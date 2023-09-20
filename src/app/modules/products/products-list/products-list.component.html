@@ -1,0 +1,190 @@
+<div class="products">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <tui-input
+        class="tui-space_right-3"
+        tuiTextfieldSize="s"
+        [formControl]="search"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldIconLeft="tuiIconSearch"
+      >
+        Введите запрос
+        <input
+          placeholder="Введите запрос"
+          tuiTextfield
+          type="text"
+        />
+      </tui-input>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        routerLink="/products/new"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+      [direction]="(direction$ | async) || 1"
+      [tuiSortBy]="sorter$ | async"
+      (tuiSortByChange)="sorter$.next($event!.toString())"
+      (directionChange)="direction$.next($event)"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'media'"
+          [sorter]="null"
+        >
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'name'"
+        >
+          Название
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'isStock'"
+        >
+          В наличии
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'price'"
+        >
+          Цена
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'categoryId'"
+        >
+          Категория
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'brand'"
+        >
+          Бренд
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(productsData?.data || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        tuiTr
+        [routerLink]="'/products/details/' + item._id"
+      >
+        <td
+          *tuiCell="'media'"
+          tuiTd
+        >
+          <img
+            class="product-item-img"
+            [src]="item.media[0] ? (env.https ? 'https://' : 'http://') + env.host + ':' + env.port + '/storage/images/' + item.media[0] : 'assets/images/no-image.png'"
+            default = "assets/images/no-image.png"
+            [alt]="item.name"
+          >
+        </td>
+        <td
+          *tuiCell="'name'"
+          tuiTd
+        >
+          {{ item.name }}
+        </td>
+        <td
+          *tuiCell="'isStock'"
+          tuiTd
+        >
+          {{ item.isStock ? 'Да' : 'Нет' }}
+        </td>
+        <td
+          *tuiCell="'price'"
+          tuiTd
+        >
+          {{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}
+        </td>
+        <td
+          *tuiCell="'categoryId'"
+          tuiTd
+        >
+          {{ item.categoryName || 'Неизвестно' }}
+        </td>
+        <td
+          *tuiCell="'brand'"
+          tuiTd
+        >
+          {{ item.brand?.name || 'Неизвестно' }}
+        </td>
+      </tr>
+      <ng-container *ngIf="productsData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="productsData?.data | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="productsData | apiLoadingState : 'Success'"
+      [items]="[10, 20, 50, 100]"
+      [total]="productsData?.metadata?.total || 0"
+      [page]="page$ | async | paginationIndex"
+      [size]="(limit$ | async) || 0"
+      (pageChange)="changePage($event + 1)"
+      (sizeChange)="changeSize($event)"
+    ></tui-table-pagination>
+  </div>
+</div>

@@ -1,0 +1,285 @@
+<div class="product">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconCheck"
+        class="tui-space_right-3"
+        [showLoader]="loading"
+        [disabled]="formGroup.invalid"
+        (click)="submit()"
+      >
+        {{ !productId ? 'Добавить' : 'Сохранить' }}
+      </button>
+      <button
+        *ngIf="productId"
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary-destructive"
+        icon="tuiIconTrash"
+        class="tui-space_right-3"
+        [showLoader]="loading"
+        (click)="showDeleteDialog()"
+      >
+        Удалить
+      </button>
+      <button
+        *ngIf="productId"
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="!([productData, brandsData, categoriesData, productTypesPrevsData] | apiLoadingState : 'Pending' : true) else loader">
+      <tui-loader [showLoader]="loading" [overlay]="true" size="l">
+        <div class="content">
+          <h3 class="tui-form__header tui-form__header_margin-top_none">Общее</h3>
+          <div class="tui-form__row">
+            <tui-input
+              formControlName="name"
+            >
+              Название
+            </tui-input>
+          </div>
+          <div class="tui-form__row tui-form__row_multi-fields">
+            <div class="tui-form__multi-field">
+              <tui-select
+                *tuiLet="brandsData as items"
+                [valueContent]="items ? stringifyBrands(items) : loading"
+                formControlName="brand"
+                [tuiTextfieldLabelOutside]="!items?.length"
+              >
+                Бренд
+                <ng-template tuiDataList>
+                  <tui-data-list *ngIf="items?.length; else loading">
+                    <button
+                      [tuiHint]="item.description"
+                      tuiHintAppearance="onDark"
+                      tuiHintDirection="right"
+                      *ngFor="let item of items"
+                      tuiOption
+                      [value]="item._id"
+                    >
+                      {{ item.name }}
+                    </button>
+                  </tui-data-list>
+                </ng-template>
+                <ng-template #loading>
+                  <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+                </ng-template>
+              </tui-select>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-select
+                class="b-form"
+                [valueContent]="categoryContent"
+                formControlName="categoryId"
+              >
+                Категория
+                <ng-template tuiDataList>
+                  <tui-data-list>
+                    <div class="category-tree">
+                      <tui-tree
+                        [tuiTreeController]="true"
+                        [value]="categoriesData"
+                        [content]="categoryItem"
+                        [childrenHandler]="categoryChildHandler"
+                      ></tui-tree>
+                      <ng-template
+                        #categoryItem
+                        let-value
+                        let-node="node"
+                      >
+                        <button
+                          tuiOption
+                          class="category-item"
+                          [disabled]="!value.productTypeId"
+                          [value]="value._id"
+                        >
+                          <tui-svg
+                            class="category-icon"
+                            *ngIf="!value.children?.length"
+                            src="tuiIconBookmark">
+                          </tui-svg>
+                          <span>{{ value.name }}</span>
+                        </button>
+                      </ng-template>
+                    </div>
+                  </tui-data-list>
+                </ng-template>
+              </tui-select>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-select
+                *tuiLet="productTypesPrevsData as items"
+                [valueContent]="items ? stringifyTypes(items) : loading"
+                [readOnly]="true"
+                formControlName="productTypeId"
+                [tuiTextfieldLabelOutside]="!items?.length"
+              >
+                Тип товара
+                <ng-template tuiDataList>
+                  <tui-data-list *ngIf="items?.length; else loading">
+                    <button
+                      [tuiHint]="item.description"
+                      tuiHintAppearance="onDark"
+                      tuiHintDirection="right"
+                      *ngFor="let item of items"
+                      tuiOption
+                      [value]="item._id"
+                    >
+                      {{ item.name }}
+                    </button>
+                  </tui-data-list>
+                </ng-template>
+                <ng-template #loading>
+                  <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+                </ng-template>
+              </tui-select>
+            </div>
+          </div>
+          <div class="tui-form__row tui-form__row_multi-fields">
+            <div class="tui-form__multi-field">
+              <tui-input-number
+                formControlName="price"
+                [postfix]="currency | tuiCurrency"
+              >
+                Цена
+              </tui-input-number>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-input-number
+                formControlName="discount"
+                [postfix]="'%'"
+              >
+                Скидка
+              </tui-input-number>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-input-number
+                [readOnly]="true"
+                [postfix]="currency | tuiCurrency"
+                formControlName="totalPrice"
+              >
+                Итоговая цена
+              </tui-input-number>
+            </div>
+          </div>
+          <div class="tui-form__row tui-form__row_multi-fields">
+            <div class="tui-form__multi-field">
+              <tui-checkbox-block
+                formControlName="isStock"
+                size="l"
+              >
+                В наличии
+              </tui-checkbox-block>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-checkbox-block
+                formControlName="isNew"
+                size="l"
+              >
+                Новинка
+              </tui-checkbox-block>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-checkbox-block
+                formControlName="isRec"
+                size="l"
+              >
+                Рекомендуемое
+              </tui-checkbox-block>
+            </div>
+          </div>
+          <div class="tui-form__row">
+            <tui-text-area
+              formControlName="description"
+              [expandable]="true"
+            >
+              Описание
+            </tui-text-area>
+          </div>
+        </div>
+        <div class="content">
+          <h3 class="tui-form__header tui-form__header_margin-top_none">Изображения</h3>
+          <div class="tui-form__row">
+            <tui-input-files
+              accept="image/*"
+              [multiple]="true"
+              formControlName="media"
+              (reject)="onReject($event)"
+              (ngModelChange)="f['media'].markAsTouched()"
+            ></tui-input-files>
+            <tui-files cdkDropList (cdkDropListDropped)="drop($event)" class="files-list tui-space_top-3">
+              <tui-file
+                class="files-item"
+                cdkDrag
+                cdkDragLockAxis="y"
+                *ngFor="let file of (f['media'].valueChanges | async) || []; index as i"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+                <div class="files-item-placeholder" *cdkDragPlaceholder></div>
+                <div>
+                  <tui-badge
+                    *ngIf="!i"
+                    status="success"
+                    class="tui-space_top-1"
+                    size="s"
+                    value="Обложка"
+                  ></tui-badge>
+                </div>
+              </tui-file>
+            </tui-files>
+            <tui-error
+              formControlName="media"
+              [error]="['maxLength'] | tuiFieldError | async"
+            ></tui-error>
+          </div>
+        </div>
+        <div class="content" *ngIf="currentTypeData !== null">
+          <h3 class="tui-form__header tui-form__header_margin-top_none">Свойства</h3>
+          <ng-container *ngIf="!(currentTypeData | apiLoadingState); else loaderSmall">
+            <div class="tui-form__row" *ngFor="let property of (currentTypeData?.properties || [])">
+              <property-input [control]="fProp[property._id]" [propertyData]="property"></property-input>
+            </div>
+          </ng-container>
+        </div>
+      </tui-loader>
+  </form>
+  <ng-template #loader>
+    <tui-loader class="loader" size="xl">
+
+    </tui-loader>
+  </ng-template>
+  <ng-template #loaderSmall>
+    <tui-loader size="m">
+
+    </tui-loader>
+  </ng-template>
+</div>

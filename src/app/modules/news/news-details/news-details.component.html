@@ -1,0 +1,118 @@
+<div class="new">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconCheck"
+        class="tui-space_right-3"
+        [showLoader]="loading"
+        [disabled]="formGroup.invalid"
+        (click)="submit()"
+      >
+        {{ !articleId ? 'Добавить' : 'Сохранить' }}
+      </button>
+      <button
+        *ngIf="articleId"
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary-destructive"
+        icon="tuiIconTrash"
+        class="tui-space_right-3"
+        [showLoader]="(articleData | apiLoadingState : 'Pending') || loading"
+        (click)="showDeleteDialog()"
+      >
+        Удалить
+      </button>
+      <button
+        *ngIf="articleId"
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <form [formGroup]="formGroup">
+    <tui-loader [showLoader]="loading" [overlay]="true" size="l">
+      <div class="content">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Общее</h3>
+        <div class="tui-form__row">
+          <tui-input
+            formControlName="title"
+          >
+            Заголовок
+          </tui-input>
+        </div>
+        <div class="tui-form__row">
+          <tui-text-area
+            formControlName="description"
+            [expandable]="true"
+          >
+            Описание
+          </tui-text-area>
+        </div>
+        <div class="tui-form__row">
+          <tui-editor
+            class="editor"
+            [tools]="editorTools"
+            formControlName="content"
+          >
+            Содержание
+          </tui-editor>
+        </div>
+        <div class="tui-form__row">
+          <tui-input-tag
+            formControlName="tags"
+          >
+            Теги
+          </tui-input-tag>
+        </div>
+      </div>
+      <div class="content">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Изображение</h3>
+        <div class="tui-form__row">
+          <tui-input-files
+            accept="image/*"
+            [multiple]="false"
+            formControlName="media"
+            (reject)="onReject($event)"
+            (ngModelChange)="f['media'].markAsTouched()"
+          ></tui-input-files>
+          <tui-files class="file tui-space_top-3">
+            <ng-container *ngIf="f['media'].value as file">
+              <tui-file
+                class="files-item"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+              </tui-file>
+            </ng-container>
+          </tui-files>
+        </div>
+      </div>
+    </tui-loader>
+  </form>
+</div>

@@ -1,0 +1,102 @@
+<div class="types">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        (click)="showAddDialog()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <ng-container [ngSwitch]="typesData | apiLoadingStateValue">
+    <div class="content" *ngSwitchCase="apiLoadingState.Success">
+      <div class="types-list">
+          <button
+            tuiAction
+            *ngFor="let item of typesData"
+            class="no-shadow"
+            #dropdown="tuiDropdown"
+            tuiDropdownContext
+            [tuiDropdown]="contextMenu"
+          >
+            <ng-template
+              #contextMenu
+            >
+              <tui-data-list
+                role="menu"
+                tuiDataListDropdownManager
+                class="context-menu"
+                (click)="showEditDialog(item); dropdown.toggle(false)"
+              >
+                <button
+                  tuiOption
+                >
+                  Изменить
+                  <tui-svg
+                    class="icon"
+                    src="tuiIconDraft"
+                  ></tui-svg>
+                </button>
+                <button
+                  tuiOption
+                  class="context-delete"
+                  (click)="showDeleteDialog(item._id, item.name); dropdown.toggle(false)"
+                >
+                  Удалить
+                  <tui-svg
+                    class="icon"
+                    src="tuiIconTrash"
+                  ></tui-svg>
+                </button>
+              </tui-data-list>
+            </ng-template>
+            <tui-marker-icon
+              size="s"
+              src="tuiIconCode"
+              class="tui-island__marker"
+            ></tui-marker-icon>
+            <section>
+              <h3 class="header tui-text_body-s">{{ item.name }}</h3>
+              <p class="description tui-text_body-xs">Элементов: {{ item.propertiesLength }}</p>
+            </section>
+          </button>
+      </div>
+    </div>
+    <div *ngSwitchCase="apiLoadingState.Empty">
+      <app-data-empty></app-data-empty>
+    </div>
+    <ng-container *ngSwitchCase="apiLoadingState.Pending">
+      <tui-loader class="loader" size="xl">
+
+      </tui-loader>
+    </ng-container>
+  </ng-container>
+</div>

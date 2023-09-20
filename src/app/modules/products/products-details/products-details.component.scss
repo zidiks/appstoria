@@ -1,0 +1,80 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.product {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content {
+    &:last-child {
+      margin-bottom: 10rem;
+    }
+    flex: 1 1 auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+  }
+}
+
+.loader {
+  margin-top: 4rem;
+}
+
+.category {
+  &-tree {
+    padding: .2rem 1rem;
+  }
+  &-icon {
+    transform: scale(0.8);
+    color: var(--tui-primary);
+  }
+  &-item {
+    ::ng-deep {
+      .t-checkmark {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.files {
+  &-list {
+    overflow: hidden;
+  }
+  &-item {
+    background: var(--tui-base-01);
+    cursor: move;
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.files-list.cdk-drop-list-dragging .files-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.files-item-placeholder {
+  min-height: 80px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+tui-checkbox-block {
+  width: 100%;
+}

@@ -1,0 +1,25 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.analytics {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content {
+    flex: 1 1 auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+  }
+}
+
+.date-range {
+  max-width: 15rem;
+}

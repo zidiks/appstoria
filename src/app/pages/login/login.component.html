@@ -1,0 +1,53 @@
+<div class="login">
+  <div class="login__left">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form">
+      <h2>Добро пожаловать</h2>
+      <p>Пожалуйста введите Ваши данные</p>
+      <div class="form__field">
+        <tui-input
+          [tuiTextfieldLabelOutside]="true"
+          formControlName="login"
+        >
+          Логин
+          <input
+            tuiTextfield
+          />
+        </tui-input>
+        <tui-error
+          formControlName="login"
+          [error]="[] | tuiFieldError | async"
+        ></tui-error>
+      </div>
+      <div class="form__field">
+        <tui-input-password
+          [tuiTextfieldLabelOutside]="true"
+          formControlName="password"
+        >
+          Пароль
+          <input
+            tuiTextfield
+          />
+        </tui-input-password>
+        <tui-error
+          formControlName="password"
+          [error]="[] | tuiFieldError | async"
+        ></tui-error>
+      </div>
+      <button
+        [disabled]="!formGroup.valid"
+        [showLoader]="loading"
+        tuiButton
+        type="submit"
+        appearance="outline"
+        size="m"
+      >
+        Войти
+      </button>
+    </form>
+  </div>
+  <div class="login__right">
+    <div class="logo">
+      <tui-svg src="tuiIconPiechartLarge"></tui-svg> Hue-Commerce
+    </div>
+  </div>
+</div>

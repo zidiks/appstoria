@@ -1,0 +1,36 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.new {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content {
+    &:last-child {
+      margin-bottom: 10rem;
+    }
+    flex: 1 1 auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+  }
+}
+
+.editor > {
+  ::ng-deep {
+    .t-wrapper {
+      min-height: 20rem;
+    }
+  }
+}
+
+.socket {
+  white-space: pre-wrap;
+}

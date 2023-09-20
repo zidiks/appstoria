@@ -1,0 +1,43 @@
+<div class="analytics">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+      >
+      </button>
+    </div>
+  </div>
+  <tui-input-date-range
+    class="date-range tui-space_top-3"
+    [maxLength]="maxLength"
+    [(ngModel)]="range"
+  >
+    Период
+  </tui-input-date-range>
+  <div class="content">
+    <h3 class="tui-form__header tui-form__header_margin-top_none">Посещения сайта</h3>
+    <app-visits [range]="range" [maxLength]="maxLength"></app-visits>
+  </div>
+  <div class="content">
+    <h3 class="tui-form__header tui-form__header_margin-top_none">Заказы</h3>
+    <app-sales [range]="range" [maxLength]="maxLength"></app-sales>
+  </div>
+</div>

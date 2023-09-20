@@ -1,0 +1,168 @@
+<div class="orders">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconUpload"
+      >
+        Экспорт
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+      [direction]="(direction$ | async) || 1"
+      [tuiSortBy]="sorter$ | async"
+      (tuiSortByChange)="sorter$.next($event!.toString())"
+      (directionChange)="direction$.next($event)"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'id'"
+          [sorter]="null"
+        >
+          Код
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'createdAt'"
+        >
+          Дата
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'customer'"
+        >
+          Покупатель
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'totalPrice'"
+        >
+          Стоимость
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'state'"
+        >
+          Статус
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(ordersData?.data || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        tuiTr
+        [routerLink]="'/orders/details/' + item._id"
+      >
+        <td
+          *tuiCell="'id'"
+          tuiTd
+        >
+          {{ item.orderCode }}
+        </td>
+        <td
+          *tuiCell="'createdAt'"
+          tuiTd
+        >
+          {{ item.createdAt  | date }}
+        </td>
+        <td
+          *tuiCell="'totalPrice'"
+          tuiTd
+        >
+          {{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ 'BYN' | tuiCurrency }}
+        </td>
+        <td
+          *tuiCell="'customer'"
+          tuiTd
+        >
+          <div class="td-name">
+            <tui-avatar
+              size="xs"
+              [text]="item.customer.name"
+            ></tui-avatar>
+            {{ item.customer.name }}
+          </div>
+        </td>
+        <td
+          *tuiCell="'state'"
+          tuiTd
+        >
+          <tui-badge
+            *tuiLet="item.state as statusInfo"
+            [status]="statusInfo.color"
+            [value]="statusInfo.label"
+          ></tui-badge>
+        </td>
+      </tr>
+      <ng-container *ngIf="ordersData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="ordersData | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="ordersData | apiLoadingState : 'Success'"
+      [items]="[10, 20, 50, 100]"
+      [total]="ordersData?.metadata?.total || 0"
+      [page]="page$ | async | paginationIndex"
+      [size]="(limit$ | async) || 0"
+      (pageChange)="changePage($event + 1)"
+      (sizeChange)="changeSize($event)"
+    ></tui-table-pagination>
+  </div>
+</div>
