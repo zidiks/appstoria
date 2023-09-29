@@ -28,6 +28,11 @@ export class ModulesComponent {
       route: '/categories',
     },
     {
+      icon: 'tuiIconBookmark',
+      name: 'Меню',
+      route: '/menus',
+    },
+    {
       icon: 'tuiIconStar',
       name: 'Бренды',
       route: '/brands',
