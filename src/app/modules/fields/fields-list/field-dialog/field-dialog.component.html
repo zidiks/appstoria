@@ -1,0 +1,46 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="label"
+      >
+        Название
+      </tui-input>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="code"
+      >
+        Код
+      </tui-input>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="type"
+      >
+        Тип
+      </tui-input>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="value"
+      >
+        Значение
+      </tui-input>
+      <button
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ fieldData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>

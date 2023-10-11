@@ -28,9 +28,14 @@ export class ModulesComponent {
       route: '/categories',
     },
     {
-      icon: 'tuiIconBookmark',
+      icon: 'tuiIconLink',
       name: 'Меню',
       route: '/menus',
+    },
+    {
+      icon: 'tuiIconEdit',
+      name: 'Поля',
+      route: '/fields',
     },
     {
       icon: 'tuiIconStar',

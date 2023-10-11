@@ -1,0 +1,172 @@
+<div class="brands">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        (click)="showAddDialog()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'label'"
+        >
+          Название
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'code'"
+        >
+          Код
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'value'"
+        >
+          Значение
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'type'"
+        >
+          Тип
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(fieldsData || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        #dropdown="tuiDropdown"
+        tuiDropdownContext
+        [tuiDropdown]="contextMenu"
+        tuiTr
+      >
+        <ng-template
+          #contextMenu
+        >
+          <tui-data-list
+            role="menu"
+            tuiDataListDropdownManager
+            class="context-menu"
+            (click)="showEditDialog(item); dropdown.toggle(false)"
+          >
+            <button
+              tuiOption
+            >
+              Изменить
+              <tui-svg
+                class="icon"
+                src="tuiIconDraft"
+              ></tui-svg>
+            </button>
+            <button
+              tuiOption
+              class="context-delete"
+              (click)="showDeleteDialog(item._id, item.label); dropdown.toggle(false)"
+            >
+              Удалить
+              <tui-svg
+                class="icon"
+                src="tuiIconTrash"
+              ></tui-svg>
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <td
+          *tuiCell="'label'"
+          tuiTd
+        >
+          <span>{{ item.label }}</span>
+        </td>
+        <td
+          *tuiCell="'code'"
+          tuiTd
+        >
+          <span>{{ item.code }}</span>
+        </td>
+        <td
+          *tuiCell="'value'"
+          tuiHintAppearance="onDark"
+          [tuiHint]="item.value"
+          class="cell-overflow"
+          tuiTd
+        >
+          <span>{{ item.value }}</span>
+        </td>
+        <td
+          *tuiCell="'type'"
+          tuiTd
+        >
+          <span>{{ item.type }}</span>
+        </td>
+      </tr>
+      <ng-container *ngIf="fieldsData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3, 4]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="fieldsData | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="fieldsData | apiLoadingState : 'Success'"
+      [total]="fieldsData?.length || 0"
+      [(page)]="page"
+      [(size)]="size"
+    ></tui-table-pagination>
+  </div>
+</div>
