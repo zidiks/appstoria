@@ -4,9 +4,10 @@ import { FieldsComponent } from './fields.component';
 import { FieldsListComponent } from './fields-list/fields-list.component';
 import { FieldsRoutingModule } from "./fields-routing.module";
 import {
+  TuiBadgeModule,
   TuiBreadcrumbsModule,
   TuiDataListDropdownManagerModule,
-  TuiInputModule,
+  TuiInputModule, TuiInputTagModule, TuiSelectModule,
   TuiTextAreaModule
 } from "@taiga-ui/kit";
 import {
@@ -23,6 +24,8 @@ import { ApiLoadingStateModule } from "../../shared/pipes/api-loading-state/api-
 import { FieldDialogComponent } from './fields-list/field-dialog/field-dialog.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
+import { ProductPropertyModule } from "../../shared/pipes/product-property/product-property.module";
+import { FieldTypeModule } from "../../shared/pipes/field-type/field-type.module";
 
 @NgModule({
   declarations: [
@@ -30,27 +33,32 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
     FieldsListComponent,
     FieldDialogComponent,
   ],
-    imports: [
-        CommonModule,
-        FieldsRoutingModule,
-        TuiBreadcrumbsModule,
-        TuiLinkModule,
-        TuiButtonModule,
-        TuiTableModule,
-        TuiLetModule,
-        ApiLoadingStateModule,
-        TuiSvgModule,
-        TuiTablePaginationModule,
-        TuiHintModule,
-        TuiDropdownModule,
-        TuiDataListModule,
-        TuiLoaderModule,
-        TuiInputModule,
-        ReactiveFormsModule,
-        TuiTextfieldControllerModule,
-        TuiTextAreaModule,
-        TuiDataListDropdownManagerModule,
-        DataEmptyModule,
-    ]
+  imports: [
+    CommonModule,
+    FieldsRoutingModule,
+    TuiBreadcrumbsModule,
+    TuiLinkModule,
+    TuiButtonModule,
+    TuiTableModule,
+    TuiLetModule,
+    ApiLoadingStateModule,
+    TuiSvgModule,
+    TuiTablePaginationModule,
+    TuiHintModule,
+    TuiDropdownModule,
+    TuiDataListModule,
+    TuiLoaderModule,
+    TuiInputModule,
+    ReactiveFormsModule,
+    TuiTextfieldControllerModule,
+    TuiTextAreaModule,
+    TuiDataListDropdownManagerModule,
+    DataEmptyModule,
+    ProductPropertyModule,
+    TuiBadgeModule,
+    FieldTypeModule,
+    TuiSelectModule,
+    TuiInputTagModule,
+  ]
 })
 export class FieldsModule { }

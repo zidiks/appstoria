@@ -13,26 +13,53 @@
         Название
       </tui-input>
       <tui-input
+        [readOnly]="!!fieldData?.type"
         tuiTextfieldSize="m"
         class="tui-space_top-3 tui-space_bottom-5"
         formControlName="code"
       >
         Код
       </tui-input>
-      <tui-input
+      <tui-select
         tuiTextfieldSize="m"
-        class="tui-space_top-3 tui-space_bottom-5"
+        *tuiLet="fieldTypes as items"
+        [valueContent]="items ? stringify(items) : loading"
         formControlName="type"
+        [tuiTextfieldLabelOutside]="!items?.length"
       >
         Тип
-      </tui-input>
-      <tui-input
-        tuiTextfieldSize="m"
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="items?.length; else loading">
+            <button
+              *ngFor="let item of items"
+              tuiOption
+              [value]="item.value"
+            >
+              {{ item.label }}
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <ng-template #loading>
+          <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+        </ng-template>
+      </tui-select>
+      <tui-input-tag
+        *ngIf="f['type'].value === fieldTypeEnum.FieldStringArray; else typeString"
         class="tui-space_top-3 tui-space_bottom-5"
+        tuiTextfieldSize="s"
         formControlName="value"
       >
         Значение
-      </tui-input>
+      </tui-input-tag>
+      <ng-template #typeString>
+        <tui-input
+          tuiTextfieldSize="m"
+          class="tui-space_top-3 tui-space_bottom-5"
+          formControlName="value"
+        >
+          Значение
+        </tui-input>
+      </ng-template>
       <button
         tuiButton
         type="submit"

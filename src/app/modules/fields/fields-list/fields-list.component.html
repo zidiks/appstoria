@@ -138,7 +138,22 @@
           *tuiCell="'type'"
           tuiTd
         >
-          <span>{{ item.type }}</span>
+          <tui-badge
+            tuiHintAppearance="onDark"
+            tuiHintDirection="top"
+            *ngIf="item.type | fieldType as fieldTypeData else errorBadge"
+            [tuiHint]="fieldTypeData.description"
+            status="info"
+            [value]="fieldTypeData.name"
+          >
+            <tui-svg src="tuiIconTooltip"></tui-svg>
+          </tui-badge>
+          <ng-template  #errorBadge>
+            <tui-badge
+              status="error"
+              value="Неизвестно"
+            ></tui-badge>
+          </ng-template>
         </td>
       </tr>
       <ng-container *ngIf="fieldsData | apiLoadingState">
