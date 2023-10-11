@@ -9,7 +9,7 @@ import { TuiAlertService, TuiDialogService, TuiNotification } from "@taiga-ui/co
 import { BrandDialogComponent } from "./brand-dialog/brand-dialog.component";
 
 @Component({
-  selector: 'app-brands-list',
+  selector: 'app-fields-list',
   templateUrl: './brands-list.component.html',
   styleUrls: ['./brands-list.component.scss'],
   providers: [

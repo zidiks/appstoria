@@ -23,6 +23,16 @@ const routes: Routes = [
         canActivate: [],
       },
       {
+        path: 'menus',
+        loadChildren: () => import('./menus/menus.module').then(m => m.MenusModule),
+        canActivate: [],
+      },
+      {
+        path: 'fields',
+        loadChildren: () => import('./fields/fields.module').then(m => m.FieldsModule),
+        canActivate: [],
+      },
+      {
         path: 'news',
         loadChildren: () => import('./news/news.module').then(m => m.NewsModule),
         canActivate: [],

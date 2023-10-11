@@ -28,6 +28,16 @@ export class ModulesComponent {
       route: '/categories',
     },
     {
+      icon: 'tuiIconLink',
+      name: 'Меню',
+      route: '/menus',
+    },
+    {
+      icon: 'tuiIconEdit',
+      name: 'Поля',
+      route: '/fields',
+    },
+    {
       icon: 'tuiIconStar',
       name: 'Бренды',
       route: '/brands',

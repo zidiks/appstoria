@@ -7,7 +7,7 @@ import { BrandsService } from "../../brands.service";
 import { AddBrandDto, UpdateBrandDto } from "../../../../shared/dto/brands.dto";
 
 @Component({
-  selector: 'app-brand-dialog',
+  selector: 'app-field-dialog',
   templateUrl: './brand-dialog.component.html',
   styleUrls: ['./brand-dialog.component.scss']
 })
