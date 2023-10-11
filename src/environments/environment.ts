@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  host: 'localhost',
+  host: '185.251.38.37',
   port: 5000,
-  currentOrigin: true,
+  currentOrigin: false,
   https: false,
   httpRequestTimeout: 30000,
   currency: 'BYN',
