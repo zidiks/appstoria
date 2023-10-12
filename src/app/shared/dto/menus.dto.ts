@@ -4,7 +4,7 @@ export interface AddMenuDto {
   handle: string;
   description?: string;
   media: string[];
-  productTypeId?: string;
+  code: string;
   root?: boolean;
 }
 
@@ -14,5 +14,5 @@ export interface UpdateMenuDto {
   description?: string;
   media: string[];
   children?: string[];
-  productTypeId?: string;
+  code: string;
 }
