@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiDialogContext, TuiValueContentContext } from "@taiga-ui/core";
-import { TypesService } from "../../../types/types.service";
 import { forkJoin, Observable } from "rxjs";
 import { ProductTypePrevModel } from "../../../../shared/models/type-property.model";
 import { EMPTY_ARRAY, TuiContextWithImplicit, TuiHandler, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
@@ -17,7 +16,6 @@ import { MenuDialogDataModel } from "../../../../shared/models/menu-dialog.model
   styleUrls: ['./menu-dialog.component.scss']
 })
 export class MenuDialogComponent implements OnInit {
-  public typesData: ApiDataModel<ProductTypePrevModel[]>;
   public menusTreeData: ApiDataModel<MenuModel>;
   public linearMenusData: MenuLinearModel[] = [];
   public loading = false;
@@ -27,17 +25,16 @@ export class MenuDialogComponent implements OnInit {
     name : [ this.menuData?.name, Validators.required ],
     handle : [ this.menuData?.handle, Validators.required ],
     description : [ this.menuData?.description ],
+    code: [ this.menuData?.code, Validators.required ],
   } );
 
   constructor(
     @Inject(POLYMORPHEUS_CONTEXT) private readonly context: TuiDialogContext<any, MenuDialogDataModel>,
     private formBuilder: FormBuilder,
-    private typesService: TypesService,
     private menusService: MenusService,
   ) { }
 
   public ngOnInit(): void {
-    this.typesService.getTypes().subscribe(res => this.typesData = res);
     this.menusService.getMenusTree().subscribe((res: MenuModel | null) => {
       this.menusTreeData = res;
       if (res) {
@@ -51,7 +48,6 @@ export class MenuDialogComponent implements OnInit {
     items: ProductTypePrevModel[],
   ): TuiStringHandler<TuiContextWithImplicit<string>> {
     const map = new Map(items.map(({_id, name}) => [_id, name] as [string, string]));
-
     return ({$implicit}: TuiContextWithImplicit<string>) => map.get($implicit) || ``;
   }
 
@@ -63,10 +59,6 @@ export class MenuDialogComponent implements OnInit {
 
   get parentData(): MenuModel | undefined {
     return this.context.data.parentData;
-  }
-
-  public get typeListData(): Observable<ProductTypePrevModel[] | null> {
-    return this.typesService.getTypes();
   }
 
   public submit(): void {
@@ -81,7 +73,7 @@ export class MenuDialogComponent implements OnInit {
             description: formValue.description,
             media: this.menuData?.media || [],
             children: this.menuData?.children?.map(item => item._id) || [],
-            productTypeId: formValue.type,
+            code: formValue.code,
           })
         ];
         if (this.parentData?._id !== formValue.parent && formValue.parent && !this.menuData.root) {
@@ -98,7 +90,7 @@ export class MenuDialogComponent implements OnInit {
           handle: formValue.handle,
           description: formValue.description,
           media: [],
-          productTypeId: formValue.type,
+          code: formValue.code,
           root: this.parentData || formValue.parent ? undefined : true,
         }).subscribe(
           res => this.context.completeWith(res),
@@ -123,7 +115,6 @@ export class MenuDialogComponent implements OnInit {
       linearTree.push({
         _id: menuNode._id,
         name: menuNode.name,
-        productTypeId: menuNode.productTypeId,
       });
       if (menuNode.children?.length) {
         menuNode.children.forEach((child: MenuModel) => {

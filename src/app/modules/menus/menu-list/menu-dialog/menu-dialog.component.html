@@ -1,5 +1,5 @@
 <tui-loader
-  [showLoader]="loading || ([menusTreeData, linearMenusData, typesData] | apiLoadingState : 'Pending' : true)"
+  [showLoader]="loading || ([menusTreeData, linearMenusData] | apiLoadingState : 'Pending' : true)"
   [overlay]="true"
   size="xl"
 >
@@ -60,36 +60,13 @@
       >
         Ссылка
       </tui-input>
-<!--      <tui-select-->
-<!--        tuiTextfieldSize="m"-->
-<!--        *tuiLet="typesData as items"-->
-<!--        [valueContent]="items ? stringify(items) : loading"-->
-<!--        formControlName="type"-->
-<!--        [tuiTextfieldLabelOutside]="!items?.length"-->
-<!--      >-->
-<!--        Тип товара-->
-<!--        <ng-template tuiDataList>-->
-<!--          <tui-data-list *ngIf="items?.length; else loading">-->
-<!--            <button-->
-<!--              tuiOption-->
-<!--              class="empty-param"-->
-<!--              [value]="null"-->
-<!--            >-->
-<!--              Без сущности-->
-<!--            </button>-->
-<!--            <button-->
-<!--              *ngFor="let item of items"-->
-<!--              tuiOption-->
-<!--              [value]="item._id"-->
-<!--            >-->
-<!--              {{ item.name }}-->
-<!--            </button>-->
-<!--          </tui-data-list>-->
-<!--        </ng-template>-->
-<!--        <ng-template #loading>-->
-<!--          <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>-->
-<!--        </ng-template>-->
-<!--      </tui-select>-->
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="code"
+      >
+        Код
+      </tui-input>
       <tui-text-area
         tuiTextfieldSize="m"
         class="tui-space_top-3 tui-space_bottom-5"
