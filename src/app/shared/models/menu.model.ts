@@ -6,7 +6,7 @@ export interface MenuModel {
   media: string[];
   root?: boolean;
   children?: MenuModel[];
-  productTypeId?: string;
+  code: string;
   parent?: MenuParentModel;
 }
 
