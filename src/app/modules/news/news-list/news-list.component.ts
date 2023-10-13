@@ -24,7 +24,7 @@ export class NewsListComponent implements OnInit {
     },
   ];
 
-  readonly columns = ['title', 'date', 'tags'];
+  readonly columns = ['title', 'date', 'tags', 'seoTags'];
 
   constructor(
     private newsService: NewsService,

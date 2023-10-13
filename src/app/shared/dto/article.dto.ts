@@ -6,6 +6,7 @@ export interface ArticleResponseDto extends ApiId, ApiTimestamp {
   description: string;
   content: string;
   tags: string[];
+  seoTags: string[];
 }
 
 export interface ArticlePrevResponseDto extends ApiId, ApiTimestamp {
@@ -13,6 +14,7 @@ export interface ArticlePrevResponseDto extends ApiId, ApiTimestamp {
   title: string;
   description: string;
   tags: string[];
+  seoTags: string[];
 }
 
 export interface AddArticleRequestDto {
@@ -21,6 +23,7 @@ export interface AddArticleRequestDto {
   description: string;
   content: string;
   tags: string[];
+  seoTags: string[];
 }
 
 export interface UpdateArticleRequestDto extends AddArticleRequestDto { }
