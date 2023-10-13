@@ -63,6 +63,7 @@ export class NewsDetailsComponent implements OnInit {
     content: ['', Validators.required],
     media: [null, Validators.required],
     tags: [[]],
+    seoTags: [[]],
   });
 
   constructor(
@@ -160,6 +161,7 @@ export class NewsDetailsComponent implements OnInit {
                 content: res.content,
                 media: mediaRes || null,
                 tags: res.tags,
+                seoTags: res.seoTags,
               })
             });
           });
