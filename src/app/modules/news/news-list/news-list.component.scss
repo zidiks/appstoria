@@ -43,7 +43,7 @@ table {
     }
     tr {
       display: grid;
-      grid-template-columns: 3fr 1fr 1fr;
+      grid-template-columns: 3fr 1fr 1fr 1fr;
       cursor: pointer;
       &>td, th {
         display: flex;

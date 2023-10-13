@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  host: '185.251.38.37',
+  host: 'localhost',
   port: 5000,
   currentOrigin: false,
   https: false,
