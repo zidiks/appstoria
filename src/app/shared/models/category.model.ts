@@ -4,6 +4,7 @@ export interface CategoryModel {
   handle: string;
   description?: string;
   media: string[];
+  icon: string;
   root?: boolean;
   children?: CategoryModel[];
   productTypeId?: string;
