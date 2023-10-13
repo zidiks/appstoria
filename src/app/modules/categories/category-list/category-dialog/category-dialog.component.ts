@@ -28,6 +28,7 @@ export class CategoryDialogComponent implements OnInit {
     handle : [ this.categoryData?.handle, Validators.required ],
     description : [ this.categoryData?.description ],
     type : [ this.categoryData?.productTypeId ],
+    icon: [ this.categoryData?.icon ],
   } );
 
   constructor(
@@ -81,6 +82,7 @@ export class CategoryDialogComponent implements OnInit {
             handle: formValue.handle,
             description: formValue.description,
             media: this.categoryData?.media || [],
+            icon: formValue.icon,
             children: this.categoryData?.children?.map(item => item._id) || [],
             productTypeId: formValue.type,
           })
@@ -99,6 +101,7 @@ export class CategoryDialogComponent implements OnInit {
           handle: formValue.handle,
           description: formValue.description,
           media: [],
+          icon: formValue.icon,
           productTypeId: formValue.type,
           root: this.parentData || formValue.parent ? undefined : true,
         }).subscribe(
