@@ -7,6 +7,7 @@ import { TuiAlertService, TuiDialogService, TuiNotification } from "@taiga-ui/co
 import { SubmitService } from "../../../shared/services/submit.service";
 import { PolymorpheusComponent } from "@tinkoff/ng-polymorpheus";
 import { DeliveryDialogComponent } from "./delivery-dialog/delivery-dialog.component";
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-delivery',
@@ -46,7 +47,13 @@ export class DeliveryComponent implements OnInit {
 
   public refreshData(): void {
     this.deliveryData = undefined;
-    this.deliveryService.getDeliveryMethods().subscribe(res => this.deliveryData = res);
+      this.deliveryService.getDeliveryMethods().pipe(
+        map((res) => {
+          return (res || []).map((item) => Object.assign(item, {
+            paymentMethods: item.paymentMethods.map((method) => method._id)
+          }));
+        })
+      ).subscribe(res => this.deliveryData = res);
   }
 
   public showAddDialog(): void {

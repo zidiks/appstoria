@@ -28,6 +28,7 @@ export class DeliveryDialogComponent {
     description : [ this.deliveryData?.description, Validators.required ],
     fields: [ this.deliveryData?.fields || [] ],
     paymentMethods: [ this.deliveryData?.paymentMethods || [] ],
+    deliveryPrice: [ this.deliveryData?.deliveryPrice || 0, Validators.required ],
   } );
 
   private readonly payments$ = this.paymentsData$.pipe(
