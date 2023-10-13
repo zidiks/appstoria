@@ -160,8 +160,8 @@ export class NewsDetailsComponent implements OnInit {
                 description: res.description,
                 content: res.content,
                 media: mediaRes || null,
-                tags: res.tags,
-                seoTags: res.seoTags,
+                tags: res.tags || [],
+                seoTags: res.seoTags || [],
               })
             });
           });
