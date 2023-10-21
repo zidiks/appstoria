@@ -56,8 +56,8 @@ export class LoginComponent {
           (res) => {
             if (res && !res.roles.includes(Roles.User)) {
               this.alertService.open('Недостаточно прав доступа', {label: `Невозможно войти`, status: TuiNotification.Error, autoClose: 7000}).subscribe();
-              this.loading = false;
             }
+            this.loading = false;
             this.router.navigate(['/']);
           },
           (error) => {
