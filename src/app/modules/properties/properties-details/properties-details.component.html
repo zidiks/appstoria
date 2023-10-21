@@ -102,13 +102,22 @@
           >
             Отображать в карточках товаров
           </tui-checkbox-labeled>
-          <tui-checkbox-labeled
-            formControlName="showFilter"
-            size="l"
-            class="tui-form__checkbox"
-          >
-            Отображать в фильтрах подбора
-          </tui-checkbox-labeled>
+          <div class="tooltip">
+            <tui-checkbox-labeled
+              formControlName="showFilter"
+              size="l"
+              class="tui-form__checkbox"
+              [readOnly]="f['type'].value === productTypePropertyType.NumberInput || f['type'].value === productTypePropertyType.StringInput"
+            >
+              Отображать в фильтрах подбора
+            </tui-checkbox-labeled>
+            <tui-tooltip
+              content="Для всех типов значений кроме произвольная строка или число"
+              describeId="button"
+              direction="right"
+              class="tui-space_left-4"
+            ></tui-tooltip>
+          </div>
         </div>
     </tui-loader>
     <ng-container *tuiLet="f['type']?.valueChanges | async as typeValue">

@@ -20,6 +20,11 @@
   }
 }
 
+.tooltip {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 .loader {
   margin-top: 4rem;
 }
