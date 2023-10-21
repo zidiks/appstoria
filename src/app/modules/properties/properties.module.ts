@@ -12,11 +12,11 @@ import {
   TuiTextAreaModule
 } from "@taiga-ui/kit";
 import {
-    TuiButtonModule, TuiDataListModule, TuiDropdownModule,
-    TuiHintModule,
-    TuiLinkModule, TuiLoaderModule,
-    TuiSvgModule,
-    TuiTextfieldControllerModule
+  TuiButtonModule, TuiDataListModule, TuiDropdownModule,
+  TuiHintModule,
+  TuiLinkModule, TuiLoaderModule,
+  TuiSvgModule,
+  TuiTextfieldControllerModule, TuiTooltipModule
 } from "@taiga-ui/core";
 import { TuiTableModule, TuiTablePaginationModule } from "@taiga-ui/addon-table";
 import { TuiLetModule } from "@taiga-ui/cdk";
@@ -31,33 +31,34 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
     PropertiesListComponent,
     PropertiesDetailsComponent
   ],
-    imports: [
-        CommonModule,
-        PropertiesRoutingModule,
-        TuiBreadcrumbsModule,
-        TuiButtonModule,
-        TuiLinkModule,
-        TuiTableModule,
-        TuiLetModule,
-        ApiLoadingStateModule,
-        TuiSvgModule,
-        TuiTablePaginationModule,
-        TuiMarkerIconModule,
-        ProductPropertyModule,
-        TuiBadgeModule,
-        TuiHintModule,
-        ReactiveFormsModule,
-        TuiInputModule,
-        TuiTextAreaModule,
-        TuiSelectModule,
-        TuiTextfieldControllerModule,
-        TuiDataListModule,
-        TuiLoaderModule,
-        TuiCheckboxLabeledModule,
-        TuiInputTagModule,
-        TuiDropdownModule,
-        TuiDataListDropdownManagerModule,
-        DataEmptyModule,
-    ]
+  imports: [
+    CommonModule,
+    PropertiesRoutingModule,
+    TuiBreadcrumbsModule,
+    TuiButtonModule,
+    TuiLinkModule,
+    TuiTableModule,
+    TuiLetModule,
+    ApiLoadingStateModule,
+    TuiSvgModule,
+    TuiTablePaginationModule,
+    TuiMarkerIconModule,
+    ProductPropertyModule,
+    TuiBadgeModule,
+    TuiHintModule,
+    ReactiveFormsModule,
+    TuiInputModule,
+    TuiTextAreaModule,
+    TuiSelectModule,
+    TuiTextfieldControllerModule,
+    TuiDataListModule,
+    TuiLoaderModule,
+    TuiCheckboxLabeledModule,
+    TuiInputTagModule,
+    TuiDropdownModule,
+    TuiDataListDropdownManagerModule,
+    DataEmptyModule,
+    TuiTooltipModule,
+  ]
 })
 export class PropertiesModule { }
