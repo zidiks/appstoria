@@ -12,7 +12,7 @@ export class HttpService {
   constructor(
     private httpClient: HttpClient,
   ) {
-    this.url = `${environment.https ? 'https' : 'http'}://${environment.currentOrigin ? window.location.hostname : environment.host}:${environment.port}`;
+    this.url = `${environment.https ? 'https' : 'http'}://${environment.currentOrigin ? window.location.hostname : environment.host}${environment.port ? ':' + environment.port : ''}`;
   }
 
   public get<T>(endpoint: string, parameters?: { [key: string]: any }): Observable<T> {
