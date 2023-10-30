@@ -136,6 +136,13 @@
           font-size: 1rem;
         }
       }
+      &-delivery {
+        .total__line-value {
+          color: var(--tui-text-01);
+          font-weight: 600;
+          font-size: 1rem;
+        }
+      }
       &-total {
         .total__line-value {
           color: var(--tui-text-01);

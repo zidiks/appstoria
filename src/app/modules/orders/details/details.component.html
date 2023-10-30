@@ -192,6 +192,15 @@
                     ></tui-money>
                   </span>
                 </div>
+                <div class="total__line total__line-delivery">
+                  <span class="total__line-name">Стоимость доставки</span>
+                  <span class="total__line-value">
+                    <tui-money
+                      currency="BYN"
+                      [value]="orderData.delivery.deliveryMethod.deliveryPrice || 0"
+                    ></tui-money>
+                  </span>
+                </div>
                 <div class="total__line total__line-total">
                   <span class="total__line-name">Итоговая стоимость</span>
                   <span class="total__line-value">
@@ -218,6 +227,13 @@
               <div class="delivery-box">
                 <span class="delivery-param">Способ доставки</span>
                 <span class="delivery-value">{{ orderData.delivery.deliveryMethod.name }}</span>
+              </div>
+              <div class="delivery-box">
+                <span class="delivery-param">Стоимость доставки</span>
+                <tui-money
+                  currency="BYN"
+                  [value]="orderData.delivery.deliveryMethod.deliveryPrice || 0"
+                ></tui-money>
               </div>
               <div class="delivery-box" *ngFor="let item of orderData.delivery.deliveryData">
                 <span class="delivery-param">{{ item.name }}</span>
