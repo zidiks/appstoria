@@ -88,4 +88,7 @@ export class ListComponent implements OnInit {
     });
   }
 
+  public exportData() {
+    return null;
+  }
 }
