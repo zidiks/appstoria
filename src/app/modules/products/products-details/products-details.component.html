@@ -270,6 +270,46 @@
             </div>
           </ng-container>
         </div>
+        <div class="content" formGroupName="seo">
+          <h3 class="tui-form__header tui-form__header_margin-top_none">Seo</h3>
+            <div class="tui-form__row">
+              <tui-input
+                formControlName="seoTitle"
+              >
+                Заголовок
+              </tui-input>
+            </div>
+            <div class="tui-form__row">
+              <tui-input
+                formControlName="seoDescription"
+              >
+                Описание
+              </tui-input>
+            </div>
+            <div class="tui-form__row">
+              <tui-input-tag
+                formControlName="seoKeywords"
+              >
+                Ключевые слова
+              </tui-input-tag>
+            </div>
+            <div class="tui-form__row seo_btn">
+              <tui-input
+                class="seo_input"
+                formControlName="seoUrl"
+              >
+                URL адрес
+              </tui-input>
+              <button
+                tuiButton
+                type="button"
+                class="tui-space_bottom-3"
+                (click)="generateUrl(this.formGroup.get('name')?.value)"
+              >
+                Сгенерировать
+              </button>
+            </div>
+        </div>
       </tui-loader>
   </form>
   <ng-template #loader>

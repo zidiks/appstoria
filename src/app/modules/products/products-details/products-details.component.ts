@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiDataModel } from "../../../shared/models/api-data.model";
-import { ProductModel, ProductPropertyValueModel } from "../../../shared/models/product.model";
+import {ProductModel, ProductPropertyValueModel, ProductSeoDto} from "../../../shared/models/product.model";
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ProductsService } from "../products.service";
 import { TypesService } from "../../types/types.service";
@@ -29,6 +29,7 @@ import { ResultMediaData } from "../../../shared/models/images.model";
 import { AddImagesResponseDto } from "../../../shared/dto/images.dto";
 import { SubmitService } from "../../../shared/services/submit.service";
 import { environment } from "../../../../environments/environment";
+import { transliteration } from "../../../shared/functions/transliteration.func";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -37,6 +38,7 @@ interface DataResponse {
   brands: BrandModel[] | null;
   categories: CategoryModel | null;
   productTypes: ProductTypePrevModel[] | null;
+  seo?: ProductSeoDto | null;
 }
 
 @Component({
@@ -72,6 +74,12 @@ export class ProductsDetailsComponent implements OnInit {
     isStock: [true, Validators.required],
     discount: [0],
     productProps: this.formBuilder.group({}),
+    seo: this.formBuilder.group({
+      seoTitle: [''],
+      seoDescription: [''],
+      seoKeywords: [[]],
+      seoUrl: [''],
+    })
   });
 
   constructor(
@@ -173,6 +181,12 @@ export class ProductsDetailsComponent implements OnInit {
               isRec: productData.isRec,
               isStock: productData.isStock,
             });
+            this.formGroup.get('seo')?.setValue({
+              seoTitle: productData.seo?.seoTitle || '',
+              seoDescription: productData.seo?.seoDescription || '',
+              seoKeywords: productData.seo?.seoKeywords || [],
+              seoUrl: productData.seo?.seoUrl || '',
+            })
           });
         });
       } else {
@@ -372,4 +386,9 @@ export class ProductsDetailsComponent implements OnInit {
       );
   }
 
+  generateUrl(text: string) {
+    this.formGroup.get('seo')?.patchValue({
+      seoUrl: transliteration(text)
+    })
+  }
 }

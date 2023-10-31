@@ -34,3 +34,12 @@
 .socket {
   white-space: pre-wrap;
 }
+
+.seo_btn {
+  .seo_input {
+    width: 100%;
+  }
+  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+}

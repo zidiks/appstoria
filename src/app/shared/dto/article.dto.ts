@@ -6,7 +6,7 @@ export interface ArticleResponseDto extends ApiId, ApiTimestamp {
   description: string;
   content: string;
   tags: string[];
-  seoTags: string[];
+  seo: ArticleSeoDto;
 }
 
 export interface ArticlePrevResponseDto extends ApiId, ApiTimestamp {
@@ -24,6 +24,14 @@ export interface AddArticleRequestDto {
   content: string;
   tags: string[];
   seoTags: string[];
+}
+
+export interface ArticleSeoDto {
+  seoTitle?: string,
+  seoDescription?: string,
+  seoKeywords?: string,
+  seoUrl?: string,
+  seoAuthor?: string,
 }
 
 export interface UpdateArticleRequestDto extends AddArticleRequestDto { }

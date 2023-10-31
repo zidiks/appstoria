@@ -17,8 +17,15 @@ export interface ProductModel extends ApiId, ApiTimestamp {
   isRec: boolean;
   isStock: boolean;
   productProps: ProductPropertyValueModel[];
+  seo?: ProductSeoDto;
 }
 
+export interface ProductSeoDto {
+  seoTitle?: string,
+  seoDescription?: string,
+  seoKeywords?: string,
+  seoUrl?: string,
+}
 export interface ProductPrevModel extends ApiId, ApiTimestamp {
   name: string;
   media: string[];

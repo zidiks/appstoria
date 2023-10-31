@@ -78,3 +78,12 @@
 tui-checkbox-block {
   width: 100%;
 }
+
+.seo_btn {
+  .seo_input {
+    width: 100%;
+  }
+  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
