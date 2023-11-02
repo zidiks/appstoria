@@ -52,6 +52,7 @@ export interface OrderDeliveryDto {
 export interface OrderDeliveryMethodDto {
   name: string;
   description: string;
+  deliveryPrice?: number;
 }
 
 export interface OrderDeliveryDataValueDto {
