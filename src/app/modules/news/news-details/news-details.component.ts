@@ -20,6 +20,7 @@ import { ResultMediaData } from "../../../shared/models/images.model";
 import * as randomBytes from "randombytes";
 import { SubmitService } from "../../../shared/services/submit.service";
 import { imageLoader } from "./image-loader";
+import { transliteration } from "../../../shared/functions/transliteration.func";
 
 @Component({
   selector: 'app-news-details',
@@ -63,7 +64,13 @@ export class NewsDetailsComponent implements OnInit {
     content: ['', Validators.required],
     media: [null, Validators.required],
     tags: [[]],
-    seoTags: [[]],
+    seo: this.formBuilder.group({
+      seoTitle: [''],
+      seoDescription: [''],
+      seoKeywords: [[]],
+      seoUrl: [''],
+      seoAuthor: [''],
+    }),
   });
 
   constructor(
@@ -155,13 +162,19 @@ export class NewsDetailsComponent implements OnInit {
           this.initialMedia = res.media || null;
           this.imagesService.getImage(res.media).subscribe((mediaRes: TuiFileLike | null) => {
             setTimeout(() => {
-              this.formGroup.setValue({
+              this.formGroup.patchValue({
                 title: res.title,
                 description: res.description,
                 content: res.content,
                 media: mediaRes || null,
-                tags: res.tags || [],
-                seoTags: res.seoTags || [],
+                tags: res.tags || []
+              })
+              this.formGroup.get('seo')?.setValue({
+                  seoTitle: res.seo.seoTitle || '',
+                  seoDescription: res.seo.seoDescription || '',
+                  seoKeywords: res.seo.seoKeywords || [''],
+                  seoUrl: res.seo.seoUrl || '',
+                  seoAuthor: res.seo.seoAuthor || '',
               })
             });
           });
@@ -218,4 +231,9 @@ export class NewsDetailsComponent implements OnInit {
     }
   }
 
+  generateUrl(text: string){
+    this.formGroup.get('seo')?.patchValue({
+      seoUrl: transliteration(text)
+    })
+  }
 }

@@ -71,4 +71,8 @@ export class ModulesComponent {
       authService.updCurrentUser().subscribe();
     }
   }
+
+  public userSettings() {
+    return null;
+  }
 }

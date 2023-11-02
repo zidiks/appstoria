@@ -10,6 +10,7 @@
 <ng-template #dropdownProfile>
   <div class="profile-dropdown-content">
     <a
+      *ngIf="userSettings()"
       tuiLink
       icon="tuiIconSettingsLarge"
       iconAlign="left"
