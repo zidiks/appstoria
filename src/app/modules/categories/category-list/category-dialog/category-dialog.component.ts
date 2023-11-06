@@ -24,10 +24,10 @@ export class CategoryDialogComponent implements OnInit {
 
   public formGroup: FormGroup = this.formBuilder.group( {
     parent: [ this.parentData?._id || this.categoryData?.parent?._id || null ],
-    name : [ this.categoryData?.name, Validators.required ],
-    handle : [ this.categoryData?.handle, Validators.required ],
-    description : [ this.categoryData?.description ],
-    type : [ this.categoryData?.productTypeId ],
+    name: [ this.categoryData?.name, Validators.required ],
+    handle: [ this.categoryData?.handle?.split('/').slice(-1), Validators.required ],
+    description: [ this.categoryData?.description ],
+    type: [ this.categoryData?.productTypeId ],
     icon: [ this.categoryData?.icon ],
   } );
 
@@ -71,6 +71,18 @@ export class CategoryDialogComponent implements OnInit {
     return this.typesService.getTypes();
   }
 
+  public changeSlug(value: string): void {
+    this.f['handle']?.setValue(value);
+  }
+
+  public get parentSlug(): string {
+    const parent = this.parentData;
+    if (!parent?.handle) {
+      return '';
+    }
+    return parent.handle === 'root' ? '' : `${parent.handle}/`;
+  }
+
   public submit(): void {
     if (this.formGroup.valid) {
       this.loading = true;
@@ -79,7 +91,7 @@ export class CategoryDialogComponent implements OnInit {
         const requests: Observable<CategoryModel | CategoryModel[] | null>[] = [
           this.categoriesService.updateCategory(this.categoryData._id, {
             name: formValue.name,
-            handle: formValue.handle,
+            handle: this.parentSlug + formValue.handle,
             description: formValue.description,
             media: this.categoryData?.media || [],
             icon: formValue.icon,
