@@ -20,11 +20,16 @@ export interface ProductModel extends ApiId, ApiTimestamp {
   seo?: ProductSeoDto;
 }
 
+export interface ProductSeoImageDto {
+  imageName: string;
+  imageAlt: string;
+}
 export interface ProductSeoDto {
   seoTitle?: string,
   seoDescription?: string,
   seoKeywords?: string,
   seoUrl?: string,
+  seoImage?: ProductSeoImageDto[];
 }
 export interface ProductPrevModel extends ApiId, ApiTimestamp {
   name: string;
