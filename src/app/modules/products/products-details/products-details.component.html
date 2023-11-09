@@ -294,12 +294,14 @@
               </tui-input-tag>
             </div>
             <div class="tui-form__row seo_btn">
-              <tui-input
+              <tui-primitive-textfield
                 class="seo_input"
-                formControlName="seoUrl"
+                [prefix]="prefix"
+                [value]="formGroup.get('seo.seoUrl')?.value || ''"
+                (valueChange)="changeSlug($event)"
               >
                 URL адрес
-              </tui-input>
+              </tui-primitive-textfield>
               <button
                 tuiButton
                 type="button"
