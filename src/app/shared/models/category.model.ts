@@ -21,6 +21,7 @@ export interface CategoryParentModel {
 export interface CategoryLinearModel {
   _id: string;
   name: string;
+  handle?: string;
   productTypeId?: string;
 }
 

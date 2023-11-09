@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiDataModel } from "../../../shared/models/api-data.model";
 import {ProductModel, ProductPropertyValueModel, ProductSeoDto} from "../../../shared/models/product.model";
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { ProductsService } from "../products.service";
 import { TypesService } from "../../types/types.service";
 import { CategoryLinearModel, CategoryModel } from "../../../shared/models/category.model";
@@ -59,6 +59,7 @@ export class ProductsDetailsComponent implements OnInit {
   public loading = false;
   public maxMediaLength = MAX_MEDIA_LENGTH;
   public currency = environment.currency;
+  public prefix = '';
 
   public formGroup: FormGroup = this.formBuilder.group({
     name: [null, Validators.required],
@@ -78,7 +79,8 @@ export class ProductsDetailsComponent implements OnInit {
       seoTitle: [''],
       seoDescription: [''],
       seoKeywords: [[]],
-      seoUrl: [''],
+      seoUrl: ['', Validators.required],
+      seoImage: this.formBuilder.array([]),
     })
   });
 
@@ -131,6 +133,7 @@ export class ProductsDetailsComponent implements OnInit {
       if (this.categoriesData) {
         const categoryItem = this.linearCategoriesData.find((category => category._id === value));
         if (categoryItem) {
+          this.prefix = categoryItem.handle ? `${categoryItem.handle}/` : '';
           this.f['productTypeId'].setValue(categoryItem.productTypeId);
         }
       }
@@ -165,6 +168,8 @@ export class ProductsDetailsComponent implements OnInit {
       if (res.product) {
         const productData = res.product;
         this.initialMedia = res.product.media || [];
+        productData.seo?.seoImage?.forEach(el => (this.formGroup.get('seo')?.get('seoImage') as FormArray)
+          .push(this.formBuilder.group(el)))
         this.getImages(res.product.media || []).subscribe(mediaRes => {
           setTimeout(() => {
             this.formGroup.patchValue({
@@ -181,13 +186,13 @@ export class ProductsDetailsComponent implements OnInit {
               isRec: productData.isRec,
               isStock: productData.isStock,
             });
-            this.formGroup.get('seo')?.setValue({
+            this.formGroup.get('seo')?.patchValue({
               seoTitle: productData.seo?.seoTitle || '',
               seoDescription: productData.seo?.seoDescription || '',
               seoKeywords: productData.seo?.seoKeywords || [],
               seoUrl: productData.seo?.seoUrl || '',
             })
-          });
+          },1000);
         });
       } else {
         this.currentTypeData = null;
@@ -232,6 +237,7 @@ export class ProductsDetailsComponent implements OnInit {
       linearTree.push({
         _id: categoryNode._id,
         name: categoryNode.name,
+        handle: categoryNode.handle,
         productTypeId: categoryNode.productTypeId,
       });
       if (categoryNode.children?.length) {
@@ -249,10 +255,15 @@ export class ProductsDetailsComponent implements OnInit {
     this.alertService.open([...(files as TuiFileLike[])].map(item => item.name).join(', '), {label: `Ошибка загрузки файлов`, status: TuiNotification.Error, autoClose: 5000}).subscribe();
   }
 
-  public removeFile({name}: File): void {
+  public removeFile({name}: File, i: number): void {
     this.f['media'].setValue(
       this.f['media'].value?.filter((current: File) => current.name !== name) ?? [],
     );
+    (this.formGroup.get('seo')?.get('seoImage') as FormArray).removeAt(i)
+  }
+
+  public changeSlug(value: string): void {
+    this.formGroup.get('seo.seoUrl')?.setValue(value);
   }
 
   private setPropertiesControls(productTypeId: string): void {
@@ -291,10 +302,20 @@ export class ProductsDetailsComponent implements OnInit {
     if (this.formGroup.valid) {
       const data = this.formGroup.value;
       this.loading = true;
-      this.processMedia(this.initialMedia || [], data.media).subscribe(resMediaPayload => {
+      this.processMedia(this.initialMedia || [], data.media, data.seo.seoImage).subscribe(resMediaPayload => {
+        const mediaRes: string[] = []
+        const seoImageRes: any[] = []
+        resMediaPayload.forEach(el => {
+          mediaRes.push(el.media)
+          seoImageRes.push(el.seoName)
+        })
         const payload = {
           ...data,
-          media: resMediaPayload,
+          media: mediaRes,
+          seo: {
+            ...data.seo,
+            seoImage: seoImageRes
+          },
           productProps: Object.entries<PropertyValue>(data.productProps || [])
             .map(([productTypePropertyId, value]: [string, PropertyValue]) =>
               ({ productTypePropertyId, value }))
@@ -345,7 +366,7 @@ export class ProductsDetailsComponent implements OnInit {
     }
   }
 
-  private processMedia(initialNames: string[], resultMedias: TuiFileLike[]): Observable<string[]> {
+  private processMedia(initialNames: string[], resultMedias: TuiFileLike[], seoImage: any[]): Observable<any[]> {
     const resultMediaData: ResultMediaData[] = (resultMedias || []).map(media => {
       const isNew: boolean = !initialNames.includes(media.name);
       const shortName: string = randomBytes(7).toString('hex');
@@ -379,7 +400,14 @@ export class ProductsDetailsComponent implements OnInit {
                   return mediaData;
                 })
                 .filter(mediaData => mediaData)
-                .map(mediaData => mediaData!.name);
+                .map(mediaData => {
+                  const seoName = seoImage.filter(image => image.imageName === mediaData?.file.name)
+                  seoName[0].imageName = mediaData?.name
+                  return {
+                    media: mediaData!.name,
+                    seoName: seoName[0]
+                  }
+                });
             })
           )
         )
@@ -389,6 +417,23 @@ export class ProductsDetailsComponent implements OnInit {
   generateUrl(text: string) {
     this.formGroup.get('seo')?.patchValue({
       seoUrl: transliteration(text)
+    })
+  }
+
+  inputFileChange(file: File[]) {
+    if (!file.length || file.length <= (this.f['seo'].get('seoImage') as FormArray).length) return
+    this.f['media'].markAsTouched();
+    (this.f['seo'].get('seoImage') as FormArray).push(
+      this.formBuilder.group({
+        imageName: [file[file.length-1].name || ''],
+        imageAlt: [this.formGroup.get('seo')?.get('seoImage')?.get('imageAlt')?.value || '']
+      })
+    )
+  }
+
+  onAltChange(event: Event, control: number) {
+    (this.formGroup.get('seo')?.get('seoImage') as FormArray).at(control).patchValue({
+      imageAlt: (event.target as HTMLInputElement).value
     })
   }
 }

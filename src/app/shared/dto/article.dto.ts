@@ -32,6 +32,7 @@ export interface ArticleSeoDto {
   seoKeywords?: string,
   seoUrl?: string,
   seoAuthor?: string,
+  seoImageAlt?: string,
 }
 
 export interface UpdateArticleRequestDto extends AddArticleRequestDto { }
