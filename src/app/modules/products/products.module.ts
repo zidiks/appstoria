@@ -19,7 +19,7 @@ import {
   TuiFormatNumberPipeModule,
   TuiHintModule,
   TuiLinkModule,
-  TuiLoaderModule,
+  TuiLoaderModule, TuiPrimitiveTextfieldModule,
   TuiSvgModule,
   TuiTextfieldControllerModule
 } from "@taiga-ui/core";
@@ -77,6 +77,7 @@ import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagin
     TuiAvatarModule,
     TuiCheckboxBlockModule,
     TuiInputTagModule,
+    TuiPrimitiveTextfieldModule,
   ]
 })
 export class ProductsModule { }

@@ -59,6 +59,7 @@ export class ProductsDetailsComponent implements OnInit {
   public loading = false;
   public maxMediaLength = MAX_MEDIA_LENGTH;
   public currency = environment.currency;
+  public prefix = '';
 
   public formGroup: FormGroup = this.formBuilder.group({
     name: [null, Validators.required],
@@ -78,7 +79,7 @@ export class ProductsDetailsComponent implements OnInit {
       seoTitle: [''],
       seoDescription: [''],
       seoKeywords: [[]],
-      seoUrl: [''],
+      seoUrl: ['', Validators.required],
       seoImage: this.formBuilder.array([]),
     })
   });
@@ -132,6 +133,7 @@ export class ProductsDetailsComponent implements OnInit {
       if (this.categoriesData) {
         const categoryItem = this.linearCategoriesData.find((category => category._id === value));
         if (categoryItem) {
+          this.prefix = categoryItem.handle ? `${categoryItem.handle}/` : '';
           this.f['productTypeId'].setValue(categoryItem.productTypeId);
         }
       }
@@ -235,6 +237,7 @@ export class ProductsDetailsComponent implements OnInit {
       linearTree.push({
         _id: categoryNode._id,
         name: categoryNode.name,
+        handle: categoryNode.handle,
         productTypeId: categoryNode.productTypeId,
       });
       if (categoryNode.children?.length) {
@@ -257,6 +260,10 @@ export class ProductsDetailsComponent implements OnInit {
       this.f['media'].value?.filter((current: File) => current.name !== name) ?? [],
     );
     (this.formGroup.get('seo')?.get('seoImage') as FormArray).removeAt(i)
+  }
+
+  public changeSlug(value: string): void {
+    this.formGroup.get('seo.seoUrl')?.setValue(value);
   }
 
   private setPropertiesControls(productTypeId: string): void {
