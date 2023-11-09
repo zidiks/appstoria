@@ -70,6 +70,7 @@ export class NewsDetailsComponent implements OnInit {
       seoKeywords: [[]],
       seoUrl: [''],
       seoAuthor: [''],
+      seoImageAlt: [''],
     }),
   });
 
@@ -175,6 +176,7 @@ export class NewsDetailsComponent implements OnInit {
                   seoKeywords: res.seo.seoKeywords || [''],
                   seoUrl: res.seo.seoUrl || '',
                   seoAuthor: res.seo.seoAuthor || '',
+                  seoImageAlt: res.seo.seoImageAlt || '',
               })
             });
           });

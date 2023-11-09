@@ -231,9 +231,11 @@
               [multiple]="true"
               formControlName="media"
               (reject)="onReject($event)"
-              (ngModelChange)="f['media'].markAsTouched()"
+              (ngModelChange)="inputFileChange($event)"
             ></tui-input-files>
             <tui-files cdkDropList (cdkDropListDropped)="drop($event)" class="files-list tui-space_top-3">
+              <ng-container formGroupName="seo">
+              <ng-container formArrayName="seoImage">
               <tui-file
                 class="files-item"
                 cdkDrag
@@ -242,7 +244,7 @@
                 state="normal"
                 size="l"
                 [file]="file"
-                (removed)="removeFile(file)"
+                (removed)="removeFile(file, i)"
               >
                 <div class="files-item-placeholder" *cdkDragPlaceholder></div>
                 <div>
@@ -253,8 +255,21 @@
                     size="s"
                     value="Обложка"
                   ></tui-badge>
+                  <ng-container [formGroupName]="i">
+                    <tui-input
+                      class="tui-space_top-1 tui-space_bottom-1 image_alt"
+                      formControlName="imageAlt"
+                      tuiTextfieldSize="s"
+                      [tuiTextfieldCleaner]="true"
+                      (change)="onAltChange($event, i)"
+                    >
+                      Атрибут Alt
+                    </tui-input>
+                  </ng-container>
                 </div>
               </tui-file>
+              </ng-container>
+            </ng-container>
             </tui-files>
             <tui-error
               formControlName="media"
