@@ -293,9 +293,11 @@ export class ProductsDetailsComponent implements OnInit {
 
   public drop(event: CdkDragDrop<string[]>) {
     const array = this.f['media'].value;
-    const seoImage = (this.formGroup.get('seo')?.get('seoImage') as FormArray).controls
+    const seoImageControls = (this.formGroup.get('seo')?.get('seoImage') as FormArray).controls
+    const seoImageValues = (this.formGroup.get('seo')?.get('seoImage') as FormArray).value
     moveItemInArray(array, event.previousIndex, event.currentIndex);
-    moveItemInArray(seoImage, event.previousIndex, event.currentIndex);
+    moveItemInArray(seoImageControls, event.previousIndex, event.currentIndex);
+    moveItemInArray(seoImageValues, event.previousIndex, event.currentIndex);
     this.f['media'].setValue(array);
   }
 
