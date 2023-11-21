@@ -422,6 +422,19 @@ export class ProductsDetailsComponent implements OnInit {
 
   inputFileChange(file: File[]) {
     if (!file.length || file.length <= (this.f['seo'].get('seoImage') as FormArray).length) return
+    if (file.length > (this.f['seo'].get('seoImage') as FormArray).length + 1) {
+      let length = file.length - (this.f['seo'].get('seoImage') as FormArray).length
+      while (length) {
+        (this.f['seo'].get('seoImage') as FormArray).push(
+          this.formBuilder.group({
+            imageName: [file[(this.f['seo'].get('seoImage') as FormArray).length].name || ''],
+            imageAlt: [this.formGroup.get('seo')?.get('seoImage')?.get('imageAlt')?.value || '']
+          })
+        )
+        length--;
+      }
+      return
+    }
     this.f['media'].markAsTouched();
     (this.f['seo'].get('seoImage') as FormArray).push(
       this.formBuilder.group({
