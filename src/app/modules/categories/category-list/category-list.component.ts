@@ -9,6 +9,7 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { CategoryDialogComponent } from "./category-dialog/category-dialog.component";
 import { setCategoryChildParent } from "../../../shared/functions/set-category-child-parent.func";
 import { SubmitService } from "../../../shared/services/submit.service";
+import { CategoryReorderComponent } from "./category-reorder/category-reorder.component";
 
 @Component({
   selector: 'app-category-list',
@@ -107,5 +108,24 @@ export class CategoryListComponent implements OnInit {
     })
   }
 
+  public showReorderDialog(parent: CategoryModel): void {
+    const dialog = this.dialogService.open<CategoryBaseModel>(
+      new PolymorpheusComponent(CategoryReorderComponent, this.injector),
+      {
+        label: `Порядок в ${parent?.name}`,
+        data: {
+          parentData: parent
+        }
+      }
+    );
+    dialog.subscribe({
+      next: data => {
+        if (data) {
+          this.alertService.open(`Порядок категории ${parent?.name} сохранен`, {label: `Успешно`, status: TuiNotification.Success, autoClose: 5000}).subscribe();
+          this.refreshData();
+        }
+      },
+    });
+  }
 
 }

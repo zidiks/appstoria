@@ -16,6 +16,7 @@ export interface CategoryParentModel {
   name: string;
   handle: string;
   description?: string;
+  children?: CategoryModel[];
 }
 
 export interface CategoryLinearModel {
