@@ -60,6 +60,7 @@ export class FieldsListComponent implements OnInit {
       new PolymorpheusComponent(FieldDialogComponent, this.injector),
       {
         label: 'Поле',
+        size: 'l',
       }
     );
     dialog.subscribe({
@@ -77,6 +78,7 @@ export class FieldsListComponent implements OnInit {
       new PolymorpheusComponent(FieldDialogComponent, this.injector),
       {
         label: 'Поле',
+        size: 'l',
         data: field,
       }
     );
