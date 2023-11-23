@@ -80,6 +80,17 @@
                   ></tui-svg>
                 </button>
                 <button
+                  *ngIf="value.parent"
+                  tuiOption
+                  (click)="showReorderDialog(value.parent || null); dropdown.toggle(false)"
+                >
+                  Позиция
+                  <tui-svg
+                    class="icon"
+                    src="tuiIconRotate"
+                  ></tui-svg>
+                </button>
+                <button
                   [disabled]="value.children?.length"
                   tuiOption
                   class="context-delete"

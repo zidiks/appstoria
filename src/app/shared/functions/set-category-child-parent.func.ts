@@ -7,6 +7,7 @@ export const setCategoryChildParent = (category: CategoryModel): void => {
       name: category.name,
       handle: category.handle,
       description: category.description,
+      children: category.children,
     };
     if (child.children?.length) {
       setCategoryChildParent(child);

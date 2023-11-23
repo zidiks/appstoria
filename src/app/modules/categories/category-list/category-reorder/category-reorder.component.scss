@@ -1,0 +1,36 @@
+.category-reorder {
+  &__list {
+    padding: 1rem 0;
+  }
+  &__item {
+    cursor: default;
+    display: flex;
+    align-items: center;
+    height: 35px;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.3rem;
+    tui-svg {
+      transform: scale(0.8);
+      color: var(--tui-primary);
+    }
+  }
+
+  &__placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    height: 35px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.category-reorder__list.cdk-drop-list-dragging .category-reorder__item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
