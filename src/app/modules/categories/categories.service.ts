@@ -24,8 +24,8 @@ export class CategoriesService {
     return this.http.post<CategoryModel, AddCategoryDto>('store/category', payload);
   }
 
-  public updateCategory(id: string, payload: UpdateCategoryDto): Observable<CategoryModel | null> {
-    return this.http.put<CategoryModel, UpdateCategoryDto>('store/category', id, payload);
+  public updateCategory(id: string, payload: Partial<UpdateCategoryDto>): Observable<CategoryModel | null> {
+    return this.http.put<CategoryModel, Partial<UpdateCategoryDto>>('store/category', id, payload);
   }
 
   public moveCategory(categoryId: string, toId: string): Observable<CategoryModel[] | null> {

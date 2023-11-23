@@ -68,7 +68,7 @@ export class NewsDetailsComponent implements OnInit {
       seoTitle: [''],
       seoDescription: [''],
       seoKeywords: [[]],
-      seoUrl: [''],
+      seoUrl: ['', Validators.required],
       seoAuthor: [''],
       seoImageAlt: [''],
     }),

@@ -136,7 +136,7 @@
               <div class="product" [routerLink]="'/products/details/' + cartItem.product._id" *ngFor="let cartItem of orderData.cartItems">
                 <div class="product__img">
                   <tui-avatar
-                    [avatarUrl]="cartItem.product.media[0] ? (env.https ? 'https://' : 'http://') + env.host + ':' + env.port + '/storage/images/' + cartItem.product.media[0] : 'assets/images/no-image.png'"
+                    [avatarUrl]="cartItem.product.media[0] ? (env.https ? 'https://' : 'http://') + env.host + '/storage/images/' + cartItem.product.media[0] : 'assets/images/no-image.png'"
                   >
                   </tui-avatar>
                 </div>
