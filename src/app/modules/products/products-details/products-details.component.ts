@@ -230,7 +230,7 @@ export class ProductsDetailsComponent implements OnInit {
     return 'Неизвестно';
   };
 
-  readonly categoryChildHandler: TuiHandler<CategoryModel, readonly CategoryModel[]> = item => item.children || EMPTY_ARRAY;
+  readonly categoryChildHandler: TuiHandler<CategoryModel, readonly CategoryModel[]> = item => item.children?.sort((a,b) => (a.order || 0) - (b.order || 0)) || EMPTY_ARRAY;
 
   private linearCategory(treeData: CategoryModel[]): CategoryLinearModel[] {
     const recursionFn = (linearTree: CategoryLinearModel[],categoryNode: CategoryModel): void => {
