@@ -4,11 +4,11 @@ import { CategoriesComponent } from './categories.component';
 import { CategoriesRoutingModule } from "./categories-routing.module";
 import { CategoryListComponent } from './category-list/category-list.component';
 import {
-    TuiBreadcrumbsModule,
-    TuiDataListDropdownManagerModule,
-    TuiInputModule, TuiSelectModule,
-    TuiTextAreaModule,
-    TuiTreeModule
+  TuiBreadcrumbsModule,
+  TuiDataListDropdownManagerModule,
+  TuiInputModule, TuiInputTagModule, TuiSelectModule,
+  TuiTextAreaModule,
+  TuiTreeModule
 } from "@taiga-ui/kit";
 import {
   TuiButtonModule,
@@ -56,6 +56,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     DataEmptyModule,
     TuiPrimitiveTextfieldModule,
     DragDropModule,
+    TuiInputTagModule,
   ]
 })
 export class CategoriesModule { }

@@ -5,6 +5,7 @@ import { CategoryDialogDataModel } from "../../../../shared/models/category-dial
 import { CategoryModel } from "../../../../shared/models/category.model";
 import { CategoriesService } from "../../categories.service";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { forkJoin, Observable } from "rxjs";
 
 @Component({
   selector: 'app-category-reorder',
@@ -32,12 +33,27 @@ export class CategoryReorderComponent implements OnInit {
   }
 
   public submit(): void {
-    const orderedCategories = this.categoriesList.map((item: CategoryModel, index: number) => ({
-      ...item,
-      order: index,
-    }));
-    console.log(orderedCategories);
-    this.context.completeWith(true);
+    const requestsList: Observable<CategoryModel | null>[] = [];
+    this.categoriesList.forEach((item: CategoryModel, index: number) => {
+      if (item.order !== index) {
+        requestsList.push(this.categoriesService.updateCategory(item._id, {
+          name: item.name,
+          handle: item.handle,
+          title: item.title,
+          description: item.description,
+          keywords: item.keywords || [],
+          media: item.media,
+          icon: item.icon || '',
+          children: item?.children?.map(item => item._id) || [],
+          productTypeId: item.productTypeId,
+          order: index,
+        }));
+      }
+    });
+    forkJoin(requestsList).subscribe(
+      res => this.context.completeWith(true),
+      err => this.context.completeWith(null),
+    );
   }
 
 }

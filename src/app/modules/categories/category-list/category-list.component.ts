@@ -52,7 +52,7 @@ export class CategoryListComponent implements OnInit {
     })
   }
 
-  readonly handler: TuiHandler<CategoryModel, readonly CategoryModel[]> = item => item.children || EMPTY_ARRAY;
+  readonly handler: TuiHandler<CategoryModel, readonly CategoryModel[]> = item => item.children?.sort((a,b) => (a.order || 0) - (b.order || 0)) || EMPTY_ARRAY;
 
   public showAddDialog(parent?: CategoryModel): void {
     const dialog = this.dialogService.open<CategoryBaseModel>(

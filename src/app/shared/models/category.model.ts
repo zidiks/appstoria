@@ -2,13 +2,16 @@ export interface CategoryModel {
   _id: string;
   name: string;
   handle: string;
+  title?: string;
   description?: string;
+  keywords?: string[];
   media: string[];
   icon: string;
   root?: boolean;
   children?: CategoryModel[];
   productTypeId?: string;
   parent?: CategoryParentModel;
+  order?: number;
 }
 
 export interface CategoryParentModel {
