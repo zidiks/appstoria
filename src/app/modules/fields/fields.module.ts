@@ -26,6 +26,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
 import { ProductPropertyModule } from "../../shared/pipes/product-property/product-property.module";
 import { FieldTypeModule } from "../../shared/pipes/field-type/field-type.module";
+import { TuiEditorModule } from "@taiga-ui/addon-editor";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { FieldTypeModule } from "../../shared/pipes/field-type/field-type.module
     FieldTypeModule,
     TuiSelectModule,
     TuiInputTagModule,
+    TuiEditorModule,
   ]
 })
 export class FieldsModule { }

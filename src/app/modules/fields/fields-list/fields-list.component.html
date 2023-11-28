@@ -128,11 +128,14 @@
         <td
           *tuiCell="'value'"
           tuiHintAppearance="onDark"
-          [tuiHint]="item.value"
+          [tuiHint]="item.type === fieldTypeEnum.FieldContent ? undefined : item.value"
           class="cell-overflow"
           tuiTd
         >
-          <span>{{ item.value }}</span>
+          <ng-container [ngSwitch]="item.type">
+            <span *ngSwitchCase="fieldTypeEnum.FieldContent" style="opacity: .5">Для просмотра откройте детали поля</span>
+            <span *ngSwitchDefault>{{ item.value }}</span>
+          </ng-container>
         </td>
         <td
           *tuiCell="'type'"

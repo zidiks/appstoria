@@ -10,4 +10,8 @@ export const fieldTypeData: Record<FieldType, FieldTypeDataModel> = {
     name: 'Множество строк',
     description: 'Можно задать несколько строковых значений',
   },
+  [FieldType.FieldContent]: {
+    name: 'Форматированный текст',
+    description: 'Можно разместить длинный форматированный текст',
+  },
 }

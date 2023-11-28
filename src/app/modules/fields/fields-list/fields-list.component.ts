@@ -2,12 +2,12 @@ import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { FieldsService } from "../fields.service";
 import { tuiTablePaginationOptionsProvider } from "@taiga-ui/addon-table";
 import { ApiDataModel } from "../../../shared/models/api-data.model";
-import { BrandModel } from "../../../shared/models/brand.model";
 import { SubmitService } from "../../../shared/services/submit.service";
 import { PolymorpheusComponent } from "@tinkoff/ng-polymorpheus";
 import { TuiAlertService, TuiDialogService, TuiNotification } from "@taiga-ui/core";
 import { FieldDialogComponent } from "./field-dialog/field-dialog.component";
 import { FieldModel } from "../../../shared/models/field.model";
+import { FieldType } from "../../../shared/enums/field-type.enum";
 
 @Component({
   selector: 'app-fields-list',
@@ -23,6 +23,7 @@ export class FieldsListComponent implements OnInit {
   public page = 0;
   public size = 10;
   public fieldsData: ApiDataModel<FieldModel[]>;
+  public fieldTypeEnum = FieldType;
   public breadcrumbs = [
     {
       caption: `Главная`,
