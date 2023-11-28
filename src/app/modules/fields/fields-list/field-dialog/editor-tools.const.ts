@@ -1,0 +1,25 @@
+import { TuiEditorTool } from "@taiga-ui/addon-editor";
+
+export const EDITOR_TOOLS: TuiEditorTool[] = [
+  TuiEditorTool.Align,
+  TuiEditorTool.Clear,
+  TuiEditorTool.Bold,
+  TuiEditorTool.Code,
+  TuiEditorTool.Color,
+  TuiEditorTool.Hilite,
+  TuiEditorTool.HR,
+  TuiEditorTool.Img,
+  TuiEditorTool.Italic,
+  TuiEditorTool.Link,
+  TuiEditorTool.List,
+  TuiEditorTool.MergeCells,
+  TuiEditorTool.Quote,
+  TuiEditorTool.RowsColumnsManaging,
+  TuiEditorTool.Size,
+  TuiEditorTool.SplitCells,
+  TuiEditorTool.Strikethrough,
+  TuiEditorTool.Sub,
+  TuiEditorTool.Sup,
+  TuiEditorTool.Underline,
+  TuiEditorTool.Table,
+];

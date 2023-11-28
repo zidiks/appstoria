@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { POLYMORPHEUS_CONTEXT } from "@tinkoff/ng-polymorpheus";
 import { TuiDialogContext } from "@taiga-ui/core";
@@ -7,8 +7,16 @@ import { FieldModel } from "../../../../shared/models/field.model";
 import { fieldTypeData } from "../../../../shared/constants/field-type.const";
 import { FieldTypeDataModel } from "../../../../shared/models/field-type-data.model";
 import { TuiContextWithImplicit, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
-import { ProductTypePrevModel } from "../../../../shared/models/type-property.model";
 import { FieldType } from "../../../../shared/enums/field-type.enum";
+import {
+  defaultEditorExtensions,
+  TUI_EDITOR_CONTENT_PROCESSOR,
+  TUI_EDITOR_EXTENSIONS, TUI_IMAGE_LOADER,
+  tuiLegacyEditorConverter
+} from "@taiga-ui/addon-editor";
+import { imageLoader } from "./image-loader";
+import { ImagesService } from "../../../../shared/services/images.service";
+import { EDITOR_TOOLS } from "./editor-tools.const";
 
 interface FieldTypeItem {
   label: string;
@@ -18,7 +26,30 @@ interface FieldTypeItem {
 @Component({
   selector: 'app-field-dialog',
   templateUrl: './field-dialog.component.html',
-  styleUrls: ['./field-dialog.component.scss']
+  styleUrls: ['./field-dialog.component.scss'],
+  providers: [
+    {
+      provide: TUI_EDITOR_EXTENSIONS,
+      deps: [Injector],
+      useFactory: (injector: Injector) => [
+        import('@taiga-ui/addon-editor/extensions/image-editor').then(
+          ({createImageEditorExtension}) =>
+            createImageEditorExtension(injector),
+        ),
+        ...defaultEditorExtensions,
+      ],
+    },
+    {
+      provide: TUI_EDITOR_CONTENT_PROCESSOR,
+      useValue: tuiLegacyEditorConverter,
+    },
+    {
+      provide: TUI_IMAGE_LOADER,
+      useFactory: imageLoader,
+      deps: [ImagesService],
+    },
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldDialogComponent implements OnInit {
   public loading = false;
@@ -29,7 +60,7 @@ export class FieldDialogComponent implements OnInit {
     }
   });
   public fieldTypeEnum = FieldType;
-
+  public editorTools = EDITOR_TOOLS;
   public formGroup: FormGroup = this.formBuilder.group( {
     label: [ this.fieldData?.label, Validators.required ],
     code : [ this.fieldData?.code, Validators.required ],
@@ -75,5 +106,4 @@ export class FieldDialogComponent implements OnInit {
 
     return ({$implicit}: TuiContextWithImplicit<string>) => map.get($implicit) || ``;
   }
-
 }

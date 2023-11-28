@@ -43,25 +43,35 @@
           <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
         </ng-template>
       </tui-select>
-      <tui-input-tag
-        *ngIf="f['type'].value === fieldTypeEnum.FieldStringArray; else typeString"
-        class="tui-space_top-3 tui-space_bottom-5"
-        tuiTextfieldSize="s"
-        formControlName="value"
-      >
-        Значение
-      </tui-input-tag>
-      <ng-template #typeString>
+      <ng-container [ngSwitch]="f['type'].value">
+        <tui-input-tag
+          *ngSwitchCase="fieldTypeEnum.FieldStringArray"
+          class="tui-space_top-3"
+          tuiTextfieldSize="s"
+          formControlName="value"
+        >
+          Значение
+        </tui-input-tag>
         <tui-text-area
+          *ngSwitchCase="fieldTypeEnum.FieldString"
           tuiTextfieldSize="m"
-          class="tui-space_top-3 tui-space_bottom-5"
+          class="tui-space_top-3"
           formControlName="value"
           [expandable]="true"
         >
           Значение
         </tui-text-area>
-      </ng-template>
+        <tui-editor
+          *ngSwitchCase="fieldTypeEnum.FieldContent"
+          class="editor tui-space_top-3"
+          [tools]="editorTools"
+          formControlName="value"
+        >
+          Значение
+        </tui-editor>
+      </ng-container>
       <button
+        class="tui-space_top-5"
         tuiButton
         type="submit"
         size="m"
