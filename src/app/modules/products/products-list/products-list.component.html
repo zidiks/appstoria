@@ -42,6 +42,16 @@
         size="s"
         tuiIconButton
         type="button"
+        [appearance]="(editMode$ | async) ? 'primary' : 'secondary'"
+        icon="tuiIconEdit"
+        class="tui-space_right-3"
+        (click)="changeEditMode()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
         appearance="secondary"
         icon="tuiIconRefresh"
         class="tui-space_right-3"
@@ -96,13 +106,22 @@
         >
           Категория
         </th>
-        <th
-          tuiTh
-          tuiSortable
-          *tuiHead="'brand'"
-        >
-          Бренд
-        </th>
+        <ng-container *ngIf="(editMode$ | async); else brandTh">
+          <th
+            tuiTh
+            [sorter]="null"
+            *tuiHead="'brand'"
+          ></th>
+        </ng-container>
+        <ng-template #brandTh>
+          <th
+            tuiTh
+            tuiSortable
+            *tuiHead="'brand'"
+          >
+            Бренд
+          </th>
+        </ng-template>
       </tr>
       </thead>
       <tbody
@@ -113,7 +132,7 @@
       <tr
         *ngFor="let item of sortedData"
         tuiTr
-        [routerLink]="'/products/details/' + item._id"
+        [routerLink]="(editMode$ | async) ? null : ('/products/details/' + item._id)"
       >
         <td
           *tuiCell="'media'"
@@ -131,18 +150,47 @@
           tuiTd
         >
           {{ item.name }}
+          <tui-badge
+            *ngIf="item.discount > 0"
+            status="info"
+            [value]="item.discount + '%'"
+            class="tui-space_left-2"
+          ></tui-badge>
         </td>
         <td
           *tuiCell="'isStock'"
           tuiTd
         >
-          {{ item.isStock ? 'Да' : 'Нет' }}
+          <ng-container *ngIf="editMode$ | async; else defaultModeStock">
+            <tui-checkbox
+              style="padding: 0 0.75rem"
+              [(ngModel)]="item.isStock"
+              size="l"
+            >
+              В наличии
+            </tui-checkbox>
+          </ng-container>
+          <ng-template #defaultModeStock>
+            {{ item.isStock ? 'Да' : 'Нет' }}
+          </ng-template>
         </td>
         <td
           *tuiCell="'price'"
           tuiTd
         >
-          {{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}
+          <ng-container *ngIf="editMode$ | async; else defaultModePrice">
+            <tui-input-number
+              [postfix]="currency | tuiCurrency"
+              [(ngModel)]="item.price"
+              [precision]="2"
+              decimal="always"
+            >
+              Цена
+            </tui-input-number>
+          </ng-container>
+          <ng-template #defaultModePrice>
+            {{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}
+          </ng-template>
         </td>
         <td
           *tuiCell="'categoryId'"
@@ -154,7 +202,21 @@
           *tuiCell="'brand'"
           tuiTd
         >
-          {{ item.brand?.name || 'Неизвестно' }}
+          <ng-container *ngIf="(editMode$ | async); else brandTd">
+            <button
+              size="s"
+              tuiIconButton
+              type="button"
+              appearance="secondary"
+              icon="tuiIconCheck"
+              class="tui-space_right-3"
+              (click)="saveEditChange(item)"
+            >
+            </button>
+          </ng-container>
+          <ng-template #brandTd>
+            {{ item.brand?.name || 'Неизвестно' }}
+          </ng-template>
         </td>
       </tr>
       <ng-container *ngIf="productsData | apiLoadingState">

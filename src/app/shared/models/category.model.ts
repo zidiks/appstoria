@@ -6,7 +6,7 @@ export interface CategoryModel {
   description?: string;
   keywords?: string[];
   media: string[];
-  icon: string;
+  icon?: string;
   root?: boolean;
   children?: CategoryModel[];
   productTypeId?: string;

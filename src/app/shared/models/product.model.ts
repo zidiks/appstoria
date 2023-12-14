@@ -42,6 +42,7 @@ export interface ProductPrevModel extends ApiId, ApiTimestamp {
   isNew: boolean;
   isRec: boolean;
   isStock: boolean;
+  discount?: number;
 }
 
 export interface ProductPropertyValueModel {

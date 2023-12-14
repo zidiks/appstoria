@@ -7,7 +7,7 @@ import { ProductsDetailsComponent } from './products-details/products-details.co
 import {
   TuiAvatarModule,
   TuiBadgeModule,
-  TuiBreadcrumbsModule, TuiCheckboxBlockModule, TuiFieldErrorPipeModule, TuiInputFilesModule,
+  TuiBreadcrumbsModule, TuiCheckboxBlockModule, TuiCheckboxModule, TuiFieldErrorPipeModule, TuiInputFilesModule,
   TuiInputModule,
   TuiInputNumberModule,
   TuiInputTagModule,
@@ -27,7 +27,7 @@ import { TuiTableModule, TuiTablePaginationModule } from "@taiga-ui/addon-table"
 import { ApiLoadingStateModule } from "../../shared/pipes/api-loading-state/api-loading-state.module";
 import { TuiLetModule } from "@taiga-ui/cdk";
 import { TuiCurrencyPipeModule } from "@taiga-ui/addon-commerce";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { PropertyInputModule } from "../../shared/components/property-input/property-input.module";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { TuiPreviewModule } from '@taiga-ui/addon-preview';
@@ -78,6 +78,8 @@ import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagin
     TuiCheckboxBlockModule,
     TuiInputTagModule,
     TuiPrimitiveTextfieldModule,
+    FormsModule,
+    TuiCheckboxModule,
   ]
 })
 export class ProductsModule { }

@@ -37,4 +37,8 @@ export class ProductsService {
   public updateProduct(id: string, payload: UpdateProductDto): Observable<ProductModel | null> {
     return this.http.put<ProductModel, UpdateProductDto>('store/product', id, payload);
   }
+
+  public updateProductPartial(id: string, payload: Partial<UpdateProductDto>): Observable<ProductModel | null> {
+    return this.http.put<ProductModel, Partial<UpdateProductDto>>('store/product/partial', id, payload);
+  }
 }
