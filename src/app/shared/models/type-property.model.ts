@@ -21,6 +21,7 @@ export interface ProductTypePropertyModel {
   name: string;
   units?: string;
   description?: string;
+  code?: string;
   type: ProductTypePropertyType;
   options?: (string | number)[];
 }
