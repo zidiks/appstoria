@@ -37,6 +37,7 @@ export class PropertiesDetailsComponent implements OnInit {
   public formGroup: FormGroup = this.formBuilder.group({
     name: [``, Validators.required],
     description: [null],
+    code: [null],
     showCard: [false],
     showFilter: [false],
     type: [null, Validators.required],
@@ -119,6 +120,7 @@ export class PropertiesDetailsComponent implements OnInit {
             this.formGroup.patchValue({
               name: res.name,
               description: res.description,
+              code: res.code,
               showCard: res.showCard,
               showFilter: res.showFilter,
               type: res.type,
