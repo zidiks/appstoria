@@ -35,6 +35,8 @@ import {
   DiscountDialogFixPriceComponent
 } from "./discount/discount-dialog-fix-price/discount-dialog-fix-price.component";
 import { TuiCurrencyPipeModule } from "@taiga-ui/addon-commerce";
+import {CurrencyComponent} from "./currency/currency.component";
+import {CurrencyDialogComponent} from "./currency/currency-dialog/currency-dialog.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { TuiCurrencyPipeModule } from "@taiga-ui/addon-commerce";
     DiscountComponent,
     DiscountDialogComponent,
     DiscountDialogFixPriceComponent,
+    CurrencyComponent,
+    CurrencyDialogComponent,
   ],
     imports: [
         CommonModule,

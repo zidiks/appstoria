@@ -12,7 +12,7 @@ import {
   ProductTypePrevModel,
   ProductTypePropertyModel
 } from "../../../shared/models/type-property.model";
-import { combineLatest, forkJoin, map, Observable, of, startWith, switchMap } from "rxjs";
+import {combineLatest, debounceTime, forkJoin, map, Observable, of, startWith, switchMap, take} from "rxjs";
 import { BrandsService } from "../../brands/brands.service";
 import { CategoriesService } from "../../categories/categories.service";
 import { EMPTY_ARRAY, TuiContextWithImplicit, TuiHandler, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
@@ -30,6 +30,7 @@ import { AddImagesResponseDto } from "../../../shared/dto/images.dto";
 import { SubmitService } from "../../../shared/services/submit.service";
 import { environment } from "../../../../environments/environment";
 import { transliteration } from "../../../shared/functions/transliteration.func";
+import {CurrencyService} from "../../settings/currency/currency.service";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -64,7 +65,8 @@ export class ProductsDetailsComponent implements OnInit {
   public formGroup: FormGroup = this.formBuilder.group({
     name: [null, Validators.required],
     media: [[], maxFilesLength(this.maxMediaLength)],
-    price: [null, Validators.required],
+    price: [null],
+    priceUSD: [null, Validators.required],
     totalPrice: [null, Validators.required],
     brand: [null, Validators.required],
     description: [null, Validators.required],
@@ -94,6 +96,7 @@ export class ProductsDetailsComponent implements OnInit {
     private categoriesService: CategoriesService,
     private imagesService: ImagesService,
     private submitService: SubmitService,
+    private currencyService: CurrencyService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
   ) {
     this.productId = this.route.snapshot.params['id'];
@@ -117,11 +120,16 @@ export class ProductsDetailsComponent implements OnInit {
     this.refreshData();
     combineLatest([
       this.f['discount'].valueChanges.pipe(startWith(0)),
-      this.f['price'].valueChanges,
-    ]).subscribe((value) => {
-      const price = value[1] || 0;
+      this.f['priceUSD'].valueChanges,
+      this.f['price'].valueChanges.pipe(take(1)),
+      this.currencyService.getCurrencyConfig(),
+    ]).pipe(debounceTime(500)).subscribe((value) => {
+      const price = value[1] ? value[1] * value[3].currency : value[2] || 0;
       const discount = price * ((value[0] || 0) / 100);
       const roundedDiscount = Math.ceil(discount * 100) / 100;
+      if (value[1]) {
+        this.f['price'].setValue(price);
+      }
       this.f['totalPrice'].setValue(price - roundedDiscount);
     });
     this.f['productTypeId'].valueChanges.subscribe((value: string) => {
@@ -176,6 +184,7 @@ export class ProductsDetailsComponent implements OnInit {
               name: productData.name,
               media: mediaRes.filter(mediaItem => mediaItem) || [],
               price: productData.price,
+              priceUSD: productData.priceUSD,
               totalPrice: productData.totalPrice,
               discount: productData.discount || 0,
               brand: productData.brand?._id,
