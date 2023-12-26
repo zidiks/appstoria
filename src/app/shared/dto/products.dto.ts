@@ -5,6 +5,7 @@ export interface AddProductDto {
   name: string;
   media: string[];
   price: number;
+  priceUSD: number;
   totalPrice: number;
   discount: number;
   brand: string;

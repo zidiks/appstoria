@@ -3,6 +3,7 @@ import { PaymentComponent } from "../payment/payment.component";
 import { DeliveryComponent } from "../delivery/delivery.component";
 import { OrderStateComponent } from "../order-state/order-state.component";
 import { DiscountComponent } from "../discount/discount.component";
+import {CurrencyComponent} from "../currency/currency.component";
 
 export const settingsList: SettingsItemModel[] = [
   {
@@ -31,6 +32,13 @@ export const settingsList: SettingsItemModel[] = [
     description: 'Настройка условий дисконтной программы',
     component: DiscountComponent,
     path: 'discount',
+    icon: 'tuiIconSettingsLarge'
+  },
+  {
+    name: 'Курс валют',
+    description: 'Настройка курса валют',
+    component: CurrencyComponent,
+    path: 'currency',
     icon: 'tuiIconSettingsLarge'
   },
 ];
