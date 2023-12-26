@@ -36,6 +36,7 @@ export interface ProductPrevModel extends ApiId, ApiTimestamp {
   name: string;
   media: string[];
   price: number;
+  priceUSD: number;
   totalPrice: number;
   brand?: BrandModel;
   description: string;

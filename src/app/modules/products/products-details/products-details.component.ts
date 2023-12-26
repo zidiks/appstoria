@@ -31,6 +31,7 @@ import { SubmitService } from "../../../shared/services/submit.service";
 import { environment } from "../../../../environments/environment";
 import { transliteration } from "../../../shared/functions/transliteration.func";
 import {CurrencyService} from "../../settings/currency/currency.service";
+import { floorRound } from "../../../shared/functions/floor-round.func";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -75,7 +76,7 @@ export class ProductsDetailsComponent implements OnInit {
     isNew: [false, Validators.required],
     isRec: [false, Validators.required],
     isStock: [true, Validators.required],
-    discount: [0],
+    discount: [0, Validators.required],
     productProps: this.formBuilder.group({}),
     seo: this.formBuilder.group({
       seoTitle: [''],
@@ -123,14 +124,14 @@ export class ProductsDetailsComponent implements OnInit {
       this.f['priceUSD'].valueChanges,
       this.f['price'].valueChanges.pipe(take(1)),
       this.currencyService.getCurrencyConfig(),
-    ]).pipe(debounceTime(500)).subscribe((value) => {
-      const price = value[1] ? value[1] * value[3].currency : value[2] || 0;
-      const discount = price * ((value[0] || 0) / 100);
-      const roundedDiscount = Math.ceil(discount * 100) / 100;
-      if (value[1]) {
-        this.f['price'].setValue(price);
+    ]).pipe(debounceTime(500)).subscribe(([rDiscount, rPriceUSD, rPrice, rCurrency]) => {
+      const price = rPriceUSD ? rPriceUSD * rCurrency.currency : rPrice || 0;
+      const discount = price * (rDiscount || 0) * 0.01;
+      const totalPrice = floorRound(price - discount);
+      if (rPriceUSD) {
+        this.f['price'].setValue(floorRound(price));
       }
-      this.f['totalPrice'].setValue(price - roundedDiscount);
+      this.f['totalPrice'].setValue(totalPrice);
     });
     this.f['productTypeId'].valueChanges.subscribe((value: string) => {
       if (value) {
