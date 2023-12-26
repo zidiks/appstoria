@@ -166,8 +166,17 @@
               <tui-input-number
                 formControlName="price"
                 [postfix]="currency | tuiCurrency"
+                [readOnly]="true"
               >
-                Цена
+                Цена BYN
+              </tui-input-number>
+            </div>
+            <div class="tui-form__multi-field">
+              <tui-input-number
+                formControlName="priceUSD"
+                [postfix]="'USD' | tuiCurrency"
+              >
+                Цена USD
               </tui-input-number>
             </div>
             <div class="tui-form__multi-field">

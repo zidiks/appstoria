@@ -3,12 +3,15 @@ import { ApiDataModel } from "../../../shared/models/api-data.model";
 import { GetProductsOptions, ProductPrevModel } from "../../../shared/models/product.model";
 import { ProductsService } from "../products.service";
 import { Paginated } from "../../../shared/models/paginated.model";
-import { BehaviorSubject, combineLatest, debounceTime, startWith } from "rxjs";
+import { BehaviorSubject, combineLatest, debounceTime, map, startWith } from "rxjs";
 import { BaseProductProperty } from "../../../shared/enums/base-product-property.emum";
 import { FormControl } from "@angular/forms";
 import { environment } from "../../../../environments/environment";
 import { UpdateProductDto } from "../../../shared/dto/products.dto";
 import { TuiAlertService, TuiNotification } from "@taiga-ui/core";
+import { CurrencyService } from "../../settings/currency/currency.service";
+import { CurrencyConfigResponseDto } from "../../../shared/dto/currency-config.dto";
+import { floorRound } from "../../../shared/functions/floor-round.func";
 
 @Component({
   selector: 'app-products-list',
@@ -17,6 +20,7 @@ import { TuiAlertService, TuiNotification } from "@taiga-ui/core";
 })
 export class ProductsListComponent implements OnInit {
   public currency = environment.currency;
+  private currencyValue: number | undefined;
   readonly search = new FormControl('');
   readonly search$ = this.search.valueChanges.pipe(debounceTime(200), startWith(''));
   readonly limit$ = new BehaviorSubject<number>(20);
@@ -53,6 +57,7 @@ export class ProductsListComponent implements OnInit {
 
   constructor(
     private productsService: ProductsService,
+    private currencyService: CurrencyService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
   ) { }
 
@@ -79,15 +84,20 @@ export class ProductsListComponent implements OnInit {
   }
 
   public saveEditChange(data: ProductPrevModel): void {
+    if (!this.currencyValue) {
+      return;
+    }
     const dataCopy = Object.assign({}, data);
-    const discount = dataCopy.price * ((dataCopy.discount || 0) / 100);
-    const roundedDiscount = Math.ceil(discount * 100) / 100;
-    const totalPrice = dataCopy.price - roundedDiscount;
+    const price = floorRound(dataCopy.priceUSD * this.currencyValue);
+    const discount = dataCopy.price * (dataCopy.discount || 0) * 0.01;
+    const totalPrice = floorRound(dataCopy.priceUSD * this.currencyValue - discount);
     const updateDto: Partial<UpdateProductDto> = {
+      priceUSD: dataCopy.priceUSD,
       totalPrice: totalPrice,
-      price: dataCopy.price,
+      price: price,
       isStock: dataCopy.isStock,
     }
+    console.log(updateDto);
     this.productsService.updateProductPartial(dataCopy._id, updateDto as Partial<UpdateProductDto>).subscribe(
       res => {
         if (res) {
@@ -114,8 +124,25 @@ export class ProductsListComponent implements OnInit {
     if (!withoutLoading) {
       this.productsData = undefined;
     }
-    this.productsService.getProducts<ProductPrevModel>(options).subscribe((res: Paginated<ProductPrevModel> | null) => {
-      this.productsData = res || null;
+    this.currencyService.getCurrencyConfig().subscribe((res: CurrencyConfigResponseDto) => {
+      this.currencyValue = res.currency;
+      if (res.currency) {
+        this.productsService.getProducts<ProductPrevModel>(options).pipe(
+          map((res: Paginated<ProductPrevModel> | null) => {
+            if (res) {
+              res.data = res.data.map((item: ProductPrevModel) => {
+                if (typeof item.priceUSD === 'undefined') {
+                  item.priceUSD = 0;
+                }
+                return item;
+              })
+            }
+            return res;
+          })
+        ).subscribe((res: Paginated<ProductPrevModel> | null) => {
+          this.productsData = res || null;
+        });
+      }
     });
   }
 

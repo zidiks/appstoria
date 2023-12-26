@@ -180,8 +180,8 @@
         >
           <ng-container *ngIf="editMode$ | async; else defaultModePrice">
             <tui-input-number
-              [postfix]="currency | tuiCurrency"
-              [(ngModel)]="item.price"
+              [postfix]="'USD' | tuiCurrency"
+              [(ngModel)]="item.priceUSD"
               [precision]="2"
               decimal="always"
             >
@@ -189,7 +189,11 @@
             </tui-input-number>
           </ng-container>
           <ng-template #defaultModePrice>
-            {{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}
+            <span>
+              <span>{{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}</span>
+              <br/>
+              <span class="price-usd">{{ item.priceUSD | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ 'USD' | tuiCurrency }}</span>
+            </span>
           </ng-template>
         </td>
         <td
