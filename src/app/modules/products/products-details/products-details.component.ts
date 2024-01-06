@@ -12,7 +12,7 @@ import {
   ProductTypePrevModel,
   ProductTypePropertyModel
 } from "../../../shared/models/type-property.model";
-import {combineLatest, debounceTime, forkJoin, map, Observable, of, startWith, switchMap, take} from "rxjs";
+import {combineLatest, debounceTime, forkJoin, map, Observable, of, startWith, switchMap} from "rxjs";
 import { BrandsService } from "../../brands/brands.service";
 import { CategoriesService } from "../../categories/categories.service";
 import { EMPTY_ARRAY, TuiContextWithImplicit, TuiHandler, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
@@ -122,7 +122,7 @@ export class ProductsDetailsComponent implements OnInit {
     combineLatest([
       this.f['discount'].valueChanges.pipe(startWith(0)),
       this.f['priceUSD'].valueChanges,
-      this.f['price'].valueChanges.pipe(take(1)),
+      this.f['price'].valueChanges.pipe(startWith(0)),
       this.currencyService.getCurrencyConfig(),
     ]).pipe(debounceTime(500)).subscribe(([rDiscount, rPriceUSD, rPrice, rCurrency]) => {
       const price = rPriceUSD ? rPriceUSD * rCurrency.currency : rPrice || 0;
