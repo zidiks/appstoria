@@ -8,10 +8,13 @@ import { BaseProductProperty } from "../../../shared/enums/base-product-property
 import { FormControl } from "@angular/forms";
 import { environment } from "../../../../environments/environment";
 import { UpdateProductDto } from "../../../shared/dto/products.dto";
-import { TuiAlertService, TuiNotification } from "@taiga-ui/core";
+import { TuiAlertService, TuiNotification, TuiValueContentContext } from "@taiga-ui/core";
 import { CurrencyService } from "../../settings/currency/currency.service";
 import { CurrencyConfigResponseDto } from "../../../shared/dto/currency-config.dto";
 import { floorRound } from "../../../shared/functions/floor-round.func";
+import { EMPTY_ARRAY, TuiHandler, TuiStringHandler } from "@taiga-ui/cdk";
+import { CategoryLinearModel, CategoryModel } from "../../../shared/models/category.model";
+import { CategoriesService } from "../../categories/categories.service";
 
 @Component({
   selector: 'app-products-list',
@@ -21,7 +24,11 @@ import { floorRound } from "../../../shared/functions/floor-round.func";
 export class ProductsListComponent implements OnInit {
   public currency = environment.currency;
   private currencyValue: number | undefined;
+  public linearCategoriesData: CategoryLinearModel[] = [];
   readonly search = new FormControl('');
+  readonly categorySelect = new FormControl('');
+  public categoriesData: ApiDataModel<CategoryModel>;
+  readonly categorySelect$ = this.categorySelect.valueChanges.pipe(debounceTime(200), startWith(''));
   readonly search$ = this.search.valueChanges.pipe(debounceTime(200), startWith(''));
   readonly limit$ = new BehaviorSubject<number>(20);
   readonly page$ = new BehaviorSubject<number>(0);
@@ -32,6 +39,7 @@ export class ProductsListComponent implements OnInit {
   readonly sorter$ = new BehaviorSubject<string>(`name`);
   readonly request$ = combineLatest({
     emitter: this.emitter$,
+    category: this.categorySelect$,
     search: this.search$,
     sort: this.sorter$,
     direction: this.direction$,
@@ -58,12 +66,19 @@ export class ProductsListComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private currencyService: CurrencyService,
+    private categoriesService: CategoriesService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
   ) { }
 
   ngOnInit(): void {
+    this.categoriesService.getCategoriesTree().subscribe((res: CategoryModel | null) => {
+      this.categoriesData = res;
+      if (res) {
+        this.linearCategoriesData = this.linearCategory([res]);
+      }
+    });
     this.request$.subscribe(res => {
-      this.getData({
+      const reqOptions: GetProductsOptions = {
         preview: true,
         search: res.search || undefined,
         sort: {
@@ -74,8 +89,22 @@ export class ProductsListComponent implements OnInit {
           page: res.page,
           limit: res.limit,
         }
-      }, res.emitter);
+      };
+      if (res.category) {
+        reqOptions.baseProperties = {
+          categoryId: {
+            $eq: res.category,
+          }
+        }
+      }
+      this.getData(reqOptions, res.emitter);
     });
+    this.refreshData();
+  }
+
+  public clearFilters(): void {
+    this.categorySelect.reset();
+    this.search.reset();
     this.refreshData();
   }
 
@@ -108,6 +137,8 @@ export class ProductsListComponent implements OnInit {
     );
   }
 
+  readonly categoryChildHandler: TuiHandler<CategoryModel, readonly CategoryModel[]> = item => item.children?.sort((a,b) => (a.order || 0) - (b.order || 0)) || EMPTY_ARRAY;
+
   public changeSize(limit: number): void {
     this.limit$.next(limit);
   }
@@ -119,6 +150,33 @@ export class ProductsListComponent implements OnInit {
   public refreshData(withoutLoading: boolean = false): void {
     this.emitter.emit(withoutLoading);
   }
+
+  private linearCategory(treeData: CategoryModel[]): CategoryLinearModel[] {
+    const recursionFn = (linearTree: CategoryLinearModel[],categoryNode: CategoryModel): void => {
+      linearTree.push({
+        _id: categoryNode._id,
+        name: categoryNode.name,
+        handle: categoryNode.handle,
+        productTypeId: categoryNode.productTypeId,
+      });
+      if (categoryNode.children?.length) {
+        categoryNode.children.forEach((child: CategoryModel) => {
+          recursionFn(linearTree, child);
+        });
+      }
+    }
+    const linearData: CategoryLinearModel[] = [];
+    treeData.forEach((item: CategoryModel) => recursionFn(linearData, item));
+    return linearData;
+  }
+
+  readonly categoryContent: TuiStringHandler<TuiValueContentContext<readonly unknown[]>> = ({$implicit}) => {
+    const categoryItem = (this.linearCategoriesData).find((category => category._id === $implicit.toString()));
+    if (categoryItem) {
+      return categoryItem.name;
+    }
+    return 'Выберите категорию';
+  };
 
   public getData(options?: GetProductsOptions, withoutLoading: boolean = false): void {
     if (!withoutLoading) {
