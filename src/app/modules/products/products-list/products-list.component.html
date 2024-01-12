@@ -52,7 +52,7 @@
                 <button
                   tuiOption
                   class="category-item"
-                  [disabled]="!value.productTypeId"
+                  [disabled]="value.handle === 'root'"
                   [value]="value._id"
                 >
                   <tui-svg
