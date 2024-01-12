@@ -155,22 +155,13 @@
         >
           Категория
         </th>
-        <ng-container *ngIf="(editMode$ | async); else brandTh">
-          <th
-            tuiTh
-            [sorter]="null"
-            *tuiHead="'brand'"
-          ></th>
-        </ng-container>
-        <ng-template #brandTh>
-          <th
-            tuiTh
-            tuiSortable
-            *tuiHead="'brand'"
-          >
-            Бренд
-          </th>
-        </ng-template>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'brand'"
+        >
+          Бренд
+        </th>
       </tr>
       </thead>
       <tbody
@@ -233,6 +224,7 @@
               [(ngModel)]="item.priceUSD"
               [precision]="2"
               decimal="always"
+              (change)="editableInputChange(item)"
             >
               Цена
             </tui-input-number>
@@ -255,21 +247,7 @@
           *tuiCell="'brand'"
           tuiTd
         >
-          <ng-container *ngIf="(editMode$ | async); else brandTd">
-            <button
-              size="s"
-              tuiIconButton
-              type="button"
-              appearance="secondary"
-              icon="tuiIconCheck"
-              class="tui-space_right-3"
-              (click)="saveEditChange(item)"
-            >
-            </button>
-          </ng-container>
-          <ng-template #brandTd>
-            {{ item.brand?.name || 'Неизвестно' }}
-          </ng-template>
+          {{ item.brand?.name || 'Неизвестно' }}
         </td>
       </tr>
       <ng-container *ngIf="productsData | apiLoadingState">

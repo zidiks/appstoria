@@ -126,11 +126,10 @@ export class ProductsListComponent implements OnInit {
       price: price,
       isStock: dataCopy.isStock,
     }
-    console.log(updateDto);
     this.productsService.updateProductPartial(dataCopy._id, updateDto as Partial<UpdateProductDto>).subscribe(
       res => {
         if (res) {
-          this.alertService.open(`Продукт ${res.name} обновлён`, {label: `Успешно`, status: TuiNotification.Success, autoClose: 5000}).subscribe();
+          this.alertService.open(`Продукт ${res.name} обновлён`, {label: `Успешно`, status: TuiNotification.Success, autoClose: 3000}).subscribe();
           this.refreshData(true);
         }
       },
@@ -178,6 +177,10 @@ export class ProductsListComponent implements OnInit {
     return 'Выберите категорию';
   };
 
+  public editableInputChange(data: ProductPrevModel): void {
+    this.saveEditChange(data);
+  }
+
   public getData(options?: GetProductsOptions, withoutLoading: boolean = false): void {
     if (!withoutLoading) {
       this.productsData = undefined;
@@ -204,4 +207,5 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
+  protected readonly console = console;
 }
