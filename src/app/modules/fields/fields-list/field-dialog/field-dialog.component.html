@@ -69,6 +69,30 @@
         >
           Значение
         </tui-editor>
+        <ng-container
+          *ngSwitchCase="fieldTypeEnum.FieldImage"
+        >
+          <tui-input-files
+            class="tui-space_top-3"
+            accept="image/*"
+            [multiple]="false"
+            formControlName="value"
+            (reject)="onReject($event)"
+            (ngModelChange)="f['value'].markAsTouched()"
+          ></tui-input-files>
+          <tui-files class="file tui-space_top-3">
+            <ng-container *ngIf="f['value'].value as file">
+              <tui-file
+                class="files-item"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+              </tui-file>
+            </ng-container>
+          </tui-files>
+        </ng-container>
       </ng-container>
       <button
         class="tui-space_top-5"

@@ -6,7 +6,7 @@ import { FieldsRoutingModule } from "./fields-routing.module";
 import {
   TuiBadgeModule,
   TuiBreadcrumbsModule,
-  TuiDataListDropdownManagerModule,
+  TuiDataListDropdownManagerModule, TuiFilesModule, TuiInputFilesModule,
   TuiInputModule, TuiInputTagModule, TuiSelectModule,
   TuiTextAreaModule
 } from "@taiga-ui/kit";
@@ -61,6 +61,8 @@ import { TuiEditorModule } from "@taiga-ui/addon-editor";
     TuiSelectModule,
     TuiInputTagModule,
     TuiEditorModule,
+    TuiFilesModule,
+    TuiInputFilesModule,
   ]
 })
 export class FieldsModule { }

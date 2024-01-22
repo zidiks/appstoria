@@ -14,4 +14,8 @@ export const fieldTypeData: Record<FieldType, FieldTypeDataModel> = {
     name: 'Форматированный текст',
     description: 'Можно разместить длинный форматированный текст',
   },
+  [FieldType.FieldImage]: {
+    name: 'Изображение',
+    description: 'Можно разместить изображение',
+  },
 }
