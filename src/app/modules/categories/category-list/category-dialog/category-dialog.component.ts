@@ -98,7 +98,7 @@ export class CategoryDialogComponent implements OnInit {
             description: formValue.description,
             keywords: formValue.keywords,
             media: this.categoryData?.media || [],
-            icon: formValue.icon,
+            icon: formValue.icon || '',
             children: this.categoryData?.children?.map(item => item._id) || [],
             productTypeId: formValue.type,
           })
@@ -114,12 +114,12 @@ export class CategoryDialogComponent implements OnInit {
         this.categoriesService.addCategory({
           parent: formValue.parent,
           name: formValue.name,
-          handle: formValue.handle,
+          handle: this.parentSlug + formValue.handle,
           title: formValue.title,
           description: formValue.description,
           keywords: formValue.keywords,
           media: [],
-          icon: formValue.icon,
+          icon: formValue.icon || '',
           productTypeId: formValue.type,
           root: this.parentData || formValue.parent ? undefined : true,
         }).subscribe(
