@@ -6,6 +6,11 @@ export interface ArticleResponseDto extends ApiId, ApiTimestamp {
   description: string;
   content: string;
   tags: string[];
+  isSlide?: boolean;
+  hidden?: boolean;
+  slideTitle?: string;
+  slideDescription?: string;
+  slideLink?: string;
   seo: ArticleSeoDto;
 }
 

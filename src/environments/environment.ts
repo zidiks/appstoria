@@ -1,9 +1,9 @@
 export const environment = {
   production: false,
-  host: 'api.macplus.by',
-  port: null,
+  host: 'localhost',
+  port: 5000,
   currentOrigin: false,
-  https: true,
+  https: false,
   httpRequestTimeout: 30000,
   currency: 'BYN',
 };
