@@ -64,6 +64,11 @@ export class NewsDetailsComponent implements OnInit {
     content: ['', Validators.required],
     media: [null, Validators.required],
     tags: [[]],
+    isSlide: [false],
+    hidden: [false],
+    slideTitle: [''],
+    slideDescription: [''],
+    slideLink: [''],
     seo: this.formBuilder.group({
       seoTitle: [''],
       seoDescription: [''],
@@ -168,7 +173,12 @@ export class NewsDetailsComponent implements OnInit {
                 description: res.description,
                 content: res.content,
                 media: mediaRes || null,
-                tags: res.tags || []
+                tags: res.tags || [],
+                isSlide: res.isSlide || false,
+                hidden: res.hidden || false,
+                slideTitle: res.slideTitle,
+                slideDescription: res.slideDescription,
+                slideLink: res.slideLink,
               })
               this.formGroup.get('seo')?.setValue({
                   seoTitle: res.seo.seoTitle || '',

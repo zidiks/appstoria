@@ -5,11 +5,11 @@ import { NewsRoutingModule } from "./news-routing.module";
 import { NewsListComponent } from './news-list/news-list.component';
 import { NewsDetailsComponent } from './news-details/news-details.component';
 import {
-    TuiBreadcrumbsModule,
-    TuiInputFilesModule,
-    TuiInputModule,
-    TuiInputTagModule,
-    TuiTextAreaModule
+  TuiBreadcrumbsModule, TuiCheckboxBlockModule,
+  TuiInputFilesModule,
+  TuiInputModule,
+  TuiInputTagModule,
+  TuiTextAreaModule
 } from "@taiga-ui/kit";
 import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from "@taiga-ui/core";
 import { TuiTableModule, TuiTablePaginationModule } from "@taiga-ui/addon-table";
@@ -25,25 +25,26 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
     NewsListComponent,
     NewsDetailsComponent
   ],
-    imports: [
-        CommonModule,
-        NewsRoutingModule,
-        TuiBreadcrumbsModule,
-        TuiLinkModule,
-        TuiButtonModule,
-        TuiTableModule,
-        ApiLoadingStateModule,
-        TuiSvgModule,
-        TuiTablePaginationModule,
-        TuiLetModule,
-        ReactiveFormsModule,
-        TuiLoaderModule,
-        TuiInputModule,
-        TuiTextAreaModule,
-        TuiInputFilesModule,
-        TuiEditorModule,
-        TuiInputTagModule,
-        DataEmptyModule,
-    ]
+  imports: [
+    CommonModule,
+    NewsRoutingModule,
+    TuiBreadcrumbsModule,
+    TuiLinkModule,
+    TuiButtonModule,
+    TuiTableModule,
+    ApiLoadingStateModule,
+    TuiSvgModule,
+    TuiTablePaginationModule,
+    TuiLetModule,
+    ReactiveFormsModule,
+    TuiLoaderModule,
+    TuiInputModule,
+    TuiTextAreaModule,
+    TuiInputFilesModule,
+    TuiEditorModule,
+    TuiInputTagModule,
+    DataEmptyModule,
+    TuiCheckboxBlockModule,
+  ]
 })
 export class NewsModule { }
