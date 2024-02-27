@@ -176,9 +176,9 @@ export class NewsDetailsComponent implements OnInit {
                 tags: res.tags || [],
                 isSlide: res.isSlide || false,
                 hidden: res.hidden || false,
-                slideTitle: res.slideTitle,
-                slideDescription: res.slideDescription,
-                slideLink: res.slideLink,
+                slideTitle: res.slideTitle || '',
+                slideDescription: res.slideDescription || '',
+                slideLink: res.slideLink || '',
               })
               this.formGroup.get('seo')?.setValue({
                   seoTitle: res.seo.seoTitle || '',
