@@ -27,6 +27,7 @@
   ::ng-deep {
     .t-wrapper {
       min-height: 20rem;
+      max-width: calc(100vw - 21rem);
     }
   }
 }
@@ -42,4 +43,8 @@
   gap: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+tui-checkbox-block {
+  width: 100%;
 }

@@ -90,6 +90,48 @@
         </div>
       </div>
       <div class="content">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Слайдер</h3>
+        <div class="tui-form__row tui-form__row_multi-fields">
+          <div class="tui-form__multi-field">
+            <tui-checkbox-block
+              formControlName="isSlide"
+              size="l"
+            >
+              Отображать как слайд
+            </tui-checkbox-block>
+          </div>
+          <div class="tui-form__multi-field">
+            <tui-checkbox-block
+              formControlName="hidden"
+              size="l"
+            >
+              Скрыть из блога
+            </tui-checkbox-block>
+          </div>
+        </div>
+        <div class="tui-form__row">
+          <tui-input
+            formControlName="slideTitle"
+          >
+            Заголовок
+          </tui-input>
+        </div>
+        <div class="tui-form__row">
+          <tui-input
+            formControlName="slideDescription"
+          >
+            Описание
+          </tui-input>
+        </div>
+        <div class="tui-form__row">
+          <tui-input
+            formControlName="slideLink"
+          >
+            Ссылка
+          </tui-input>
+        </div>
+      </div>
+      <div class="content">
         <div formGroupName="seo">
           <h3 class="tui-form__header tui-form__header_margin-top_none">SEO</h3>
           <div class="tui-form__row">
