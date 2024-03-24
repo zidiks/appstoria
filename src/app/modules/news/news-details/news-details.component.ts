@@ -8,7 +8,8 @@ import { ImagesService } from "../../../shared/services/images.service";
 import { TuiAlertService, TuiNotification } from "@taiga-ui/core";
 import { TuiFileLike } from "@taiga-ui/kit";
 import {
-  createImageEditorExtension, defaultEditorExtensions,
+  createImageEditorExtension,
+  defaultEditorExtensions,
   TUI_EDITOR_CONTENT_PROCESSOR,
   TUI_EDITOR_EXTENSIONS,
   TUI_IMAGE_LOADER,
@@ -21,6 +22,7 @@ import * as randomBytes from "randombytes";
 import { SubmitService } from "../../../shared/services/submit.service";
 import { imageLoader } from "./image-loader";
 import { transliteration } from "../../../shared/functions/transliteration.func";
+import { EditorMode } from "../../../shared/enums/editor-mode.enum";
 
 @Component({
   selector: 'app-news-details',
@@ -57,6 +59,7 @@ export class NewsDetailsComponent implements OnInit {
   public initialMedia: ApiDataModel<string>;
   public loading = false;
   public editorTools = EDITOR_TOOLS;
+  public editorMode: EditorMode = EditorMode.advanced;
 
   public formGroup: FormGroup = this.formBuilder.group({
     title: [null],
@@ -110,6 +113,10 @@ export class NewsDetailsComponent implements OnInit {
   }
 
   public get f(): { [key: string]: AbstractControl; } { return this.formGroup.controls; }
+
+  public setEditorMode(mode: EditorMode): void {
+    this.editorMode = mode;
+  }
 
   public onReject(files: TuiFileLike | readonly TuiFileLike[]): void {
     this.alertService.open([...(files as TuiFileLike[])].map(item => item.name)[0], {label: `Ошибка загрузки изображения`, status: TuiNotification.Error, autoClose: 5000}).subscribe();
@@ -248,4 +255,6 @@ export class NewsDetailsComponent implements OnInit {
       seoUrl: transliteration(text)
     })
   }
+
+  protected readonly EditorMode = EditorMode;
 }

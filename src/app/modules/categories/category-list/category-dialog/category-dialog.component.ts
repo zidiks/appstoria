@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiDialogContext, TuiValueContentContext } from "@taiga-ui/core";
@@ -10,17 +10,51 @@ import { ProductTypePrevModel } from "../../../../shared/models/type-property.mo
 import { EMPTY_ARRAY, TuiContextWithImplicit, TuiHandler, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
 import { CategoriesService } from "../../categories.service";
 import { ApiDataModel } from "../../../../shared/models/api-data.model";
+import { EditorMode } from "../../../../shared/enums/editor-mode.enum";
+import { EDITOR_TOOLS } from "../../../news/news-details/editor-tools.const";
+import {
+  defaultEditorExtensions,
+  TUI_EDITOR_CONTENT_PROCESSOR,
+  TUI_EDITOR_EXTENSIONS, TUI_IMAGE_LOADER,
+  tuiLegacyEditorConverter
+} from "@taiga-ui/addon-editor";
+import { imageLoader } from "../../../news/news-details/image-loader";
+import { ImagesService } from "../../../../shared/services/images.service";
 
 @Component({
   selector: 'app-category-dialog',
   templateUrl: './category-dialog.component.html',
-  styleUrls: ['./category-dialog.component.scss']
+  styleUrls: ['./category-dialog.component.scss'],
+  providers: [
+    {
+      provide: TUI_EDITOR_EXTENSIONS,
+      deps: [Injector],
+      useFactory: (injector: Injector) => [
+        import('@taiga-ui/addon-editor/extensions/image-editor').then(
+          ({createImageEditorExtension}) =>
+            createImageEditorExtension(injector),
+        ),
+        ...defaultEditorExtensions,
+      ],
+    },
+    {
+      provide: TUI_EDITOR_CONTENT_PROCESSOR,
+      useValue: tuiLegacyEditorConverter,
+    },
+    {
+      provide: TUI_IMAGE_LOADER,
+      useFactory: imageLoader,
+      deps: [ImagesService],
+    },
+  ],
 })
 export class CategoryDialogComponent implements OnInit {
   public typesData: ApiDataModel<ProductTypePrevModel[]>;
   public categoriesTreeData: ApiDataModel<CategoryModel>;
   public linearCategoriesData: CategoryLinearModel[] = [];
   public loading = false;
+  public editorMode: EditorMode = EditorMode.advanced;
+  protected readonly EditorMode = EditorMode;
 
   public formGroup: FormGroup = this.formBuilder.group( {
     parent: [ this.parentData?._id || this.categoryData?.parent?._id || null ],
@@ -28,6 +62,7 @@ export class CategoryDialogComponent implements OnInit {
     handle: [ this.categoryData?.handle?.split('/').slice(-1), Validators.required ],
     title: [ this.categoryData?.title, Validators.required ],
     description: [ this.categoryData?.description ],
+    content: [this.categoryData?.content],
     keywords: [ this.categoryData?.keywords || [] ],
     type: [ this.categoryData?.productTypeId ],
     icon: [ this.categoryData?.icon ],
@@ -48,6 +83,10 @@ export class CategoryDialogComponent implements OnInit {
         this.linearCategoriesData = this.linearCategory([res]);
       }
     });
+  }
+
+  public setEditorMode(mode: EditorMode): void {
+    this.editorMode = mode;
   }
 
   @tuiPure
@@ -96,6 +135,7 @@ export class CategoryDialogComponent implements OnInit {
             handle: this.parentSlug + formValue.handle,
             title: formValue.title,
             description: formValue.description,
+            content: formValue.content,
             keywords: formValue.keywords,
             media: this.categoryData?.media || [],
             icon: formValue.icon || '',
@@ -117,6 +157,7 @@ export class CategoryDialogComponent implements OnInit {
           handle: this.parentSlug + formValue.handle,
           title: formValue.title,
           description: formValue.description,
+          content: formValue.content,
           keywords: formValue.keywords,
           media: [],
           icon: formValue.icon || '',
@@ -162,4 +203,5 @@ export class CategoryDialogComponent implements OnInit {
     this.categoryData?._id !== item._id ?
       item.children?.filter(subItem =>subItem._id !== this.categoryData?._id) || EMPTY_ARRAY
       : EMPTY_ARRAY;
+  protected readonly editorTools = EDITOR_TOOLS;
 }

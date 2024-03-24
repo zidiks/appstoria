@@ -9,6 +9,7 @@ import {
   TuiInputFilesModule,
   TuiInputModule,
   TuiInputTagModule,
+  TuiTabsModule,
   TuiTextAreaModule
 } from "@taiga-ui/kit";
 import { TuiButtonModule, TuiLinkModule, TuiLoaderModule, TuiSvgModule } from "@taiga-ui/core";
@@ -45,6 +46,7 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
     TuiInputTagModule,
     DataEmptyModule,
     TuiCheckboxBlockModule,
+    TuiTabsModule,
   ]
 })
 export class NewsModule { }

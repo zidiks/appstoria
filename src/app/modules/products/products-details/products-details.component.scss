@@ -91,3 +91,24 @@ tui-checkbox-block {
 .image_alt {
   width: 20rem;
 }
+
+.editor > {
+  ::ng-deep {
+    .t-wrapper {
+      min-height: 20rem;
+      max-width: calc(100vw - 21rem);
+    }
+  }
+}
+
+.editor {
+  ::ng-deep {
+    img {
+      max-width: 100% !important;
+    }
+  }
+
+  &-tabs {
+    margin: 0 1rem;
+  }
+}
