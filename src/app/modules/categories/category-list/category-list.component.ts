@@ -59,6 +59,7 @@ export class CategoryListComponent implements OnInit {
       new PolymorpheusComponent(CategoryDialogComponent, this.injector),
       {
         label: 'Категория',
+        size: 'l',
         data: { parentData: parent }
       }
     );
@@ -77,6 +78,7 @@ export class CategoryListComponent implements OnInit {
       new PolymorpheusComponent(CategoryDialogComponent, this.injector),
       {
         label: 'Категория',
+        size: 'l',
         data: {
           categoryData: category,
           parentData: parent

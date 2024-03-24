@@ -121,6 +121,44 @@
       >
         Ключевые слова
       </tui-input-tag>
+      <tui-tabs class="editor-tabs" [(activeItemIndex)]="editorMode">
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.advanced)"
+        >
+          <tui-svg
+            src="tuiIconDraft"
+            class="tui-space_right-2"
+          ></tui-svg>
+          Визуально
+        </button>
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.html)"
+        >
+          <tui-svg
+            src="tuiIconCode"
+            class="tui-space_right-2"
+          ></tui-svg>
+          HTML
+        </button>
+      </tui-tabs>
+      <tui-editor
+        *ngIf="editorMode === EditorMode.advanced"
+        class="editor tui-space_bottom-5"
+        [tools]="editorTools"
+        formControlName="content"
+      >
+        Содержание
+      </tui-editor>
+      <tui-text-area
+        class="tui-space_bottom-5"
+        *ngIf="editorMode === EditorMode.html"
+        formControlName="content"
+        [expandable]="true"
+      >
+        Содержание
+      </tui-text-area>
       <button
         tuiButton
         type="submit"

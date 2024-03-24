@@ -6,7 +6,7 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import {
   TuiBreadcrumbsModule,
   TuiDataListDropdownManagerModule,
-  TuiInputModule, TuiInputTagModule, TuiSelectModule,
+  TuiInputModule, TuiInputTagModule, TuiSelectModule, TuiTabsModule,
   TuiTextAreaModule,
   TuiTreeModule
 } from "@taiga-ui/kit";
@@ -25,6 +25,7 @@ import { TuiLetModule } from "@taiga-ui/cdk";
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
 import { CategoryReorderComponent } from './category-list/category-reorder/category-reorder.component';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { TuiEditorModule } from "@taiga-ui/addon-editor";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,8 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     TuiPrimitiveTextfieldModule,
     DragDropModule,
     TuiInputTagModule,
+    TuiEditorModule,
+    TuiTabsModule,
   ]
 })
 export class CategoriesModule { }
