@@ -32,6 +32,18 @@
   }
 }
 
+.editor {
+  ::ng-deep {
+    img {
+      max-width: 100% !important;
+    }
+  }
+
+  &-tabs {
+    margin: 0 1rem;
+  }
+}
+
 .socket {
   white-space: pre-wrap;
 }
