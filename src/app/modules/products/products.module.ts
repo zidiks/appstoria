@@ -12,7 +12,9 @@ import {
   TuiInputNumberModule,
   TuiInputTagModule,
   TuiSelectModule,
-  TuiTextAreaModule, TuiTreeModule
+  TuiTabsModule,
+  TuiTextAreaModule,
+  TuiTreeModule
 } from "@taiga-ui/kit";
 import {
   TuiButtonModule, TuiDataListModule, TuiErrorModule,
@@ -34,6 +36,7 @@ import { TuiPreviewModule } from '@taiga-ui/addon-preview';
 import { ErrorImgModule } from "../../shared/directives/error-img/error-img.module";
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
 import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagination-index.module";
+import { TuiEditorModule } from "@taiga-ui/addon-editor";
 
 @NgModule({
   declarations: [
@@ -80,6 +83,8 @@ import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagin
     TuiPrimitiveTextfieldModule,
     FormsModule,
     TuiCheckboxModule,
+    TuiEditorModule,
+    TuiTabsModule,
   ]
 })
 export class ProductsModule { }

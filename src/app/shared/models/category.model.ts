@@ -4,6 +4,7 @@ export interface CategoryModel {
   handle: string;
   title?: string;
   description?: string;
+  content?: string;
   keywords?: string[];
   media: string[];
   icon?: string;

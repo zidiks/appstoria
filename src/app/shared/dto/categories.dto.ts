@@ -4,6 +4,7 @@ export interface AddCategoryDto {
   handle: string;
   title?: string;
   description?: string;
+  content?: string;
   keywords?: string[];
   media: string[];
   icon: string;
@@ -17,6 +18,7 @@ export interface UpdateCategoryDto {
   handle: string;
   title?: string;
   description?: string;
+  content?: string;
   keywords?: string[];
   media: string[];
   icon: string;

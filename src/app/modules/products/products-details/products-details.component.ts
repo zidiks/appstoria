@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiDataModel } from "../../../shared/models/api-data.model";
 import {ProductModel, ProductPropertyValueModel, ProductSeoDto} from "../../../shared/models/product.model";
@@ -32,6 +32,15 @@ import { environment } from "../../../../environments/environment";
 import { transliteration } from "../../../shared/functions/transliteration.func";
 import {CurrencyService} from "../../settings/currency/currency.service";
 import { floorRound } from "../../../shared/functions/floor-round.func";
+import { EditorMode } from "../../../shared/enums/editor-mode.enum";
+import { EDITOR_TOOLS } from "../../news/news-details/editor-tools.const";
+import {
+  defaultEditorExtensions,
+  TUI_EDITOR_CONTENT_PROCESSOR,
+  TUI_EDITOR_EXTENSIONS, TUI_IMAGE_LOADER,
+  tuiLegacyEditorConverter
+} from "@taiga-ui/addon-editor";
+import { imageLoader } from "../../news/news-details/image-loader";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -46,7 +55,29 @@ interface DataResponse {
 @Component({
   selector: 'app-products-details',
   templateUrl: './products-details.component.html',
-  styleUrls: ['./products-details.component.scss']
+  styleUrls: ['./products-details.component.scss'],
+  providers: [
+    {
+      provide: TUI_EDITOR_EXTENSIONS,
+      deps: [Injector],
+      useFactory: (injector: Injector) => [
+        import('@taiga-ui/addon-editor/extensions/image-editor').then(
+          ({createImageEditorExtension}) =>
+            createImageEditorExtension(injector),
+        ),
+        ...defaultEditorExtensions,
+      ],
+    },
+    {
+      provide: TUI_EDITOR_CONTENT_PROCESSOR,
+      useValue: tuiLegacyEditorConverter,
+    },
+    {
+      provide: TUI_IMAGE_LOADER,
+      useFactory: imageLoader,
+      deps: [ImagesService],
+    },
+  ],
 })
 export class ProductsDetailsComponent implements OnInit {
   public breadcrumbs;
@@ -62,6 +93,8 @@ export class ProductsDetailsComponent implements OnInit {
   public maxMediaLength = MAX_MEDIA_LENGTH;
   public currency = environment.currency;
   public prefix = '';
+  public editorMode: EditorMode = EditorMode.advanced;
+  protected readonly EditorMode = EditorMode;
 
   public formGroup: FormGroup = this.formBuilder.group({
     name: [null, Validators.required],
@@ -71,6 +104,7 @@ export class ProductsDetailsComponent implements OnInit {
     totalPrice: [null, Validators.required],
     brand: [null, Validators.required],
     description: [null, Validators.required],
+    content: [null],
     categoryId: [null],
     productTypeId: [null],
     isNew: [false, Validators.required],
@@ -153,6 +187,10 @@ export class ProductsDetailsComponent implements OnInit {
     return names.length ? forkJoin(names.map(name => this.imagesService.getImage(name))) : of([]);
   }
 
+  public setEditorMode(mode: EditorMode): void {
+    this.editorMode = mode;
+  }
+
   public refreshData(): void {
     this.formGroup.reset({
       isNew: false,
@@ -190,6 +228,7 @@ export class ProductsDetailsComponent implements OnInit {
               discount: productData.discount || 0,
               brand: productData.brand?._id,
               description: productData.description,
+              content: productData.content,
               categoryId: productData.categoryId,
               productTypeId: productData.productTypeId,
               isNew: productData.isNew,
@@ -463,4 +502,6 @@ export class ProductsDetailsComponent implements OnInit {
       imageAlt: (event.target as HTMLInputElement).value
     })
   }
+
+  protected readonly editorTools = EDITOR_TOOLS;
 }
