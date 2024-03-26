@@ -58,6 +58,11 @@ export class ModulesComponent {
       route: '/types',
     },
     {
+      icon: 'tuiIconSearch',
+      name: 'SEO',
+      route: '/seo',
+    },
+    {
       icon: 'tuiIconSettings',
       name: 'Настройки',
       route: '/settings',

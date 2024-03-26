@@ -1,0 +1,62 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="title"
+      >
+        Название
+      </tui-input>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="description"
+      >
+        Описание
+      </tui-input>
+      <tui-input-tag
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="keywords"
+      >
+        Ключевые слова
+      </tui-input-tag>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="tag"
+      >
+        Тег
+      </tui-input>
+
+      <tui-editor
+        class="editor tui-space_top-3"
+        [tools]="editorTools"
+        formControlName="content"
+      >
+      </tui-editor>
+
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="url"
+      >
+        Ссылка
+      </tui-input>
+      <button
+        class="tui-space_top-5"
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ seoData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>
