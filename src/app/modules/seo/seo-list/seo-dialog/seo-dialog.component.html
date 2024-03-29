@@ -10,36 +10,68 @@
         class="tui-space_top-3 tui-space_bottom-5"
         formControlName="title"
       >
-        Название
+        Title
       </tui-input>
       <tui-input
         tuiTextfieldSize="m"
         class="tui-space_top-3 tui-space_bottom-5"
         formControlName="description"
       >
-        Описание
+        Description
       </tui-input>
       <tui-input-tag
         tuiTextfieldSize="m"
         class="tui-space_top-3 tui-space_bottom-5"
         formControlName="keywords"
       >
-        Ключевые слова
+        Keywords
       </tui-input-tag>
       <tui-input
         tuiTextfieldSize="m"
         class="tui-space_top-3 tui-space_bottom-5"
         formControlName="tag"
       >
-        Тег
+        H1
       </tui-input>
 
+      <tui-tabs class="editor-tabs" [(activeItemIndex)]="editorMode">
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.advanced)"
+        >
+          <tui-svg
+            src="tuiIconDraft"
+            class="tui-space_right-2"
+          ></tui-svg>
+          Визуально
+        </button>
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.html)"
+        >
+          <tui-svg
+            src="tuiIconCode"
+            class="tui-space_right-2"
+          ></tui-svg>
+          HTML
+        </button>
+      </tui-tabs>
       <tui-editor
-        class="editor tui-space_top-3"
+        *ngIf="editorMode === EditorMode.advanced"
+        class="editor"
         [tools]="editorTools"
         formControlName="content"
       >
+        Содержание
       </tui-editor>
+      <tui-text-area
+        *ngIf="editorMode === EditorMode.html"
+        formControlName="content"
+        [expandable]="true"
+      >
+        Содержание
+      </tui-text-area>
+
 
       <tui-input
         tuiTextfieldSize="m"

@@ -5,7 +5,7 @@ import {
   TuiBadgeModule,
   TuiBreadcrumbsModule,
   TuiDataListDropdownManagerModule, TuiFilesModule, TuiInputFilesModule,
-  TuiInputModule, TuiInputTagModule,
+  TuiInputModule, TuiInputTagModule, TuiTabsModule, TuiTextAreaModule,
 } from "@taiga-ui/kit";
 import {
   TuiButtonModule,
@@ -57,6 +57,8 @@ import { SeoRoutingModule } from "./seo-routing.module";
     TuiFilesModule,
     TuiInputFilesModule,
     TuiInputTagModule,
+    TuiTabsModule,
+    TuiTextAreaModule,
   ]
 })
 export class SeoModule { }

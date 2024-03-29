@@ -15,6 +15,7 @@ import { ImagesService } from "../../../../shared/services/images.service";
 import { EDITOR_TOOLS } from "./editor-tools.const";
 import { SeoModel } from "../../../../shared/models/seo.model";
 import { SeoService } from "../../seo.service";
+import { EditorMode } from "../../../../shared/enums/editor-mode.enum";
 
 @Component({
   selector: 'app-seo-dialog',
@@ -47,6 +48,7 @@ import { SeoService } from "../../seo.service";
 export class SeoDialogComponent implements OnInit {
   public loading = false;
   public editorTools = EDITOR_TOOLS;
+  public editorMode: EditorMode = EditorMode.advanced;
 
   get seoData(): Partial<SeoModel> | undefined {
     return this.context.data;
@@ -85,4 +87,10 @@ export class SeoDialogComponent implements OnInit {
       this.formGroup.markAsTouched();
     }
   }
+
+  public setEditorMode(mode: EditorMode): void {
+    this.editorMode = mode;
+  }
+
+  protected readonly EditorMode = EditorMode;
 }
