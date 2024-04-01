@@ -1,0 +1,148 @@
+<div class="brands">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        (click)="showAddDialog()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'title'"
+        >
+          Title
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'url'"
+        >
+          Ссылка
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(seoData || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        #dropdown="tuiDropdown"
+        tuiDropdownContext
+        [tuiDropdown]="contextMenu"
+        tuiTr
+      >
+        <ng-template
+          #contextMenu
+        >
+          <tui-data-list
+            role="menu"
+            tuiDataListDropdownManager
+            class="context-menu"
+            (click)="showEditDialog(item); dropdown.toggle(false)"
+          >
+            <button
+              tuiOption
+            >
+              Изменить
+              <tui-svg
+                class="icon"
+                src="tuiIconDraft"
+              ></tui-svg>
+            </button>
+            <button
+              tuiOption
+              class="context-delete"
+              (click)="showDeleteDialog(item._id, item.title); dropdown.toggle(false)"
+            >
+              Удалить
+              <tui-svg
+                class="icon"
+                src="tuiIconTrash"
+              ></tui-svg>
+            </button>
+          </tui-data-list>
+        </ng-template>
+
+        <td
+          *tuiCell="'title'"
+          tuiTd
+          class="cell-overflow"
+        >
+          <span>{{ item.title }}</span>
+        </td>
+        <td
+          *tuiCell="'url'"
+          tuiTd
+          class="cell-overflow"
+        >
+          <span>{{ item.url }}</span>
+        </td>
+      </tr>
+      <ng-container *ngIf="seoData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3, 4, 5, 6]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="seoData | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="seoData | apiLoadingState : 'Success'"
+      [total]="seoData?.length || 0"
+      [(page)]="page"
+      [(size)]="size"
+    ></tui-table-pagination>
+  </div>
+</div>

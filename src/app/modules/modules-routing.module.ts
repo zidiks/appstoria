@@ -63,6 +63,11 @@ const routes: Routes = [
         canActivate: [RolesGuard.forRoles(Roles.Admin)],
       },
       {
+        path: 'seo',
+        loadChildren: () => import('./seo/seo.module'). then(m => m.SeoModule),
+        canActivate: [RolesGuard.forRoles(Roles.Admin)],
+      },
+      {
         path: 'settings',
         loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule),
         canActivate: [RolesGuard.forRoles(Roles.Admin)],
