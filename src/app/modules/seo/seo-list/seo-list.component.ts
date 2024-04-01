@@ -34,7 +34,7 @@ export class SeoListComponent implements OnInit {
     },
   ];
 
-  readonly columns = ['title', 'description', 'keywords', 'tag', 'content', 'url'];
+  readonly columns = ['title', 'url'];
 
   constructor(
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
