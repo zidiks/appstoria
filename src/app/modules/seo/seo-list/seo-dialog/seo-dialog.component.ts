@@ -55,11 +55,11 @@ export class SeoDialogComponent implements OnInit {
   }
 
   public formGroup: FormGroup = this.formBuilder.group( {
-    title: [ this.seoData?.title, Validators.required ],
-    description : [ this.seoData?.description, Validators.required ],
-    keywords : [ this.seoData?.keywords, Validators.required ],
-    tag : [ this.seoData?.tag, Validators.required ],
-    content : [ this.seoData?.content, Validators.required ],
+    title: [ this.seoData?.title ],
+    description : [ this.seoData?.description ],
+    keywords : [ this.seoData?.keywords ],
+    tag : [ this.seoData?.tag ],
+    content : [ this.seoData?.content ],
     url : [ this.seoData?.url, Validators.required ],
   } );
 
