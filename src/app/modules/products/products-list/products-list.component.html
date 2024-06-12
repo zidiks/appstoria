@@ -225,6 +225,7 @@
               [(ngModel)]="item.priceUSD"
               [precision]="2"
               decimal="always"
+              (blur)="editableInputChange(item)"
               (change)="editableInputChange(item)"
             >
               Цена
