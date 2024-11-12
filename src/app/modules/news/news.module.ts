@@ -19,6 +19,7 @@ import { TuiLetModule } from "@taiga-ui/cdk";
 import { ReactiveFormsModule } from "@angular/forms";
 import { TuiEditorModule } from "@taiga-ui/addon-editor";
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
+import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagination-index.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
   ],
   imports: [
     CommonModule,
+    PaginationIndexModule,
     NewsRoutingModule,
     TuiBreadcrumbsModule,
     TuiLinkModule,

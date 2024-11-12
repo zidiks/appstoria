@@ -127,9 +127,12 @@
     </table>
     <tui-table-pagination
       *ngIf="articlesData | apiLoadingState : 'Success'"
-      [total]="articlesData?.data?.length || 0"
-      [(page)]="page"
-      [(size)]="size"
+      [items]="[10, 20, 50, 100]"
+      [total]="articlesData?.metadata?.total || 0"
+      [page]="page$ | async | paginationIndex"
+      [size]="(limit$ | async) || 0"
+      (pageChange)="changePage($event + 1)"
+      (sizeChange)="changeSize($event)"
     ></tui-table-pagination>
   </div>
 </div>

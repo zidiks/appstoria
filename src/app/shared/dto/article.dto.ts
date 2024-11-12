@@ -22,6 +22,12 @@ export interface ArticlePrevResponseDto extends ApiId, ApiTimestamp {
   seoTags: string[];
 }
 
+export interface getArticlesOptions {
+  preview?: boolean;
+  limit?: number;
+  page?: number;
+}
+
 export interface AddArticleRequestDto {
   media: string;
   title: string;

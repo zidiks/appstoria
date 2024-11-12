@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from "../../shared/services/http.service";
 import { Observable } from "rxjs";
-import { AddArticleRequestDto, ArticleResponseDto, UpdateArticleRequestDto } from "../../shared/dto/article.dto";
+import {
+  AddArticleRequestDto,
+  ArticleResponseDto,
+  getArticlesOptions,
+  UpdateArticleRequestDto
+} from "../../shared/dto/article.dto";
 import { Paginated } from "../../shared/models/paginated.model";
 
 @Injectable({
@@ -13,8 +18,19 @@ export class NewsService {
     private http: HttpService,
   ) { }
 
-  public getArticles(): Observable<Paginated<ArticleResponseDto> | null> {
-    return this.http.get<Paginated<ArticleResponseDto>>('article');
+  public getArticles(options?: getArticlesOptions): Observable<Paginated<ArticleResponseDto> | null> {
+    const searchParams = new URLSearchParams({
+      preview: 'true',
+    });
+    if (options) {
+      Object.entries(options).forEach(([key, value]) => {
+        if (value) {
+          searchParams.set(key, value.toString());
+        }
+      })
+    }
+    const queryString = searchParams.toString();
+    return this.http.get<Paginated<ArticleResponseDto>>(`article${queryString ? `?${queryString}` : ''}`);
   }
 
   public getArticleById(id: string): Observable<ArticleResponseDto | null> {
