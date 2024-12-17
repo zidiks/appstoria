@@ -29,6 +29,7 @@
         />
       </tui-input>
       <tui-select
+        *ngIf="!!categoriesData"
         class="tui-space_right-3 category-select"
         tuiTextfieldSize="s"
         [valueContent]="categoryContent"
@@ -225,8 +226,7 @@
               [(ngModel)]="item.priceUSD"
               [precision]="2"
               decimal="always"
-              (blur)="editableInputChange(item)"
-              (change)="editableInputChange(item)"
+              (keyup.enter)="editableInputChange(item, $event)"
             >
               Цена
             </tui-input-number>

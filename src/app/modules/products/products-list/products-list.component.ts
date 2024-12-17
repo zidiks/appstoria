@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { ApiDataModel } from "../../../shared/models/api-data.model";
 import { GetProductsOptions, ProductPrevModel } from "../../../shared/models/product.model";
 import { ProductsService } from "../products.service";
 import { Paginated } from "../../../shared/models/paginated.model";
-import { BehaviorSubject, combineLatest, debounceTime, map, startWith } from "rxjs";
+import { BehaviorSubject, combineLatest, debounceTime, map, startWith, take } from "rxjs";
 import { BaseProductProperty } from "../../../shared/enums/base-product-property.emum";
 import { FormControl } from "@angular/forms";
 import { environment } from "../../../../environments/environment";
@@ -19,16 +19,16 @@ import { CategoriesService } from "../../categories/categories.service";
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
-  styleUrls: ['./products-list.component.scss']
+  styleUrls: ['./products-list.component.scss'],
 })
 export class ProductsListComponent implements OnInit {
   public currency = environment.currency;
   private currencyValue: number | undefined;
   public linearCategoriesData: CategoryLinearModel[] = [];
   readonly search = new FormControl('');
-  readonly categorySelect = new FormControl('');
+  readonly categorySelect = new FormControl(this.getLastCategory() || '');
   public categoriesData: ApiDataModel<CategoryModel>;
-  readonly categorySelect$ = this.categorySelect.valueChanges.pipe(debounceTime(200), startWith(''));
+  readonly categorySelect$ = this.categorySelect.valueChanges.pipe(debounceTime(200), startWith(this.getLastCategory() || ''));
   readonly search$ = this.search.valueChanges.pipe(debounceTime(200), startWith(''));
   readonly limit$ = new BehaviorSubject<number>(20);
   readonly page$ = new BehaviorSubject<number>(0);
@@ -46,7 +46,7 @@ export class ProductsListComponent implements OnInit {
     page: this.page$,
     limit: this.limit$,
   }).pipe(
-    debounceTime(0),
+    debounceTime(500),
   );
   public productsData: ApiDataModel<Paginated<ProductPrevModel>>;
   public breadcrumbs = [
@@ -71,10 +71,18 @@ export class ProductsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.categoriesService.getCategoriesTree().subscribe((res: CategoryModel | null) => {
+    this.categorySelect$.subscribe((res) => {
+      if (res) {
+        sessionStorage.setItem('products-list-category', res)
+      } else {
+        sessionStorage.removeItem('products-list-category');
+      }
+    });
+    this.categoriesService.getCategoriesTree().pipe(take(1)).subscribe((res: CategoryModel | null) => {
       this.categoriesData = res;
       if (res) {
         this.linearCategoriesData = this.linearCategory([res]);
+        this.categorySelect.setValue(this.getLastCategory() || '');
       }
     });
     this.request$.subscribe(res => {
@@ -102,8 +110,14 @@ export class ProductsListComponent implements OnInit {
     this.refreshData();
   }
 
+  private getLastCategory(): string | null {
+    const sessionCategory = sessionStorage.getItem('products-list-category');
+    return sessionCategory || null;
+  }
+
   public clearFilters(): void {
     this.categorySelect.reset();
+    sessionStorage.removeItem('products-list-category');
     this.search.reset();
     this.refreshData();
   }
@@ -177,8 +191,11 @@ export class ProductsListComponent implements OnInit {
     return 'Выберите категорию';
   };
 
-  public editableInputChange(data: ProductPrevModel): void {
+  public editableInputChange(data: ProductPrevModel, event?: any): void {
     this.saveEditChange(data);
+    if (event?.target) {
+      event.target?.blur();
+    }
   }
 
   public getData(options?: GetProductsOptions, withoutLoading: boolean = false): void {
