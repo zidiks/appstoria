@@ -4,7 +4,7 @@ import { CategoriesComponent } from './categories.component';
 import { CategoriesRoutingModule } from "./categories-routing.module";
 import { CategoryListComponent } from './category-list/category-list.component';
 import {
-  TuiBreadcrumbsModule,
+  TuiBreadcrumbsModule, TuiCheckboxLabeledModule,
   TuiDataListDropdownManagerModule,
   TuiInputModule, TuiInputTagModule, TuiSelectModule, TuiTabsModule,
   TuiTextAreaModule,
@@ -60,6 +60,7 @@ import { TuiEditorModule } from "@taiga-ui/addon-editor";
     TuiInputTagModule,
     TuiEditorModule,
     TuiTabsModule,
+    TuiCheckboxLabeledModule,
   ]
 })
 export class CategoriesModule { }

@@ -11,6 +11,7 @@ export interface AddCategoryDto {
   productTypeId?: string;
   root?: boolean;
   order?: number;
+  isHidden?: boolean;
 }
 
 export interface UpdateCategoryDto {
@@ -25,4 +26,5 @@ export interface UpdateCategoryDto {
   children?: string[];
   productTypeId?: string;
   order?: number;
+  isHidden?: boolean;
 }

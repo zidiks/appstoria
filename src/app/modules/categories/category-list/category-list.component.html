@@ -50,7 +50,7 @@
           let-value
           let-node="node"
         >
-          <div class="category-item" #dropdown="tuiDropdown"  tuiDropdownContext [tuiDropdown]="contextMenu">
+          <div [style.opacity]="value.isHidden ? 0.5 : 1" class="category-item" #dropdown="tuiDropdown"  tuiDropdownContext [tuiDropdown]="contextMenu">
             <ng-template
               #contextMenu
             >

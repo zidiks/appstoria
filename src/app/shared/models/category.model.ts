@@ -13,6 +13,7 @@ export interface CategoryModel {
   productTypeId?: string;
   parent?: CategoryParentModel;
   order?: number;
+  isHidden?: boolean;
 }
 
 export interface CategoryParentModel {

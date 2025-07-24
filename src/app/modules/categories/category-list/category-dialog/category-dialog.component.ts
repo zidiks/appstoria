@@ -66,6 +66,7 @@ export class CategoryDialogComponent implements OnInit {
     keywords: [ this.categoryData?.keywords || [] ],
     type: [ this.categoryData?.productTypeId ],
     icon: [ this.categoryData?.icon ],
+    isHidden: [ this.categoryData?.isHidden || false ],
   } );
 
   constructor(
@@ -141,6 +142,7 @@ export class CategoryDialogComponent implements OnInit {
             icon: formValue.icon || '',
             children: this.categoryData?.children?.map(item => item._id) || [],
             productTypeId: formValue.type,
+            isHidden: formValue.isHidden,
           })
         ];
         if (this.parentData?._id !== formValue.parent && formValue.parent && !this.categoryData.root) {
@@ -162,6 +164,7 @@ export class CategoryDialogComponent implements OnInit {
           media: [],
           icon: formValue.icon || '',
           productTypeId: formValue.type,
+          isHidden: formValue.isHidden,
           root: this.parentData || formValue.parent ? undefined : true,
         }).subscribe(
           res => this.context.completeWith(res),
