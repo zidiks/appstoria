@@ -16,7 +16,7 @@ import {combineLatest, debounceTime, forkJoin, map, Observable, of, startWith, s
 import { BrandsService } from "../../brands/brands.service";
 import { CategoriesService } from "../../categories/categories.service";
 import { EMPTY_ARRAY, TuiContextWithImplicit, TuiHandler, tuiPure, TuiStringHandler } from "@taiga-ui/cdk";
-import { TuiAlertService, TuiNotification, TuiValueContentContext } from "@taiga-ui/core";
+import { TuiAlertService, TuiDialogService, TuiNotification, TuiValueContentContext } from "@taiga-ui/core";
 import { maxFilesLength } from "../../../shared/functions/form-control-max-filex.func";
 import { TuiFileLike } from "@taiga-ui/kit";
 import { productPropertyControl } from "../../../shared/functions/product-property-control.func";
@@ -41,6 +41,10 @@ import {
   tuiLegacyEditorConverter
 } from "@taiga-ui/addon-editor";
 import { imageLoader } from "../../news/news-details/image-loader";
+import { CurrencyConfigResponseDto } from "../../../shared/dto/currency-config.dto";
+import { PolymorpheusComponent } from "@tinkoff/ng-polymorpheus";
+import { CurrencyDialogComponent } from "../../settings/currency/currency-dialog/currency-dialog.component";
+import { ProductsListAdditionalComponent } from "../products-list-additional/products-list-additional.component";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -133,6 +137,8 @@ export class ProductsDetailsComponent implements OnInit {
     private submitService: SubmitService,
     private currencyService: CurrencyService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
+    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
+    @Inject(Injector) private readonly injector: Injector,
   ) {
     this.productId = this.route.snapshot.params['id'];
     this.breadcrumbs = [
@@ -149,6 +155,23 @@ export class ProductsDetailsComponent implements OnInit {
         routerLink: `/products/details/${this.productId}`,
       }
     ];
+  }
+
+  public showAddProductAdditionalDialog(data: { productId: number }): void {
+    const dialog = this.dialogService.open<CurrencyConfigResponseDto>(
+      new PolymorpheusComponent(ProductsListAdditionalComponent, this.injector),
+      {
+        size: 'page',
+        data,
+      }
+    );
+    dialog.subscribe({
+      next: (data: any) => {
+        if (data) {
+          console.log(data)
+        }
+      },
+    });
   }
 
   ngOnInit(): void {

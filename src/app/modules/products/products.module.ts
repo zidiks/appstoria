@@ -37,11 +37,13 @@ import { ErrorImgModule } from "../../shared/directives/error-img/error-img.modu
 import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.module";
 import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagination-index.module";
 import { TuiEditorModule } from "@taiga-ui/addon-editor";
+import { ProductsListAdditionalComponent } from "./products-list-additional/products-list-additional.component";
 
 @NgModule({
   declarations: [
     ProductsComponent,
     ProductsListComponent,
+    ProductsListAdditionalComponent,
     ProductsDetailsComponent
   ],
   imports: [

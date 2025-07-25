@@ -112,3 +112,15 @@ tui-checkbox-block {
     margin: 0 1rem;
   }
 }
+
+.add-products {
+  &-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    &-text {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
