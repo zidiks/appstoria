@@ -20,6 +20,7 @@ export interface ProductModel extends ApiId, ApiTimestamp {
   isStock: boolean;
   productProps: ProductPropertyValueModel[];
   seo?: ProductSeoDto;
+  associatedProducts?: ProductPrevModel[];
 }
 
 export interface ProductSeoImageDto {

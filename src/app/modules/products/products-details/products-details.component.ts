@@ -43,7 +43,6 @@ import {
 import { imageLoader } from "../../news/news-details/image-loader";
 import { CurrencyConfigResponseDto } from "../../../shared/dto/currency-config.dto";
 import { PolymorpheusComponent } from "@tinkoff/ng-polymorpheus";
-import { CurrencyDialogComponent } from "../../settings/currency/currency-dialog/currency-dialog.component";
 import { ProductsListAdditionalComponent } from "../products-list-additional/products-list-additional.component";
 
 const MAX_MEDIA_LENGTH = 10;
@@ -167,11 +166,17 @@ export class ProductsDetailsComponent implements OnInit {
     );
     dialog.subscribe({
       next: (data: any) => {
-        if (data) {
-          console.log(data)
+        if (data && this.productData) {
+          this.productData.associatedProducts = [...(this.productData.associatedProducts || []), data];
         }
       },
     });
+  }
+
+  public removeAssociatedProduct(i: number): void {
+    if (!!this.productData?.associatedProducts?.length) {
+      this.productData.associatedProducts.splice(i, 1);
+    }
   }
 
   ngOnInit(): void {
@@ -387,6 +392,7 @@ export class ProductsDetailsComponent implements OnInit {
         })
         const payload = {
           ...data,
+          associatedProducts: (this.productData?.associatedProducts || []).map(item => item._id),
           media: mediaRes,
           seo: {
             ...data.seo,
@@ -527,4 +533,5 @@ export class ProductsDetailsComponent implements OnInit {
   }
 
   protected readonly editorTools = EDITOR_TOOLS;
+  protected readonly env = environment;
 }

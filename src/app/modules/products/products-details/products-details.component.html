@@ -307,7 +307,27 @@
               (click)="showAddProductAdditionalDialog(productId)"
             ></button>
           </div>
-          <span>Work in progress</span>
+          <div class="add-products-list">
+            <div class="add-products-list-item" *ngFor="let associatedProduct of (productData?.associatedProducts || []); index as i">
+              <img
+                class="add-products-list-item-img"
+                [src]="associatedProduct.media[0] ? (env.https ? 'https://' : 'http://') + env.host + (env.port ? ':' + env.port : '') + '/storage/images/' + associatedProduct.media[0] : 'assets/images/no-image.png'"
+                default = "assets/images/no-image.png"
+                [alt]="associatedProduct.name"
+              >
+              <div class="add-products-list-item-name">{{ associatedProduct.name }}</div>
+              <button
+                size="s"
+                tuiIconButton
+                type="button"
+                appearance="secondary-destructive"
+                icon="tuiIconTrash"
+                [showLoader]="loading"
+                (click)="removeAssociatedProduct(i)"
+              >
+              </button>
+            </div>
+          </div>
         </div>
         <div class="content" formGroupName="seo">
           <h3 class="tui-form__header tui-form__header_margin-top_none">SEO</h3>
