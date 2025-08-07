@@ -22,4 +22,5 @@ export interface DeliveryMethodResponseDto extends ApiId, ApiTimestamp {
   fields: DeliveryMethodFieldDto[];
   paymentMethods: PaymentMethodResponseDto[];
   deliveryPrice: number;
+  deliveryThreshold?: number;
 }
