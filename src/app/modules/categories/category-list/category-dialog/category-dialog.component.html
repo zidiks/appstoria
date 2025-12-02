@@ -121,6 +121,32 @@
       >
         Ключевые слова
       </tui-input-tag>
+
+      <div class="tui-space_bottom-5">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Изображение</h3>
+        <div class="tui-form__row">
+          <tui-input-files
+            accept="image/*"
+            [multiple]="false"
+            formControlName="media"
+            (reject)="onReject($event)"
+            (ngModelChange)="f['media'].markAsTouched()"
+          ></tui-input-files>
+          <tui-files class="file tui-space_top-3">
+            <ng-container *ngIf="f['media'].value as file">
+              <tui-file
+                class="files-item"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+              </tui-file>
+            </ng-container>
+          </tui-files>
+        </div>
+      </div>
+
       <tui-checkbox-labeled
         formControlName="isHidden"
         size="l"
