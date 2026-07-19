@@ -5,4 +5,5 @@ export interface UserModel {
   username: string;
   roles: Roles[],
   accessToken?: string;
+  refreshToken?: string;
 }

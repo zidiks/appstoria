@@ -1,10 +1,11 @@
 import { Roles } from "../enums/roles.enum";
 
 export interface GetCurrentUserResDto {
+  sub?: string;
   userId: string;
   username: string;
   roles: Roles[],
-  accessToken: string;
+  accessToken?: string;
 }
 
 export interface LoginReqDto {
@@ -17,4 +18,12 @@ export interface LoginResDto {
   sub: string;
   roles: Roles[],
   accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenReqDto {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResDto extends LoginResDto {
 }

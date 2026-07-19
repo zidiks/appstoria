@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap, throwError } from "rxjs";
+import { BehaviorSubject, map, Observable, take, tap, throwError } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { Roles } from "../enums/roles.enum";
 import { HttpService } from "./http.service";
-import { GetCurrentUserResDto, LoginReqDto, LoginResDto } from "../dto/auth.dto";
+import {
+  GetCurrentUserResDto,
+  LoginReqDto,
+  LoginResDto,
+  RefreshTokenReqDto,
+  RefreshTokenResDto,
+} from "../dto/auth.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -22,18 +28,22 @@ export class AuthService {
   }
 
   public updCurrentUser(): Observable<UserModel | null> {
-    const storageUserToken: string | undefined = JSON.parse(localStorage.getItem('currentUser') || 'null')?.accessToken;
-    if (storageUserToken) {
+    const storageUser: UserModel | null = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (storageUser?.accessToken) {
       return this.http.get<GetCurrentUserResDto>('auth').pipe(
         map((res: GetCurrentUserResDto) => {
           const newCurrentUserData: UserModel | null = res ? Object.assign(
             this.currentUserSubject.value || {},
             {
-              id: res.userId,
+              id: res.userId || res.sub || storageUser.id,
               username: res.username,
               roles: res.roles,
-              accessToken: res.accessToken,
+              accessToken: res.accessToken || storageUser.accessToken,
+              refreshToken: storageUser.refreshToken,
             }) : null;
+          if (newCurrentUserData) {
+            localStorage.setItem('currentUser', JSON.stringify(newCurrentUserData));
+          }
           this.currentUserSubject.next(newCurrentUserData);
           return newCurrentUserData;
         })
@@ -51,6 +61,7 @@ export class AuthService {
            username: user.username,
            roles: user.roles,
            accessToken: user.accessToken,
+           refreshToken: user.refreshToken,
          };
          localStorage.setItem('currentUser', JSON.stringify(userData));
          this.currentUserSubject.next(userData);
@@ -60,15 +71,59 @@ export class AuthService {
       }));
   }
 
+  public refreshAccessToken(): Observable<UserModel | null> {
+    const currentUser = this.currentUserValue;
+    if (!currentUser?.refreshToken) {
+      return throwError(new Error('Empty refresh token'));
+    }
+
+    return this.http
+      .post<RefreshTokenResDto, RefreshTokenReqDto>('auth/refresh', {
+        refreshToken: currentUser.refreshToken,
+      })
+      .pipe(
+        map((res: RefreshTokenResDto) => {
+          const userData: UserModel = {
+            id: res.sub,
+            username: res.username,
+            roles: res.roles,
+            accessToken: res.accessToken,
+            refreshToken: res.refreshToken,
+          };
+          localStorage.setItem('currentUser', JSON.stringify(userData));
+          this.currentUserSubject.next(userData);
+          return userData;
+        }),
+      );
+  }
+
   public logout(): void {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    location.reload();
+    const refreshToken = this.currentUserValue?.refreshToken;
+    if (!refreshToken) {
+      this.clearCurrentUser(true);
+      return;
+    }
+
+    this.http
+      .post<{ success: boolean }, RefreshTokenReqDto>('auth/logout', {
+        refreshToken,
+      })
+      .pipe(take(1))
+      .subscribe({
+        next: () => this.clearCurrentUser(true),
+        error: () => this.clearCurrentUser(true),
+      });
   }
 
   public softLogout(): void {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    this.clearCurrentUser(false);
   }
 
+  private clearCurrentUser(reload: boolean): void {
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
+    if (reload) {
+      location.reload();
+    }
+  }
 }
