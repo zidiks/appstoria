@@ -3,9 +3,9 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpResponse, HttpStatusCode,
+  HttpInterceptor,
 } from '@angular/common/http';
-import { delay, Observable, of, timeout, TimeoutError } from 'rxjs';
+import { delay, Observable, throwError, timeout, TimeoutError } from 'rxjs';
 import { environment } from "../../../environments/environment";
 import { catchError } from "rxjs/operators";
 import { TuiAlertService, TuiNotification } from "@taiga-ui/core";
@@ -30,10 +30,7 @@ export class HttpControlInterceptor implements HttpInterceptor {
               autoClose: 5000
             }).subscribe();
         }
-        return of(new HttpResponse({
-          body: null,
-          status: HttpStatusCode.RequestTimeout,
-        }));
+        return throwError(() => err);
       }),
     );
   }

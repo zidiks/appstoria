@@ -23,6 +23,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         !isRefreshRequest
       ) {
         return this.authenticationService.refreshAccessToken().pipe(
+          catchError((refreshErr) => {
+            this.authenticationService.softLogout();
+            location.reload();
+            return throwError(() => refreshErr);
+          }),
           switchMap((user) => {
             if (!user?.accessToken) {
               return throwError(() => err);
@@ -35,11 +40,6 @@ export class ErrorInterceptor implements HttpInterceptor {
             });
 
             return next.handle(retryRequest);
-          }),
-          catchError((refreshErr) => {
-            this.authenticationService.softLogout();
-            location.reload();
-            return throwError(() => refreshErr);
           }),
         );
       }

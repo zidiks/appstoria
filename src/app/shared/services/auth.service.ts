@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, take, tap, throwError } from "rxjs";
+import { BehaviorSubject, finalize, map, Observable, shareReplay, take, tap, throwError } from "rxjs";
 import { UserModel } from "../models/user.model";
 import { Roles } from "../enums/roles.enum";
 import { HttpService } from "./http.service";
@@ -16,6 +16,7 @@ import {
 })
 export class AuthService {
   private currentUserSubject: BehaviorSubject<UserModel | null> = new BehaviorSubject<UserModel | null>(JSON.parse(localStorage.getItem('currentUser') || 'null'));
+  private refreshInFlight$: Observable<UserModel | null> | null = null;
   public currentUser$: Observable<UserModel | null> = this.currentUserSubject.asObservable();
 
   constructor(
@@ -72,12 +73,16 @@ export class AuthService {
   }
 
   public refreshAccessToken(): Observable<UserModel | null> {
+    if (this.refreshInFlight$) {
+      return this.refreshInFlight$;
+    }
+
     const currentUser = this.currentUserValue;
     if (!currentUser?.refreshToken) {
       return throwError(new Error('Empty refresh token'));
     }
 
-    return this.http
+    this.refreshInFlight$ = this.http
       .post<RefreshTokenResDto, RefreshTokenReqDto>('auth/refresh', {
         refreshToken: currentUser.refreshToken,
       })
@@ -94,7 +99,13 @@ export class AuthService {
           this.currentUserSubject.next(userData);
           return userData;
         }),
+        finalize(() => {
+          this.refreshInFlight$ = null;
+        }),
+        shareReplay({bufferSize: 1, refCount: false}),
       );
+
+    return this.refreshInFlight$;
   }
 
   public logout(): void {
