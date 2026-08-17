@@ -34,6 +34,7 @@ function getCorsOrigins(): string[] {
     'https://macplus.by',
     'https://www.macplus.by',
     'https://admin.macplus.by',
+    'https://adel.cafein.by'
   ];
   if (process.env.NODE_ENV !== 'prod') {
     origins.push(
