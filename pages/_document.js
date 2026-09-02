@@ -66,6 +66,9 @@ export default function Document() {
         }}/>
         <base href="/"></base>
         <link rel="icon" href="images/icons/favicon.ico"/>
+        {/* Сайт только светлый: без этого браузеры с авто-тёмным режимом
+            (Chrome Auto Dark Mode) сами инвертируют страницу */}
+        <meta name="color-scheme" content="light"/>
         <meta name="google-site-verification" content="zkGKtNXlNUPH0rhw2sORnyS0J9USz7B6xXI0Gey3NwE"/>
       </Head>
 

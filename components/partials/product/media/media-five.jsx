@@ -2,17 +2,13 @@ import {useEffect, useState} from 'react';
 import Image from 'next/image';
 
 import ThumbTwo from '~/components/partials/product/thumb/thumb-two';
-import MediaLightBox from '~/components/partials/product/light-box';
 import {getImgPath} from '~/utils';
 import {SwiperSlide} from "swiper/react";
 import MpCarousel from "~/components/features/mp-carousel";
-import InlineSVG from "react-inlinesvg";
-import {expandOutlineIcon} from "~/icons/expand-outline";
 
 export default function MediaFive(props) {
   const { product, adClass = '' } = props;
   const [index, setIndex] = useState(0);
-  const [isOpen, setOpenState] = useState(false);
   const [mediaRef, setMediaRef] = useState(null);
 
   let lgImages = product.seo?.seoImage || [];
@@ -27,14 +23,6 @@ export default function MediaFive(props) {
     if (mediaIndex !== index) {
       setIndex(mediaIndex);
     }
-  };
-
-  const changeOpenState = (openState) => {
-    setOpenState(openState);
-  };
-
-  const openLightBox = () => {
-    setOpenState(true);
   };
 
   return (
@@ -58,7 +46,7 @@ export default function MediaFive(props) {
           <SwiperSlide key={image.imageName + '-' + index}>
             <Image
               width={800}
-              height={540}
+              height={800}
               src={getImgPath(image.imageName)}
               alt={`${image.imageAlt || product.name || ''}-${index}`}
               title={`${image.imageAlt || product.name || ''}-${index}`}
@@ -69,18 +57,12 @@ export default function MediaFive(props) {
       </MpCarousel>
 
 
-      <div className="product-image-full" onClick={openLightBox}>
-        <InlineSVG className="icon-24" src={expandOutlineIcon} />
-      </div>
-
       <ThumbTwo
         product={product}
         onChangeIndex={setIndexHandler}
         currIndex={index}
         length={lgImages?.length || 0}
       />
-
-      <MediaLightBox images={lgImages} isOpen={isOpen} changeOpenState={changeOpenState} index={index} product={product} />
     </div>
   );
 }

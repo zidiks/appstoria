@@ -684,10 +684,6 @@ Demo 22
   font-size: 2.4rem;
 }
 
-.ril__outer {
-  background-color: white;
-}
-
 @include breakpoints.mq(lg, max) {
   input,
   textarea {

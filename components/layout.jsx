@@ -1,5 +1,4 @@
 import {useEffect} from 'react';
-import 'react-image-lightbox/style.css';
 import Header from '~/components/common/header';
 import Footer from '~/components/common/footer';
 import StickyFooter from '~/components/common/sticky-footer';

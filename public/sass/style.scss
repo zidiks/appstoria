@@ -107,7 +107,6 @@
 @use 'demo/demo22_custom';
 
 @use 'react-phone-input';
-@use 'react-image-lightbox';
 @use 'react-toastify';
 @use 'react-swiper';
 @use 'react-swiper-navigation';
@@ -115,6 +114,12 @@
 
 html {
   height: 100%;
+  // Сайт только светлый. color-scheme запрещает браузеру авто-инверсию и
+  // включает светлый рендеринг нативных контролов, а явный фон нужен потому,
+  // что ни html, ни body его не задают: без него сквозь страницу просвечивает
+  // подложка браузера, тёмная при системной тёмной теме.
+  color-scheme: light;
+  background-color: #fff;
 }
 
 body {
@@ -177,7 +182,7 @@ body {
   }
   &-product-single {
     margin: 2rem 0;
-    aspect-ratio: 8 / 5 !important;
+    aspect-ratio: 1 / 1 !important;
   }
   &-swiper {
     width: 100%;
