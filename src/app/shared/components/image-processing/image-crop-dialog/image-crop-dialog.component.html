@@ -1,0 +1,61 @@
+<p class="hint">
+  Выделите мышью область с объектом. Квадрат и отступ 8px бэкенд добавит сам.
+</p>
+
+<tui-loader [showLoader]="loading" [overlay]="true">
+  <div class="canvas">
+    <img
+      #image
+      class="canvas__image"
+      [src]="src"
+      [alt]="file"
+      draggable="false"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp()"
+      (pointercancel)="onPointerUp()"
+    />
+    <div
+      *ngIf="selection"
+      class="canvas__selection"
+      [style.left.px]="selection.left"
+      [style.top.px]="selection.top"
+      [style.width.px]="selection.width"
+      [style.height.px]="selection.height"
+    ></div>
+  </div>
+</tui-loader>
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    class="tui-space_right-3"
+    [disabled]="!selection || loading"
+    (click)="apply()"
+  >
+    Применить
+  </button>
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="secondary"
+    class="tui-space_right-3"
+    [disabled]="!selection || loading"
+    (click)="reset()"
+  >
+    Сбросить выделение
+  </button>
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="flat"
+    [disabled]="loading"
+    (click)="cancel()"
+  >
+    Отмена
+  </button>
+</div>

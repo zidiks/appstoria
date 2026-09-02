@@ -15,6 +15,7 @@ import { floorRound } from "../../../shared/functions/floor-round.func";
 import { EMPTY_ARRAY, TuiHandler, TuiStringHandler } from "@taiga-ui/cdk";
 import { CategoryLinearModel, CategoryModel } from "../../../shared/models/category.model";
 import { CategoriesService } from "../../categories/categories.service";
+import { ImageProcessingService } from "../../../shared/services/image-processing.service";
 
 @Component({
   selector: 'app-products-list',
@@ -67,8 +68,18 @@ export class ProductsListComponent implements OnInit {
     private productsService: ProductsService,
     private currencyService: CurrencyService,
     private categoriesService: CategoriesService,
+    private imageProcessingService: ImageProcessingService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
   ) { }
+
+  /** Массовая обработка изображений всех товаров */
+  public processImages(): void {
+    this.imageProcessingService.processAll().subscribe((changed: boolean) => {
+      if (changed) {
+        this.refreshData(true);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.categorySelect$.subscribe((res) => {

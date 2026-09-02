@@ -38,6 +38,7 @@ import { DataEmptyModule } from "../../shared/components/data-empty/data-empty.m
 import { PaginationIndexModule } from "../../shared/pipes/pagination-index/pagination-index.module";
 import { TuiEditorModule } from "@taiga-ui/addon-editor";
 import { ProductsListAdditionalComponent } from "./products-list-additional/products-list-additional.component";
+import { ImageProcessingModule } from "../../shared/components/image-processing/image-processing.module";
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { ProductsListAdditionalComponent } from "./products-list-additional/prod
     TuiCheckboxModule,
     TuiEditorModule,
     TuiTabsModule,
+    ImageProcessingModule,
   ]
 })
 export class ProductsModule { }

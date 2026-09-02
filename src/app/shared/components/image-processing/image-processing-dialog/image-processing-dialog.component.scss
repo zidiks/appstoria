@@ -1,0 +1,79 @@
+.hint {
+  color: var(--tui-text-02);
+}
+
+.error {
+  color: var(--tui-error-fill);
+}
+
+.progress {
+  &__label {
+    margin: 0 0 0.75rem;
+  }
+
+  &__bar {
+    display: block;
+  }
+}
+
+.totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 45vh;
+  overflow-y: auto;
+
+  &__title {
+    margin: 0 0 0.75rem;
+  }
+}
+
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid var(--tui-base-03);
+  border-radius: 0.5rem;
+
+  &__preview {
+    flex: 0 0 auto;
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    background: var(--tui-base-02);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__file {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__reason {
+    color: var(--tui-text-02);
+    font-size: 0.8125rem;
+  }
+
+  &__actions {
+    flex: 0 0 auto;
+  }
+}
+
+.actions {
+  margin-top: 1.25rem;
+}

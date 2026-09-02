@@ -1,0 +1,83 @@
+<ng-container *ngIf="errorMessage; else content">
+  <p class="error">{{ errorMessage }}</p>
+</ng-container>
+
+<ng-template #content>
+  <ng-container *ngIf="running; else result">
+    <p class="progress__label">
+      Обработано {{ handled }} из {{ total }}
+    </p>
+    <progress
+      tuiProgressBar
+      class="progress__bar"
+      size="m"
+      [value]="progress"
+      [max]="100"
+    ></progress>
+    <p class="hint">Можно закрыть окно — обработка продолжится на сервере.</p>
+  </ng-container>
+
+  <ng-template #result>
+    <div class="totals">
+      <tui-badge status="success" size="m" [value]="'Обработано: ' + (summary?.processed || 0)"></tui-badge>
+      <tui-badge
+        *ngIf="summary?.unchanged"
+        status="default"
+        size="m"
+        [value]="'Уже были обработаны: ' + summary?.unchanged"
+      ></tui-badge>
+      <tui-badge status="warning" size="m" [value]="'Пропущено: ' + (summary?.skipped || 0)"></tui-badge>
+      <tui-badge status="error" size="m" [value]="'Ошибок: ' + (summary?.failed || 0)"></tui-badge>
+    </div>
+
+    <ng-container *ngIf="warnings.length; else allGood">
+      <h4 class="warnings__title">Требуют ручного кадрирования</h4>
+      <div class="warnings">
+        <div class="warning" *ngFor="let warning of warnings">
+          <img class="warning__preview" [src]="imageUrl(warning.file)" [alt]="warning.file" />
+          <div class="warning__info">
+            <span class="warning__file">{{ warning.file }}</span>
+            <span class="warning__reason">{{ warning.reason }}</span>
+          </div>
+          <div class="warning__actions">
+            <button
+              tuiButton
+              type="button"
+              size="s"
+              class="tui-space_right-2"
+              (click)="crop(warning)"
+            >
+              Кадрировать
+            </button>
+            <button
+              tuiButton
+              type="button"
+              size="s"
+              appearance="secondary"
+              [disabled]="warning.status === 'failed'"
+              (click)="force(warning)"
+            >
+              Обработать всё равно
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #allGood>
+      <p class="hint">Все изображения обработаны, вмешательство не требуется.</p>
+    </ng-template>
+  </ng-template>
+</ng-template>
+
+<div class="actions">
+  <button
+    tuiButton
+    type="button"
+    size="m"
+    appearance="secondary"
+    (click)="close()"
+  >
+    Закрыть
+  </button>
+</div>

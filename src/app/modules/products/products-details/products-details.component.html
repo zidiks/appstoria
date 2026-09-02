@@ -233,8 +233,29 @@
           </div>
         </div>
         <div class="content">
-          <h3 class="tui-form__header tui-form__header_margin-top_none">Изображения</h3>
+          <div class="images-header">
+            <h3 class="tui-form__header tui-form__header_margin-top_none">Изображения</h3>
+            <button
+              *ngIf="productId"
+              tuiButton
+              type="button"
+              size="s"
+              appearance="secondary"
+              icon="tuiIconPicture"
+              (click)="processImages()"
+            >
+              Обработать изображения
+            </button>
+          </div>
           <div class="tui-form__row">
+            <tui-checkbox-block
+              class="tui-space_bottom-3"
+              size="m"
+              [(ngModel)]="processOnUpload"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              Кадрировать новые изображения до квадрата при загрузке
+            </tui-checkbox-block>
             <tui-input-files
               accept="image/*"
               [multiple]="true"
@@ -275,6 +296,17 @@
                       Атрибут Alt
                     </tui-input>
                   </ng-container>
+                  <button
+                    *ngIf="isSavedImage(file)"
+                    tuiButton
+                    type="button"
+                    size="xs"
+                    appearance="secondary"
+                    class="tui-space_bottom-1"
+                    (click)="cropImage(file)"
+                  >
+                    Кадрировать
+                  </button>
                 </div>
               </tui-file>
               </ng-container>
