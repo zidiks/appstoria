@@ -22,6 +22,7 @@ import {
   ProcessImageOptions,
 } from './image-processing.service';
 import { StoredImageResult } from './interfaces/image-job.interface';
+import { IMAGE_PROCESSING } from './const/image-processing.const';
 
 const STORAGE_FOLDER = 'storage';
 /** В media товара лежит голое имя файла — искать его нужно здесь */
@@ -73,7 +74,7 @@ export class StorageService {
   }
 
   async convertToWebP(file: Buffer): Promise<Buffer> {
-    return sharp(file).webp().toBuffer();
+    return sharp(file).webp(IMAGE_PROCESSING.webp).toBuffer();
   }
 
   async convertAndSave(files: MFile[], options: UploadOptions = {}) {
