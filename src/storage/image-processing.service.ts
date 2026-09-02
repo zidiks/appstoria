@@ -227,7 +227,7 @@ export class ImageProcessingService {
       );
     }
 
-    return pipeline.webp().toBuffer();
+    return pipeline.webp(IMAGE_PROCESSING.webp).toBuffer();
   }
 
   /**
