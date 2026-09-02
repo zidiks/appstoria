@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /storage
+/storage_originals
 /docker
 /db
 certs/
