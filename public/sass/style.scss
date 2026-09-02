@@ -107,7 +107,6 @@
 @use 'demo/demo22_custom';
 
 @use 'react-phone-input';
-@use 'react-image-lightbox';
 @use 'react-toastify';
 @use 'react-swiper';
 @use 'react-swiper-navigation';
@@ -177,7 +176,7 @@ body {
   }
   &-product-single {
     margin: 2rem 0;
-    aspect-ratio: 8 / 5 !important;
+    aspect-ratio: 1 / 1 !important;
   }
   &-swiper {
     width: 100%;

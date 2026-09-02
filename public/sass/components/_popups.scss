@@ -683,10 +683,6 @@ button.mfp-close {
     z-index: 2000 !important;
 }
 
-.ril__image, .ril__imagePrev, .ril__imageNext {
-    transition: .3s;
-}
-
 // Responsive
 @include breakpoints.mq(md, max) {
     .quickview-modal .product {
