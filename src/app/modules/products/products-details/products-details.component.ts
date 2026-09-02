@@ -44,6 +44,8 @@ import { imageLoader } from "../../news/news-details/image-loader";
 import { CurrencyConfigResponseDto } from "../../../shared/dto/currency-config.dto";
 import { PolymorpheusComponent } from "@tinkoff/ng-polymorpheus";
 import { ProductsListAdditionalComponent } from "../products-list-additional/products-list-additional.component";
+import { ImageProcessingService } from "../../../shared/services/image-processing.service";
+import { StoredImageResultDto } from "../../../shared/dto/image-processing.dto";
 
 const MAX_MEDIA_LENGTH = 10;
 
@@ -97,6 +99,8 @@ export class ProductsDetailsComponent implements OnInit {
   public currency = environment.currency;
   public prefix = '';
   public editorMode: EditorMode = EditorMode.advanced;
+  /** Кропать новые картинки до квадрата при загрузке */
+  public processOnUpload = true;
   protected readonly EditorMode = EditorMode;
 
   public formGroup: FormGroup = this.formBuilder.group({
@@ -135,6 +139,7 @@ export class ProductsDetailsComponent implements OnInit {
     private imagesService: ImagesService,
     private submitService: SubmitService,
     private currencyService: CurrencyService,
+    private imageProcessingService: ImageProcessingService,
     @Inject(TuiAlertService) private readonly alertService: TuiAlertService,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
     @Inject(Injector) private readonly injector: Injector,
@@ -208,6 +213,58 @@ export class ProductsDetailsComponent implements OnInit {
           this.f['productTypeId'].setValue(categoryItem.productTypeId);
         }
       }
+    });
+  }
+
+  /** Обработать все сохранённые изображения товара */
+  public processImages(): void {
+    if (!this.productId) {
+      return;
+    }
+    this.imageProcessingService.processProduct(this.productId.toString(), this.productData?.name)
+      .subscribe((changed: boolean) => {
+        if (changed) {
+          this.reloadMedia();
+        }
+      });
+  }
+
+  /** Ручное кадрирование уже сохранённой картинки */
+  public cropImage(file: TuiFileLike): void {
+    this.imageProcessingService.cropImage(file.name)
+      .subscribe((res: StoredImageResultDto | null) => {
+        if (res?.status === 'processed') {
+          this.reloadMedia();
+        }
+      });
+  }
+
+  public isSavedImage(file: TuiFileLike): boolean {
+    return !!this.productId && (this.initialMedia || []).includes(file.name);
+  }
+
+  /**
+   * Перечитываем только картинки — остальные поля формы могли быть отредактированы
+   * и терять их нельзя.
+   */
+  private reloadMedia(): void {
+    if (!this.productId) {
+      return;
+    }
+    this.productsService.getProductById(this.productId).subscribe((product: ProductModel | null) => {
+      if (!product) {
+        return;
+      }
+      const media = product.media || [];
+      this.initialMedia = media;
+      // При конвертации jpg в webp имя файла меняется — синхронизируем seo-блок по позиции
+      const seoImage = this.formGroup.get('seo')?.get('seoImage') as FormArray;
+      media.forEach((name: string, index: number) => {
+        seoImage?.at(index)?.patchValue({ imageName: name });
+      });
+      this.getImages(media).subscribe((mediaRes: (TuiFileLike | null)[]) => {
+        this.f['media'].setValue(mediaRes.filter((mediaItem) => mediaItem) || []);
+      });
     });
   }
 
@@ -461,7 +518,7 @@ export class ProductsDetailsComponent implements OnInit {
     const resultNames: string[] = resultMediaData.map(media => media.file.name);
     const deleteRequests: Observable<any>[] = initialNames.filter(item => !resultNames.includes(item)).map(item => this.imagesService.deleteImage(item));
     const addMedias: ResultMediaData[] = resultMediaData.filter(media => media.newShortName);
-    const addRequest: Observable<AddImagesResponseDto[]> = this.imagesService.addImages(addMedias);
+    const addRequest: Observable<AddImagesResponseDto[]> = this.imagesService.addImages(addMedias, this.processOnUpload);
     return forkJoin(deleteRequests.length ? deleteRequests : [of(null)])
       .pipe(
         switchMap(() => addRequest

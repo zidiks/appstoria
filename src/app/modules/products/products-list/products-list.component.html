@@ -103,6 +103,18 @@
         tuiIconButton
         type="button"
         appearance="secondary"
+        icon="tuiIconPicture"
+        class="tui-space_right-3"
+        tuiHintAppearance="onDark"
+        [tuiHint]="'Обработать изображения всех товаров'"
+        (click)="processImages()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
         icon="tuiIconRefresh"
         class="tui-space_right-3"
         (click)="refreshData()"
