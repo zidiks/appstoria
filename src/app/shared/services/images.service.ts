@@ -67,6 +67,15 @@ export class ImagesService {
     return this.http.get<ImageJobDto>(`storage/process/jobs/${jobId}`);
   }
 
+  /** Последняя задача: к ней подключаемся, если обработку запустили до перезахода */
+  public getCurrentImageJob(): Observable<ImageJobDto | null> {
+    return this.http.get<ImageJobDto | null>('storage/process/jobs/current');
+  }
+
+  public cancelImageJob(jobId: string): Observable<ImageJobDto> {
+    return this.http.post<ImageJobDto, {}>(`storage/process/jobs/${jobId}/cancel`, {});
+  }
+
   public cropImage(payload: CropImageDto): Observable<StoredImageResultDto> {
     return this.http.post<StoredImageResultDto, CropImageDto>('storage/crop', payload);
   }

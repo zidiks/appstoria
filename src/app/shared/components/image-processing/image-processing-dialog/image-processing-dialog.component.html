@@ -1,73 +1,100 @@
-<ng-container *ngIf="errorMessage; else content">
-  <p class="error">{{ errorMessage }}</p>
+<p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+<ng-container *ngIf="running; else result">
+  <p class="progress__label">
+    Обработано {{ handled }} из {{ total }}
+    <span class="progress__elapsed" *ngIf="elapsed">· идёт {{ elapsed }}</span>
+  </p>
+  <progress
+    tuiProgressBar
+    class="progress__bar"
+    size="m"
+    [value]="progress"
+    [max]="100"
+  ></progress>
+
+  <p class="hint" *ngIf="attached">Обработка была запущена раньше — показываем её текущее состояние.</p>
+  <p class="hint current" *ngIf="job?.currentFile">Сейчас: {{ job?.currentFile }}</p>
+
+  <p class="error" *ngIf="job?.stalled">
+    Прогресса нет уже несколько минут — похоже, обработка застряла{{ job?.currentFile ? ' на файле ' + job?.currentFile : '' }}.
+    Её можно остановить и запустить заново.
+  </p>
+
+  <p class="hint">Можно закрыть окно — обработка продолжится на сервере, прогресс не потеряется.</p>
 </ng-container>
 
-<ng-template #content>
-  <ng-container *ngIf="running; else result">
-    <p class="progress__label">
-      Обработано {{ handled }} из {{ total }}
-    </p>
-    <progress
-      tuiProgressBar
-      class="progress__bar"
-      size="m"
-      [value]="progress"
-      [max]="100"
-    ></progress>
-    <p class="hint">Можно закрыть окно — обработка продолжится на сервере.</p>
-  </ng-container>
+<ng-template #result>
+  <ng-container *ngIf="hasResult">
+    <p class="status" *ngIf="statusLabel">{{ statusLabel }}</p>
 
-  <ng-template #result>
     <div class="totals">
-      <tui-badge status="success" size="m" [value]="'Обработано: ' + (summary?.processed || 0)"></tui-badge>
+      <tui-badge status="success" size="m" [value]="'Обработано: ' + (counters?.processed || 0)"></tui-badge>
       <tui-badge
-        *ngIf="summary?.unchanged"
+        *ngIf="counters?.unchanged"
         status="default"
         size="m"
-        [value]="'Уже были обработаны: ' + summary?.unchanged"
+        [value]="'Уже были обработаны: ' + counters?.unchanged"
       ></tui-badge>
-      <tui-badge status="warning" size="m" [value]="'Пропущено: ' + (summary?.skipped || 0)"></tui-badge>
-      <tui-badge status="error" size="m" [value]="'Ошибок: ' + (summary?.failed || 0)"></tui-badge>
+      <tui-badge status="warning" size="m" [value]="'Пропущено: ' + (counters?.skipped || 0)"></tui-badge>
+      <tui-badge status="error" size="m" [value]="'Ошибок: ' + (counters?.failed || 0)"></tui-badge>
+      <tui-badge
+        *ngIf="job && job.status !== 'done' && handled < total"
+        status="default"
+        size="m"
+        [value]="'Не дошли: ' + (total - handled)"
+      ></tui-badge>
     </div>
+  </ng-container>
+</ng-template>
 
-    <ng-container *ngIf="warnings.length; else allGood">
-      <h4 class="warnings__title">Требуют ручного кадрирования</h4>
-      <div class="warnings">
-        <div class="warning" *ngFor="let warning of warnings">
-          <img class="warning__preview" [src]="imageUrl(warning.file)" [alt]="warning.file" />
-          <div class="warning__info">
-            <span class="warning__file">{{ warning.file }}</span>
-            <span class="warning__reason">{{ warning.reason }}</span>
-          </div>
-          <div class="warning__actions">
-            <button
-              tuiButton
-              type="button"
-              size="s"
-              class="tui-space_right-2"
-              (click)="crop(warning)"
-            >
-              Кадрировать
-            </button>
-            <button
-              tuiButton
-              type="button"
-              size="s"
-              appearance="secondary"
-              [disabled]="warning.status === 'failed'"
-              (click)="force(warning)"
-            >
-              Обработать всё равно
-            </button>
-          </div>
-        </div>
+<!-- Проблемные файлы показываем и по ходу прогона, и после него -->
+<ng-container *ngIf="warnings.length; else allGood">
+  <h4 class="warnings__title">Требуют внимания: {{ warnings.length }}</h4>
+  <p class="hint" *ngIf="job?.warningsTruncated">
+    Показаны первые {{ warnings.length }} — остальные смотрите после повторного прогона.
+  </p>
+  <div class="warnings">
+    <div class="warning" *ngFor="let warning of warnings">
+      <img class="warning__preview" [src]="imageUrl(warning.file)" [alt]="warning.file" />
+      <div class="warning__info">
+        <span class="warning__file">{{ warning.file }}</span>
+        <span
+          class="warning__reason"
+          [class.warning__reason_error]="warning.status === 'failed'"
+        >
+          {{ warning.status === 'failed' ? 'Ошибка: ' : 'Пропущено: ' }}{{ warning.reason }}
+        </span>
       </div>
-    </ng-container>
+      <div class="warning__actions">
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          class="tui-space_right-2"
+          (click)="crop(warning)"
+        >
+          Кадрировать
+        </button>
+        <button
+          tuiButton
+          type="button"
+          size="s"
+          appearance="secondary"
+          [disabled]="warning.status === 'failed'"
+          (click)="force(warning)"
+        >
+          Обработать всё равно
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
 
-    <ng-template #allGood>
-      <p class="hint">Все изображения обработаны, вмешательство не требуется.</p>
-    </ng-template>
-  </ng-template>
+<ng-template #allGood>
+  <p class="hint" *ngIf="!running && hasResult && !errorMessage">
+    Все изображения обработаны, вмешательство не требуется.
+  </p>
 </ng-template>
 
 <div class="actions">
@@ -79,5 +106,16 @@
     (click)="close()"
   >
     Закрыть
+  </button>
+  <button
+    *ngIf="running && job"
+    tuiButton
+    type="button"
+    size="m"
+    appearance="flat"
+    [showLoader]="canceling"
+    (click)="cancel()"
+  >
+    Остановить обработку
   </button>
 </div>
