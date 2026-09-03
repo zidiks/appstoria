@@ -7,6 +7,7 @@ import { path } from 'app-root-path';
 import { ImageProcessingService } from './image-processing.service';
 import { ImageJobsService } from './image-jobs.service';
 import { ProductSchema } from '../product/schema/product.schema';
+import { ImageJobEntity, ImageJobSchema } from './schema/image-job.schema';
 
 @Module({
   imports: [
@@ -14,7 +15,10 @@ import { ProductSchema } from '../product/schema/product.schema';
       rootPath: `${path}/storage`,
       serveRoot: '/storage',
     }),
-    MongooseModule.forFeature([{ name: 'Product', schema: ProductSchema }]),
+    MongooseModule.forFeature([
+      { name: 'Product', schema: ProductSchema },
+      { name: ImageJobEntity.name, schema: ImageJobSchema },
+    ]),
   ],
   controllers: [StorageController],
   providers: [StorageService, ImageProcessingService, ImageJobsService],

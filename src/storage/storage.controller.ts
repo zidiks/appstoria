@@ -83,11 +83,30 @@ export class StorageController {
     return this.imageJobsService.getJobs();
   }
 
+  /**
+   * Последняя задача — по ней админка переподключается к прогрессу после
+   * перезахода. Объявлена до :jobId, иначе current уедет в параметр.
+   */
+  @Get('process/jobs/current')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  async getCurrentJob() {
+    return this.imageJobsService.getCurrentJob();
+  }
+
   @Get('process/jobs/:jobId')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.Admin)
   async getJob(@Param('jobId') jobId: string) {
     return this.imageJobsService.getJob(jobId);
+  }
+
+  /** Остановить зависший или ненужный прогон */
+  @Post('process/jobs/:jobId/cancel')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  async cancelJob(@Param('jobId') jobId: string) {
+    return this.imageJobsService.cancelJob(jobId);
   }
 
   /** Ручное кадрирование: квадрат и паддинг всё равно считает бэк */
