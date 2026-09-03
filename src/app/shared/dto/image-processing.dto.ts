@@ -20,11 +20,28 @@ export interface ImageJobSummaryDto {
   warnings: StoredImageResultDto[];
 }
 
-export interface ImageJobDto extends ImageJobSummaryDto {
+export type ImageJobStatus = 'running' | 'done' | 'failed' | 'canceled';
+
+/** Массовая задача. results в неё не входят — админке нужны только warnings */
+export interface ImageJobDto {
   id: string;
-  status: 'running' | 'done' | 'failed';
+  status: ImageJobStatus;
+  total: number;
+  processed: number;
+  unchanged: number;
+  skipped: number;
+  failed: number;
+  warnings: StoredImageResultDto[];
+  /** Проблемных файлов было больше, чем поместилось в отчёт */
+  warningsTruncated: boolean;
   startedAt: string;
   finishedAt?: string;
+  lastProgressAt?: string;
+  /** Файл, который обрабатывается прямо сейчас */
+  currentFile?: string;
+  /** Процесс жив, но прогресса давно нет — похоже на зависание */
+  stalled: boolean;
+  force: boolean;
   error?: string;
 }
 
