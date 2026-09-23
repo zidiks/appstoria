@@ -4,7 +4,7 @@ export default function ServiceUnavailable({ retryUrl = '/' }) {
   return (
     <main className="main">
       <Head>
-        <title>Сервис временно недоступен | Mac Plus</title>
+        <title>Сервис временно недоступен | App:storia</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-content pt-10 pb-10">

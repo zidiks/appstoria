@@ -81,10 +81,10 @@ export default function ContactUs({ fields }) {
   return (
     <main className="main contact-us">
       <Head>
-        <title>Mac Plus | Контакты</title>
+        <title>App:storia | Контакты</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Контакты</h1>
+      <h1 className="d-none">App:storia - Контакты</h1>
 
       <nav className="breadcrumb-nav">
         <div className="container">

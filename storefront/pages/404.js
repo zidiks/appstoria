@@ -15,10 +15,10 @@ function Error404() {
   return (
     <main className="main">
       <Head>
-        <title>Mac Plus | 404</title>
+        <title>App:storia | 404</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - 404</h1>
+      <h1 className="d-none">App:storia - 404</h1>
 
       <div className="page-content">
         <section className="error-section d-flex flex-column justify-content-center align-items-center text-center pl-3 pr-3">

@@ -1,9 +1,15 @@
 import YandexReviews from "~/components/common/partials/yandex-reviews";
+import {getFieldsObject} from "~/utils/endpoints/fields";
 
-export default function ReviewsPage() {
+ReviewsPage.getInitialProps = async () => {
+  const fields = await getFieldsObject('yandex-reviews-org');
+  return { fields: fields || {} };
+};
+
+export default function ReviewsPage({ fields }) {
   return (
     <div className="page-content">
-      <YandexReviews />
+      <YandexReviews orgId={fields?.['yandex-reviews-org']} />
     </div>
   )
 }

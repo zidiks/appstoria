@@ -22,6 +22,6 @@ Disallow: /*?per_page=
 Disallow: /*?type=list
 Disallow: /*?type=grid
 
-Host: https://macplus.by
+Host: https://appstoria.by
 
-Sitemap: https://macplus.by/sitemap.xml
+Sitemap: https://appstoria.by/sitemap.xml

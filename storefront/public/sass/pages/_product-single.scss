@@ -422,7 +422,7 @@
   a.active:before,
   a:hover:before {
     content: "\e955\e955\e955\e955\e955";
-    color: variables.$secondary-color;
+    color: variables.$rating-color;
   }
 
   .star-1 {

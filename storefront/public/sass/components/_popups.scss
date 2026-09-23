@@ -564,7 +564,7 @@ button.mfp-close {
         &_icon {
             width: 5rem;
             height: 5rem;
-            stroke: #007945;
+            stroke: variables.$primary-color;
         }
         &_title {
             font-size: 2rem;

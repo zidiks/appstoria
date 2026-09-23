@@ -6,15 +6,9 @@ import MobileMenu from '~/components/common/partials/mobile-menu';
 import 'react-toastify/dist/ReactToastify.css';
 
 import {scrollTopHandler, showScrollTopHandler, stickyFooterHandler, stickyHeaderHandler} from '~/utils';
-import {Poppins} from "next/font/google";
 import {ToastContainer} from "react-toastify";
 import InlineSVG from "react-inlinesvg";
 import {arrowUpOutlineIcon} from "~/icons/arrow-up-outline";
-
-const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-})
 
 function Layout({ children, categoryTree, layoutFields, footerNav }) {
 
@@ -39,7 +33,7 @@ function Layout({ children, categoryTree, layoutFields, footerNav }) {
 
   return (
     <>
-      <div className={`page-wrapper ${poppins.className}`}>
+      <div className="page-wrapper">
         <Header categoryTree={categoryTree} fields={layoutFields} />
 
         {children}

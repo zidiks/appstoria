@@ -374,14 +374,35 @@ export function getPostDate(date) {
 }
 
 export function normalizeString(string) {
-  return string.replace('"', '&quot;').replace('&', '&amp;').replace('>', '&gt;').replace('<', '&lt;').replace("'", '&apos;').trim();
+  // «&» — первым, иначе заэкранируем уже готовые сущности
+  return String(string ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
+    .replace(/'/g, '&apos;')
+    .trim();
 }
+
+// Keys used only by Yandex Metrika e-commerce (read from dataLayer), not by GA4.
+const YM_ECOMMERCE_KEYS = ['currencyCode', 'add', 'remove', 'detail', 'view', 'purchase'];
 
 export function pushToDataLayer(event) {
   try {
     if (typeof window === 'undefined') return;
+    // Yandex Metrika reads e-commerce objects from dataLayer (ecommerce: "dataLayer").
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(event);
+
+    // GA4 via gtag.js ignores plain dataLayer objects, so forward the event explicitly.
+    if (event?.event && typeof window.gtag === 'function') {
+      const params = {...(event.ecommerce || {})};
+      YM_ECOMMERCE_KEYS.forEach((key) => delete params[key]);
+      if (!params.currency) {
+        params.currency = event.ecommerce?.currencyCode || 'BYN';
+      }
+      window.gtag('event', event.event, params);
+    }
   } catch (error) {
     console.error(error);
   }

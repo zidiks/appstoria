@@ -5,8 +5,7 @@ import CartMenu from '~/components/common/partials/cart-menu';
 import MainMenu from '~/components/common/partials/main-menu';
 import SearchBox from '~/components/common/partials/search-box';
 import { orderCategories } from '~/utils';
-import Image from 'next/image';
-import logoImage from '~/public/images/home/logo.png';
+import { SITE_NAME } from '~/utils/site';
 import InlineSVG from "react-inlinesvg";
 import {menuOutlineIcon} from "~/icons/menu-outline";
 import {callOutlineIcon} from "~/icons/call-outline";
@@ -18,6 +17,7 @@ import {whatsappIcon} from "~/icons/whatsapp";
 
 export default function Header({ categoryTree, fields }) {
   const router = useRouter();
+  const logoAlt = fields['main-seo-title'] || SITE_NAME;
 
   const showMobileMenu = () => {
     document.querySelector('body').classList.add('mmenu-active');
@@ -33,7 +33,8 @@ export default function Header({ categoryTree, fields }) {
             </div>
 
             <ALink href="/" className="logo">
-              <Image style={{ height: '56px', width: 'auto' }} src={logoImage} alt={fields['main-seo-title']} title={fields['main-seo-title']} width={200} height={56} />
+              <img className="logo-full" src="/images/logo.svg" alt={logoAlt} title={logoAlt} width={149} height={32} />
+              <img className="logo-icon" src="/images/logo-mobile.svg" alt={logoAlt} title={logoAlt} width={41} height={32} />
             </ALink>
 
             <SearchBox />

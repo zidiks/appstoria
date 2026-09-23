@@ -2,8 +2,9 @@ import {getArticles} from "~/utils/endpoints/articles";
 import {getCategories} from "~/utils/endpoints/categoryTree";
 import {getProducts} from "~/utils/endpoints/products";
 import {getAllSeo} from "~/utils/endpoints/seo";
+import {SITE_URL} from '~/utils/site';
 
-const host = process.env.NEXT_PUBLIC_HOST || 'https://macplus.by';
+const host = SITE_URL;
 
 function generateSiteMap({posts, categories, products, filters}) {
   return `<?xml version="1.0" encoding="UTF-8"?>

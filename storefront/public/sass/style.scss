@@ -233,7 +233,7 @@ body {
       transition: ease-in-out 0.1s;
       &:hover {
         border: 1px solid transparent;
-        background: #007945;
+        background: variables.$primary-color;
         .mp-carousel-navigation-icon {
           color: #fff;
         }
@@ -245,7 +245,7 @@ body {
           border: 1px solid #ebebeb;
           background: rgba(255,255,255, 0.5);
           .mp-carousel-navigation-icon {
-            color: #007945;
+            color: variables.$primary-color;
           }
         }
       }
@@ -253,7 +253,7 @@ body {
 
     &-icon {
       transition: ease-in-out 0.1s;
-      color: #007945;
+      color: variables.$primary-color;
       width: 2rem;
       height: 2rem;
       &-left {
@@ -284,7 +284,7 @@ body {
     border-radius: 1.2rem;
     overflow: hidden;
     &-active {
-      border: 2px solid #007945;
+      border: 2px solid variables.$primary-color;
     }
   }
   &-image {
@@ -353,7 +353,7 @@ body {
 }
 
 .services-icon {
-  color: #007945;
+  color: variables.$primary-color;
   width: 40px;
   height: 40px;
   margin-bottom: 1rem;
@@ -467,7 +467,7 @@ body {
   background: transparent !important;
   color: #222 !important;
   .menu li:hover > a:not(.menu-title), .menu .active > a:not(.menu-title) {
-    color: #007945 !important;
+    color: variables.$primary-color !important;
   }
   .menu > li > a {
     padding-top: 1.5rem !important;
@@ -478,8 +478,8 @@ body {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     background: transparent !important;
-    border: 1px solid #007945 !important;
-    color: #007945 !important;
+    border: 1px solid variables.$primary-color !important;
+    color: variables.$primary-color !important;
   }
 }
 
@@ -529,7 +529,7 @@ body {
       cursor: pointer;
       gap: 1.2rem;
       &-active {
-        border: 1px solid #007945;
+        border: 1px solid variables.$primary-color;
       }
       &-img {
         width: 6rem;
@@ -554,7 +554,7 @@ body {
       }
       &-price {
         font-size: 1.8rem;
-        color: #007945;
+        color: variables.$primary-color;
         font-weight: 600;
       }
       &-ckeckbox {
@@ -569,7 +569,7 @@ body {
         margin-right: .5rem;
         margin-top: .5rem;
         &-active {
-          border: 1px solid #007945;
+          border: 1px solid variables.$primary-color;
         }
         &-icon {
           width: 1.4rem;
@@ -589,7 +589,7 @@ body {
 }
 
 .banner-section-wrapper {
-  background: linear-gradient(to right, #045933, #0c7044, #11784c, #0c7044, #024F23) !important;
+  background: linear-gradient(to right, #1A4FB8, #2C6DEC, #1A4FB8) !important;
   padding-top: 4rem !important;
   padding-bottom: 4rem !important;
   @include breakpoints.mq(lg, max) {
@@ -626,4 +626,31 @@ body {
       font-size: 1.7rem !important;
     }
   }
+}
+
+// App:storia logo: full wordmark on desktop, icon mark on small screens
+.header .logo {
+  .logo-full {
+    display: block;
+    height: 32px;
+    width: auto;
+  }
+  .logo-icon {
+    display: none;
+    height: 32px;
+    width: auto;
+  }
+  @include breakpoints.mq(sm, max) {
+    .logo-full {
+      display: none;
+    }
+    .logo-icon {
+      display: block;
+    }
+  }
+}
+
+.footer .logo-footer img {
+  height: 32px;
+  width: auto;
 }

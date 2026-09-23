@@ -3,24 +3,27 @@
 ------------------------------------------- */
 
 // 1. Colors
-$primary-color: #007945 !default;
-$primary-color-dark:  #222 !default;
-$secondary-color: #d26e4b  !default;
+$primary-color: #2C6DEC !default;
+$primary-color-hover: #1F56C4 !default;
+$primary-color-dark:  #111111 !default;
+$secondary-color: #0057FF  !default;
+$sale-color: #E53935 !default;
+$rating-color: #FFB400 !default;
 $alert-color: #b10001 !default; 
 $success-color: #a8c26e !default;
-$body-color: #666 !default;
-$dark-color: #222 !default;
+$body-color: #5B5B5B !default;
+$dark-color: #111111 !default;
 $light-color: #ccc !default;
-$grey-color: #999 !default;
-$border-color: #e1e1e1 !default;
+$grey-color: #959595 !default;
+$border-color: #E5E5E5 !default;
 $border-color-light: #eee !default;
 $white-color: #fff !default;
 
 // 2. Font-families
 $alt-font-family: sans-serif !default;
-$second-font-family: Poppins, $alt-font-family !default;
-$font-family: Poppins, $alt-font-family !default;
-$third-font-family: 'Open Sans', $alt-font-family !default;
+$second-font-family: Ubuntu, $alt-font-family !default;
+$font-family: Ubuntu, $alt-font-family !default;
+$third-font-family: Ubuntu, $alt-font-family !default;
 
 // 3. Breakpoints
 $breakpoints: (xs: 480px, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1600px, xlst: 1920px);

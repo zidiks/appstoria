@@ -1,16 +1,17 @@
 import ALink from '~/components/features/custom-link';
 import { orderCategories } from '~/utils';
 import Image from 'next/image';
-import logoShortImage from '~/public/images/home/logo-short.png';
 import paymentsImage from '~/public/images/payment.png';
 import InlineSVG from "react-inlinesvg";
 import {telegramIcon} from "~/icons/telegram";
 import {viberIcon} from "~/icons/viber";
 import {instagramIcon} from "~/icons/instagram";
 import {whatsappIcon} from "~/icons/whatsapp";
+import { SITE_NAME } from '~/utils/site';
 
 export default function Footer({ fields, categoryTree, footerNav }) {
   const YEAR = new Date().getFullYear();
+  const copyright = fields.copyright || `${SITE_NAME} © ${YEAR}. Все права защищены.`;
 
   return (
     <footer className="footer">
@@ -22,6 +23,10 @@ export default function Footer({ fields, categoryTree, footerNav }) {
         <div className="footer-middle">
           <div className="row justify-content-between">
             <div className="col-lg-3 col-md-6">
+              <ALink href="/" className="logo-footer mb-4">
+                <img src="/images/logo.svg" alt={SITE_NAME} title={SITE_NAME} width={149} height={32} />
+              </ALink>
+
               <div className="widget widget-info">
                 <span className="widget-title">Контакты</span>
 
@@ -93,7 +98,7 @@ export default function Footer({ fields, categoryTree, footerNav }) {
             </figure>
           </div>
           <div className="footer-center">
-            <p className="copyright">Mac Plus &copy; 2023{YEAR > 2023 ? ` - ${YEAR}` : ''}. Все права защищены.</p>
+            <p className="copyright" style={{ whiteSpace: 'pre-wrap' }}>{copyright}</p>
           </div>
           <div className="footer-right">
             <div className="social-links">

@@ -1,20 +1,25 @@
 import {Head, Html, Main, NextScript} from 'next/document';
 import Script from "next/script";
 
+const YANDEX_METRIKA_ID = 65770258;
+const GA_MEASUREMENT_ID = 'G-M3P7BDYR85';
+
 export default function Document() {
   return (
     <Html lang="ru">
       <Head>
-        <Script strategy="afterInteractive" id="google-tag-manager"
+        <Script strategy="afterInteractive" id="google-analytics-src"
+                src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        {/* gtag() stub is defined inline so events pushed during hydration are queued */}
+        <script id="google-analytics"
                 dangerouslySetInnerHTML={{
                   __html: `
-                if (window) {
-                  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-KZX7JHJG');
-                }
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
               `
                 }}
         />
@@ -27,63 +32,39 @@ export default function Document() {
                  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
                  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-              
-                 ym(96220740, "init", {
+
+                 ym(${YANDEX_METRIKA_ID}, "init", {
                       webvisor:true,
                       clickmap:true,
                       accurateTrackBounce:true,
                       trackLinks:true,
+                      ecommerce:"dataLayer",
                  });
                 }
             `
                 }}
         />
-        <Script strategy="afterInteractive" id="meta-pixel"
-                dangerouslySetInnerHTML={{
-                  __html: `
-               !function(f,b,e,v,n,t,s)
-                {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)}(window, document,'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
-                fbq('init', '1184434382543279');
-                fbq('track', 'PageView');
-            `
-                }}
-        />
-        <Script strategy="afterInteractive" dangerouslySetInnerHTML={{
-          __html: `
-                var _mtm = window._mtm = window._mtm || [];
-                 _mtm.push({ 'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start' });
-                 (function () {
-                     var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-                     g.src = 'https://stat1.clickfraud.ru/js/container_v5tvjjul.js'; s.parentNode.insertBefore(g, s);
-                 })();
-            `
-        }}/>
         <base href="/"></base>
-        <link rel="icon" href="images/icons/favicon.ico"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon.png"/>
+        <link rel="icon" href="/images/icons/favicon.ico" sizes="any"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+        <meta name="theme-color" content="#ffffff"/>
         {/* Сайт только светлый: без этого браузеры с авто-тёмным режимом
             (Chrome Auto Dark Mode) сами инвертируют страницу */}
         <meta name="color-scheme" content="light"/>
-        <meta name="google-site-verification" content="zkGKtNXlNUPH0rhw2sORnyS0J9USz7B6xXI0Gey3NwE"/>
       </Head>
 
       <body className="loaded">
       <noscript>
-        <div><img src="https://mc.yandex.ru/watch/96220740" style={{position: 'absolute', left: '-9999px'}} alt=""/>
+        <div><img src={`https://mc.yandex.ru/watch/${YANDEX_METRIKA_ID}`} style={{position: 'absolute', left: '-9999px'}} alt=""/>
         </div>
-      </noscript>
-      <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KZX7JHJG" height="0" width="0"
-                style={{display: 'none', visibility: 'hidden'}}></iframe>
-      </noscript>
-      <noscript>
-        <img src="https://www.facebook.com/tr?id=1184434382543279&ev=PageView&noscript=1" height="1" width="1"
-             style={{display: 'none'}}/>
       </noscript>
       <Main/>
       <NextScript/>

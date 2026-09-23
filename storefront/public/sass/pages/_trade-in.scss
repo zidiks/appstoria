@@ -68,7 +68,7 @@
           align-items: flex-start;
           color: variables.$white-color;
           line-height: 6rem;
-          text-shadow: -1px -1px 0 variables.$primary-color, 1px -1px 0 variables.$primary-color, -1px 1px 0 #00af66, 1px 1px 0 variables.$primary-color;
+          text-shadow: -1px -1px 0 variables.$primary-color, 1px -1px 0 variables.$primary-color, -1px 1px 0 variables.$primary-color-hover, 1px 1px 0 variables.$primary-color;
           font-size: 6rem;
           font-weight: 600;
           padding-top: .4rem;

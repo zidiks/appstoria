@@ -6,11 +6,12 @@ import Image from "next/image";
 import InlineSVG from "react-inlinesvg";
 import {homeOutlineIcon} from "~/icons/home-outline";
 import {chevronForwardOutlineIcon} from "~/icons/chevron-forward-outline";
+import {SITE_NAME} from '~/utils/site';
 
 export default function PostSingle({ post, seoFields }) {
   const loading = false;
   const ogImage = post.media;
-  const titleString = `${post.seo?.seoTitle || post.title || 'Mac Plus'}`;
+  const titleString = `${post.seo?.seoTitle || post.title || SITE_NAME}`;
   const descriptionString = `${post.seo?.seoTitle || post.title || ''}`;
 
   const interpolatedTitle = seoFields['blog-seo-title'].replaceAll('{TITLE}', titleString);
@@ -24,7 +25,7 @@ export default function PostSingle({ post, seoFields }) {
         <meta name="description" content={interpolatedDescription} />
         <meta property="og:description" content={interpolatedDescription} />
         <meta name="keywords" content={post.seo?.seoKeywords?.join(', ')} />
-        <meta name="author" content={post.seo?.seoAuthor || 'Mac Plus'} />
+        <meta name="author" content={post.seo?.seoAuthor || SITE_NAME} />
         {ogImage && <meta property="og:image" content={getImgPath(ogImage)} />}
       </Head>
 

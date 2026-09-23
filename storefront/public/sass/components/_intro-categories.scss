@@ -2,7 +2,7 @@
 
 .intro_categories {
   &-sub {
-    background-color: rgba(0, 121, 69, 0.1);
+    background-color: rgba(44, 109, 236, 0.1);
   }
   &-wrapper {
     display: none;
@@ -28,7 +28,7 @@
     align-items: center;
     transition: color, background-color .3s ease-in-out;
     &.expanded, &.expanding {
-      background-color: #007945;
+      background-color: #2C6DEC;
       color:  white;
     }
   }

@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function YandexReviews() {
+export default function YandexReviews({ orgId }) {
+  const id = String(orgId || '').trim();
+  if (!id) {
+    return null;
+  }
+
   return (
     <div
       style={{
@@ -44,7 +49,8 @@ export default function YandexReviews() {
             border: 'none',
             borderRadius: '0px'
           }}
-          src="https://yandex.ru/maps-reviews-widget/29915864657?comments"
+          src={`https://yandex.ru/maps-reviews-widget/${encodeURIComponent(id)}?comments`}
+          title="Отзывы на Яндекс Картах"
         ></iframe>
       </div>
     </div>

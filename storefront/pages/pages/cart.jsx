@@ -75,10 +75,10 @@ function Cart(props) {
   return (
     <div className="main cart border-no">
       <Head>
-        <title>Mac Plus | Корзина</title>
+        <title>App:storia | Корзина</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Корзина</h1>
+      <h1 className="d-none">App:storia - Корзина</h1>
 
       <div className="page-content pt-7 pb-10">
         <div className="step-by pr-4 pl-4">

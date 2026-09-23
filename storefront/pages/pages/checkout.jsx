@@ -212,10 +212,10 @@ function Checkout(props) {
 
     <main className="main checkout border-no">
       <Head>
-        <title>Mac Plus | Оформление</title>
+        <title>App:storia | Оформление</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Оформление</h1>
+      <h1 className="d-none">App:storia - Оформление</h1>
 
       <div className={`page-content pt-7 pb-10 ${cartList.length > 0 ? 'mb-10' : 'mb-2'}`}>
         <div className="step-by pr-4 pl-4">

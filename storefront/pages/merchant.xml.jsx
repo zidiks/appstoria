@@ -2,8 +2,10 @@ import { getProducts } from '~/utils/endpoints/products';
 import { getFieldsObject } from '~/utils/endpoints/fields';
 import { getDeliveryMethods } from '~/utils/endpoints/orders';
 import { getImgPath, normalizeString } from '~/utils';
+import { SITE_NAME, SITE_URL } from '~/utils/site';
 
 function generateMerchantFeed({ products, fields, deliveryMethods }) {
+  const siteLink = (fields['yml-feed-link'] || SITE_URL).replace(/\/+$/, '');
   const avDate = new Date();
   const newDate = new Date(avDate.getTime() + 14 * 24 * 60 * 60 * 1000);
   const isoDate = newDate.toISOString();
@@ -11,8 +13,8 @@ function generateMerchantFeed({ products, fields, deliveryMethods }) {
   return `<?xml version="1.0" encoding="UTF-8"?>
     <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
       <channel>
-        <title>${fields['yml-feed-name']}</title>
-        <link>${fields['yml-feed-link']}</link>
+        <title>${fields['yml-feed-name'] || SITE_NAME}</title>
+        <link>${siteLink}</link>
         ${(products?.data || [])
           .map(
             (product) => `
@@ -20,7 +22,7 @@ function generateMerchantFeed({ products, fields, deliveryMethods }) {
             <g:id>${product._id}</g:id>
             <g:title>${normalizeString(product.name)}</g:title>
             <g:description>${normalizeString(product.description)}</g:description>
-            <g:link>${fields['yml-feed-link']}/${product.categoryHandle}/${
+            <g:link>${siteLink}/${product.categoryHandle}/${
               product.seo?.seoUrl
             }</g:link>
             <g:image_link>${
@@ -35,11 +37,11 @@ function generateMerchantFeed({ products, fields, deliveryMethods }) {
                 `
                 <g:shipping>
                   <g:country>BY</g:country>
-                  <g:service>${method.name}</g:service>
+                  <g:service>${normalizeString(method.name)}</g:service>
                   <g:price>${method.deliveryPrice} BYN</g:price>
                 </g:shipping>
               `
-            )}
+            ).join('')}
             <g:brand>${product.brand?.name || 'Apple'}</g:brand>
           </item>
         `

@@ -14,12 +14,23 @@ export const getStaticProps = async () => {
     page: 1,
     limit: 8,
   };
-  const posts = await getArticles(pagination.page, pagination.limit);
-  return {
-    props: {
-      posts: posts,
-    },
-    revalidate: 3600,
+  try {
+    const posts = await getArticles(pagination.page, pagination.limit);
+    return {
+      props: {
+        posts: posts,
+      },
+      revalidate: 3600,
+    }
+  } catch (error) {
+    // API ещё не поднят на этапе сборки — перерисуем через ISR
+    console.error('[Blog data unavailable]', error?.message || error);
+    return {
+      props: {
+        posts: null,
+      },
+      revalidate: 60,
+    }
   }
 }
 
@@ -39,10 +50,10 @@ export default function Classic({posts}) {
   return (
     <main className="main skeleton-body">
       <Head>
-        <title>Mac Plus | Блог</title>
+        <title>App:storia | Блог</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Блог</h1>
+      <h1 className="d-none">App:storia - Блог</h1>
 
       <nav className="breadcrumb-nav">
         <div className="container">

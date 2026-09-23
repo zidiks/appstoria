@@ -17,10 +17,10 @@ function Order(props) {
   return (
     <main className="main order">
       <Head>
-        <title>Mac Plus | Заказ {order.orderCode}</title>
+        <title>App:storia | Заказ {order.orderCode}</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Заказ</h1>
+      <h1 className="d-none">App:storia - Заказ</h1>
 
       <div className="page-content pt-7 pb-10 mb-10">
         <div className="step-by pr-4 pl-4">

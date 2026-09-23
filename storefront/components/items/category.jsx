@@ -7,6 +7,7 @@ import Head from 'next/head';
 import InlineSVG from "react-inlinesvg";
 import {chevronForwardOutlineIcon} from "~/icons/chevron-forward-outline";
 import {homeOutlineIcon} from "~/icons/home-outline";
+import {SITE_URL} from '~/utils/site';
 
 export default function Category({ banner, products, filters, category, page, filterObject, filtersPairs, fullPath, mainSeo, seoFields, searchValue }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -41,7 +42,7 @@ export default function Category({ banner, products, filters, category, page, fi
     itemListElement: (products?.data || []).map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `${process.env.NEXT_PUBLIC_HOST || 'https://macplus.by'}/${item.categoryHandle ? item.categoryHandle + '/' : ''}${item.seo?.seoUrl || '#'}`,
+      url: `${SITE_URL}/${item.categoryHandle ? item.categoryHandle + '/' : ''}${item.seo?.seoUrl || '#'}`,
     })),
   };
 

@@ -11,8 +11,13 @@ import {getFieldsObject} from '~/utils/endpoints/fields';
 import IntroCategories from "~/components/partials/home/intro-categories";
 import {getSeoByUrl} from "~/utils/endpoints/seo";
 import Head from "next/head";
+import {SITE_DESCRIPTION, SITE_NAME} from "~/utils/site";
 
+// Страница собирается при `next build`, когда API может быть ещё не поднят
+// (docker compose собирает витрину до старта бэкенда). Тогда отдаём пустую
+// страницу с коротким revalidate — ISR перерисует её, как только API оживёт.
 export const getStaticProps = (async () => {
+  try {
   const [
     articles,
     recProducts,
@@ -39,22 +44,36 @@ export const getStaticProps = (async () => {
     },
     revalidate: 600,
   }
+  } catch (error) {
+    console.error('[Home data unavailable]', error?.message || error);
+    return {
+      props: {
+        articles: [],
+        recProducts: [],
+        slides: [],
+        fields: {},
+        features: {},
+        mainSeo: null,
+      },
+      revalidate: 60,
+    }
+  }
 })
 
 export default function HomePage({ articles, recProducts, slides, fields, features, categoryTree, mainSeo }) {
   return (
     <div className="main home mt-lg-4 homepage">
       <Head>
-        <title>{mainSeo?.title || fields['main-seo-title'] || 'Mac Plus'}</title>
-        <meta property="og:title" content={mainSeo?.title || fields['main-seo-title'] || 'Mac Plus'}/>
+        <title>{mainSeo?.title || fields['main-seo-title'] || SITE_NAME}</title>
+        <meta property="og:title" content={mainSeo?.title || fields['main-seo-title'] || SITE_NAME}/>
         <meta name="description"
-              content={mainSeo?.description || fields['main-seo-description'] || 'Интернет-магазин электроники в Беларуси'}/>
+              content={mainSeo?.description || fields['main-seo-description'] || SITE_DESCRIPTION}/>
         <meta property="og:description"
-              content={mainSeo?.description || fields['main-seo-description'] || 'Интернет-магазин электроники в Беларуси'}/>
+              content={mainSeo?.description || fields['main-seo-description'] || SITE_DESCRIPTION}/>
         <meta name="keywords" content={mainSeo?.keywords}/>
       </Head>
 
-      <h1 className="d-none">{mainSeo?.tag || fields['main-seo-title'] || 'Mac Plus'}</h1>
+      <h1 className="d-none">{mainSeo?.tag || fields['main-seo-title'] || SITE_NAME}</h1>
 
       <div className="page-content">
         <IntroSection slides={slides}/>

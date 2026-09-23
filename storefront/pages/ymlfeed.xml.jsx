@@ -2,16 +2,17 @@ import { getCategoryTree } from '~/utils/endpoints/categoryTree';
 import { getProducts } from '~/utils/endpoints/products';
 import { getFieldsObject } from '~/utils/endpoints/fields';
 import { getImgPath, normalizeString } from '~/utils';
+import { SITE_NAME, SITE_URL } from '~/utils/site';
 
-const host = process.env.NEXT_PUBLIC_HOST || 'https://macplus.by';
+const host = SITE_URL;
 
 function generateYmlFeed({ categories, products, fields, categoriesKeys }) {
   const date = new Date();
   return `<?xml version="1.0" encoding="UTF-8"?>
     <yml_catalog date="${date.toISOString()}">
       <shop>
-        <name>${fields['yml-feed-name']}</name>
-        <company>${fields['yml-feed-company']}</company>
+        <name>${fields['yml-feed-name'] || SITE_NAME}</name>
+        <company>${fields['yml-feed-company'] || SITE_NAME}</company>
         <url>${host}</url>
         <categories>
           ${(categories || [])

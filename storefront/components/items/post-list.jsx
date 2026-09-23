@@ -16,10 +16,10 @@ export default function PostList({posts, fullPath}) {
   return (
     <main className="main skeleton-body">
       <Head>
-        <title>Mac Plus | Блог</title>
+        <title>App:storia | Блог</title>
       </Head>
 
-      <h1 className="d-none">Mac Plus - Блог</h1>
+      <h1 className="d-none">App:storia - Блог</h1>
 
       <nav className="breadcrumb-nav">
         <div className="container">

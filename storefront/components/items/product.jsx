@@ -18,6 +18,7 @@ import {homeOutlineIcon} from "~/icons/home-outline";
 import TurnstileWidget from '~/components/features/turnstile';
 import FormStatus from '~/components/features/form-status';
 import {getPublicFormErrorMessage} from '~/utils/endpoints/public-form';
+import {SITE_NAME, SITE_URL} from '~/utils/site';
 
 export default function ProductItem({product, featured, deliveryMethods, seoFields, mainSeo}) {
   if (!product) return '';
@@ -34,7 +35,7 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
   };
 
   const ogImage = product.seo?.seoImage[0];
-  const titleString = `${product.seo?.seoTitle || product.name || 'Mac Plus'}`;
+  const titleString = `${product.seo?.seoTitle || product.name || SITE_NAME}`;
   const descriptionString = `${product.seo?.seoTitle || product.name || ''}`;
   const categoryString = `${product.category.name}`;
   const headerString = `${product.name}`;
@@ -204,13 +205,13 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
     'description': interpolatedDescription,
     'offers': {
       '@type': 'Offer',
-      'url': product && `https://macplus.by/${product.category?.handle ? product.category?.handle + '/' : ''}${product.seo?.seoUrl || '#'}`,
+      'url': product && `${SITE_URL}/${product.category?.handle ? product.category?.handle + '/' : ''}${product.seo?.seoUrl || '#'}`,
       'price': product?.totalPrice || product?.price,
       'priceCurrency': 'BYN',
       'availability': 'https://schema.org/InStock',
       "seller": {
         "@type": "Organization",
-        "name": "Интернет - магазин техники Apple"
+        "name": SITE_NAME
       },
     }
   };
