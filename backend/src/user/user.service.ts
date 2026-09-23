@@ -2,6 +2,8 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
+  OnApplicationBootstrap,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
@@ -9,12 +11,31 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { User, UserDocument } from './schema/user.schema';
 import { CreateUserDTO } from './dto/create-user-dto';
+import { Role } from '../auth/enums/role.enum';
 
 @Injectable()
-export class UserService {
+export class UserService implements OnApplicationBootstrap {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserDocument>,
   ) {}
+
+  /**
+   * На чистой базе завести админа через API нельзя — регистрация сама требует
+   * админа. Поэтому первый админ создаётся из ADMIN_USERNAME / ADMIN_PASSWORD,
+   * и только пока в базе нет ни одного админа.
+   */
+  async onApplicationBootstrap() {
+    const username = process.env.ADMIN_USERNAME;
+    const password = process.env.ADMIN_PASSWORD;
+    if (!username || !password) return;
+    if (await this.userModel.exists({ roles: Role.Admin })) return;
+    await this.addUser({
+      username,
+      password,
+      roles: [Role.Admin, Role.User],
+    });
+    new Logger(UserService.name).log(`Создан первый администратор ${username}`);
+  }
 
   async addUser(createUserDTO: CreateUserDTO): Promise<User> {
     const checkUsername = await this.getUserByName(createUserDTO.username);

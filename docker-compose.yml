@@ -1,0 +1,101 @@
+# Весь стек App:storia одной командой:  docker compose up -d --build
+# Настройки — в .env рядом с этим файлом (шаблон: .env.example).
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: appstoria-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME}
+    volumes:
+      - mongo_data:/data/db
+    # Наружу не торчит; для доступа с сервера: ssh-туннель на 127.0.0.1:27017
+    ports:
+      - "127.0.0.1:27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: appstoria-backend
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      NODE_ENV: prod
+      PORT: 5000
+      TRUST_PROXY: 1
+      MONGODB_URI: mongodb://
+      MONGODB_URL: mongo
+      MONGODB_PORT: 27017
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MONGODB_NAME: ${MONGODB_NAME}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ACCESS_TTL: ${JWT_ACCESS_TTL:-15m}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-30d}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      CORS_ORIGINS: https://${SITE_DOMAIN},https://www.${SITE_DOMAIN},https://${ADMIN_DOMAIN}
+      PUBLIC_FORM_ALLOWED_ORIGINS: https://${SITE_DOMAIN},https://www.${SITE_DOMAIN}
+      PUBLIC_FORM_REQUIRE_TOKEN: ${PUBLIC_FORM_REQUIRE_TOKEN:-false}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+      TG_TOKEN: ${TG_TOKEN:-}
+      TG_CHAT_ID: ${TG_CHAT_ID:-}
+      STORAGE_ORIGINALS_DIR: /opt/app/storage_originals
+    volumes:
+      - storage:/opt/app/storage
+      - storage_originals:/opt/app/storage_originals
+
+  storefront:
+    build:
+      context: ./storefront
+      args:
+        API_HOST: https://${API_DOMAIN}
+        NEXT_PUBLIC_HOST: https://${SITE_DOMAIN}
+        TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:-}
+    container_name: appstoria-storefront
+    restart: always
+    depends_on:
+      - backend
+
+  dashboard:
+    build: ./dashboard
+    container_name: appstoria-dashboard
+    restart: always
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: appstoria-caddy
+    restart: always
+    depends_on:
+      - storefront
+      - backend
+      - dashboard
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      API_DOMAIN: ${API_DOMAIN}
+      ADMIN_DOMAIN: ${ADMIN_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  mongo_data:
+  storage:
+  storage_originals:
+  caddy_data:
+  caddy_config:
