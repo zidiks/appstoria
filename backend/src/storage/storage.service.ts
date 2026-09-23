@@ -176,6 +176,35 @@ export class StorageService {
     };
   }
 
+  /**
+   * Скачивает картинку по ссылке в storage/images под именем, зависящим от url:
+   * повторный импорт того же товара не качает файл заново. Возвращает имя
+   * файла для media товара.
+   */
+  async saveRemoteImage(url: string, prefix: string): Promise<string> {
+    const baseName = `${prefix}-${createHash('sha1')
+      .update(url)
+      .digest('hex')
+      .slice(0, 16)}`;
+    const fileName = `${baseName}.webp`;
+    if (await pathExists(join(this.storageRoot, IMAGES_FOLDER, fileName))) {
+      return fileName;
+    }
+
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(30_000),
+      headers: { 'User-Agent': 'AppstoriaImporter/1.0' },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} при загрузке ${url}`);
+    }
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const [saved] = await this.saveFiles([
+      { originalname: fileName, buffer: await this.convertToWebP(buffer) },
+    ]);
+    return saved.name;
+  }
+
   async getStorage() {
     const PATH = `${path}/storage/`;
     return await this.getFiles(PATH);

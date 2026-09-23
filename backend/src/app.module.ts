@@ -17,6 +17,7 @@ import { FieldModule } from './field/field.module';
 import { SeoModule } from './seo/seo.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { SecurityModule } from './security/security.module';
+import { MerchantImportModule } from './merchant-import/merchant-import.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SecurityModule } from './security/security.module';
     FieldModule,
     MenuModule,
     SeoModule,
+    MerchantImportModule,
   ],
   controllers: [],
   providers: [],

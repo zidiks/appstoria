@@ -22,5 +22,6 @@ import { ImageJobEntity, ImageJobSchema } from './schema/image-job.schema';
   ],
   controllers: [StorageController],
   providers: [StorageService, ImageProcessingService, ImageJobsService],
+  exports: [StorageService],
 })
 export class StorageModule {}

@@ -58,6 +58,18 @@ export class Product {
 
   @Prop({ type: () => SeoDTO })
   seo: SeoDTO;
+
+  /** Источник импорта (MerchantImportSource) — пусто у товаров, заведённых вручную */
+  @Prop({ type: String })
+  importSourceId?: string;
+
+  /** g:id товара в фиде источника */
+  @Prop({ type: String })
+  importExternalId?: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+ProductSchema.index(
+  { importSourceId: 1, importExternalId: 1 },
+  { partialFilterExpression: { importSourceId: { $exists: true } } },
+);
