@@ -1,0 +1,19 @@
+<div>
+  <div cdkDropList class="category-reorder__list" (cdkDropListDropped)="drop($event)">
+    <div class="category-reorder__item" *ngFor="let category of categoriesList" cdkDrag>
+      <div class="category-reorder__placeholder" *cdkDragPlaceholder></div>
+      <tui-svg
+        src="tuiIconBookmark">
+      </tui-svg>
+      <span>{{ category.name }}</span>
+    </div>
+  </div>
+  <button
+    tuiButton
+    type="submit"
+    size="m"
+    (click)="submit()"
+  >
+    Сохранить
+  </button>
+</div>

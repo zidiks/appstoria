@@ -1,0 +1,18 @@
+.data-empty {
+  cursor: default;
+  width: 100%;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  tui-svg {
+    color: var(--tui-base-05);
+    margin-top: 0.1rem;
+  }
+  span {
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+    color: var(--tui-base-05);
+  }
+}

@@ -1,0 +1,195 @@
+<div class="properties">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        routerLink="/properties/new"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'name'"
+        >
+          Название
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'type'"
+        >
+          Тип
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'showCard'"
+        >
+          Для карточек
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'showFilter'"
+        >
+          Для фильтров
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(propertiesData || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        tuiTr
+        [routerLink]="'/properties/details/' + item._id"
+        #dropdown="tuiDropdown"
+        tuiDropdownContext
+        [tuiDropdown]="contextMenu"
+      >
+        <ng-template
+          #contextMenu
+        >
+          <tui-data-list
+            role="menu"
+            tuiDataListDropdownManager
+            class="context-menu"
+            [routerLink]="'/properties/details/' + item._id"
+          >
+            <button
+              tuiOption
+            >
+              Изменить
+              <tui-svg
+                class="icon"
+                src="tuiIconDraft"
+              ></tui-svg>
+            </button>
+            <button
+              tuiOption
+              class="context-delete"
+              (click)="showDeleteDialog(item._id, item.name); dropdown.toggle(false)"
+            >
+              Удалить
+              <tui-svg
+                class="icon"
+                src="tuiIconTrash"
+              ></tui-svg>
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <td
+          *tuiCell="'name'"
+          tuiTd
+        >
+          <span tuiHintAppearance="onDark" tuiHintDirection="top-right" [tuiHint]="item.description">{{ item.name }}</span>
+        </td>
+        <td
+          *tuiCell="'type'"
+          tuiTd
+        >
+          <tui-badge
+            tuiHintAppearance="onDark"
+            tuiHintDirection="top"
+            *ngIf="item.type | productProperty as productPropData else errorBadge"
+            [tuiHint]="productPropData.description"
+            status="info"
+            [value]="productPropData.name"
+          >
+            <tui-svg src="tuiIconTooltip"></tui-svg>
+          </tui-badge>
+          <ng-template  #errorBadge>
+            <tui-badge
+              status="error"
+              value="Неизвестно"
+            ></tui-badge>
+          </ng-template>
+        </td>
+        <td
+          *tuiCell="'showCard'"
+          tuiTd
+        >
+          <tui-marker-icon
+            new
+            [mode]="item.showCard ? 'success' : 'error'"
+            size="xxs"
+            [src]="item.showCard ? 'tuiIconCheckLarge' : 'tuiIconCloseLarge'"
+          ></tui-marker-icon>
+        </td>
+        <td
+          *tuiCell="'showFilter'"
+          tuiTd
+        >
+          <tui-marker-icon
+            new
+            [mode]="item.showFilter ? 'success' : 'error'"
+            size="xxs"
+            [src]="item.showFilter ? 'tuiIconCheckLarge' : 'tuiIconCloseLarge'"
+          ></tui-marker-icon>
+        </td>
+      </tr>
+      <ng-container *ngIf="propertiesData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="propertiesData | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="propertiesData | apiLoadingState : 'Success'"
+      [total]="propertiesData?.length || 0"
+      [(page)]="page"
+      [(size)]="size"
+    ></tui-table-pagination>
+  </div>
+</div>

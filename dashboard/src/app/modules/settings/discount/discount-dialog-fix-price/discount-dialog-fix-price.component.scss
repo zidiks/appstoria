@@ -1,0 +1,14 @@
+.category-tree {
+  padding: 1rem;
+  &__item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+.category  {
+  &-name {
+    color: var(--tui-text-01);
+  }
+}

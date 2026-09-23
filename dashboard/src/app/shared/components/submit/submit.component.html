@@ -1,0 +1,18 @@
+<p *ngIf="data.info">{{ data.info }}</p>
+<button
+  tuiButton
+  type="button"
+  size="m"
+  class="tui-space_right-3"
+  (click)="submit()"
+>
+  {{ data.button }}
+</button>
+<button
+  tuiButton
+  type="button"
+  size="m"
+  (click)="cancel()"
+>
+  Отмена
+</button>

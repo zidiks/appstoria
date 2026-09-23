@@ -1,0 +1,160 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.product {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content {
+    &:last-child {
+      margin-bottom: 10rem;
+    }
+    flex: 1 1 auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+  }
+}
+
+.loader {
+  margin-top: 4rem;
+}
+
+.category {
+  &-tree {
+    padding: .2rem 1rem;
+  }
+  &-icon {
+    transform: scale(0.8);
+    color: var(--tui-primary);
+  }
+  &-item {
+    ::ng-deep {
+      .t-checkmark {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.files {
+  &-list {
+    overflow: hidden;
+  }
+  &-item {
+    background: var(--tui-base-01);
+    cursor: move;
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.files-list.cdk-drop-list-dragging .files-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.files-item-placeholder {
+  min-height: 80px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+tui-checkbox-block {
+  width: 100%;
+}
+
+.seo_btn {
+  .seo_input {
+    width: 100%;
+  }
+  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image_alt {
+  width: 20rem;
+}
+
+.editor > {
+  ::ng-deep {
+    .t-wrapper {
+      min-height: 20rem;
+      max-width: calc(100vw - 21rem);
+    }
+  }
+}
+
+.editor {
+  ::ng-deep {
+    img {
+      max-width: 100% !important;
+    }
+  }
+
+  &-tabs {
+    margin: 0 1rem;
+  }
+}
+
+.add-products {
+  &-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    &-text {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  &-list {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    &-item {
+      cursor: pointer;
+      border-radius: .5rem;
+      padding: .5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      &:hover {
+        background: var(--tui-base-02);
+      }
+      &-img {
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 0.2rem;
+        object-fit: contain;
+      }
+      &-name {
+        display: flex;
+        flex: 1 1 0;
+      }
+    }
+  }
+}
+
+.images-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}

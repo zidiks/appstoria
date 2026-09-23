@@ -1,0 +1,74 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="name"
+      >
+        Название
+      </tui-input>
+      <tui-input-number
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="deliveryPrice"
+      >
+        Цена доставки
+      </tui-input-number>
+      <tui-input-number
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="deliveryThreshold"
+      >
+        Порог бесплатной доставки
+      </tui-input-number>
+      <tui-text-area
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="description"
+        [expandable]="true"
+      >
+        Описание
+      </tui-text-area>
+
+      <label tuiLabel="Поля для заполнения данных">
+        <tui-input-tag
+          class="tui-space_top-3 tui-space_bottom-5"
+          formControlName="fields"
+          [tuiTextfieldLabelOutside]="true"
+        >
+          Введите поля
+        </tui-input-tag>
+      </label>
+      <label tuiLabel="Методы оплаты">
+        <tui-multi-select
+          *tuiLet="items$ | async"
+          class="tui-space_top-3 tui-space_bottom-5"
+          formControlName="paymentMethods"
+          [tuiTextfieldLabelOutside]="true"
+          [stringify]="(stringify$ | async)!"
+          (searchChange)="onSearch($event)"
+        >
+          <tui-data-list-wrapper
+            *tuiDataList
+            tuiMultiSelectGroup
+            [items]="items$ | async"
+            [itemContent]="(stringify$ | async)!"
+          ></tui-data-list-wrapper>
+        </tui-multi-select>
+      </label>
+      <button
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ deliveryData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>

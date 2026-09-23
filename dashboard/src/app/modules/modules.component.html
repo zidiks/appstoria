@@ -1,0 +1,83 @@
+<ng-template #iconProfile>
+  <tui-avatar
+    size="xs"
+    [rounded]="true"
+    *tuiLet="authService.currentUser$ | async as userData"
+    [text]=" userData?.username || 'Неизвестно'"
+  ></tui-avatar>
+</ng-template>
+
+<ng-template #dropdownProfile>
+  <div class="profile-dropdown-content">
+    <a
+      *ngIf="userSettings()"
+      tuiLink
+      icon="tuiIconSettingsLarge"
+      iconAlign="left"
+    >
+      Настройки
+    </a>
+    <a
+      tuiLink
+      icon="tuiIconLogoutLarge"
+      iconAlign="left"
+      (click)="authService.logout()"
+    >
+      Выйти
+    </a>
+  </div>
+</ng-template>
+
+<div class="apps">
+  <div class="bar-wrapper">
+    <div class="bar">
+      <div class="bar__top">
+        <div class="bar__logo">
+          <h2><tui-svg src="tuiIconPiechartLarge"></tui-svg> Hue-Commerce</h2>
+        </div>
+        <div class="bar__list">
+          <button
+            *ngFor="let app of appsList"
+            tuiButton
+            type="button"
+            class="list-item"
+            size="m"
+            appearance="flat"
+            [routerLink]="app.route"
+            [pseudoActive]="rla.isActive"
+            routerLinkActive
+            #rla="routerLinkActive"
+            [icon]="app.icon"
+            [disabled]="!!app.disabled"
+          >
+            {{ app.name }}
+          </button>
+        </div>
+      </div>
+      <div class="bar__bottom">
+        <tui-hosted-dropdown
+          tuiDropdownLimitWidth="fixed"
+          [content]="dropdownProfile"
+        >
+          <button
+            tuiButton
+            type="button"
+            [pseudoActive]="true"
+            [icon]="iconProfile"
+          >
+        <span>
+          {{ (authService.currentUser$ | async)?.username || 'Неизвестно' }}
+        </span>
+          </button>
+        </tui-hosted-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <tui-scrollbar class="content__box">
+      <div class="content__box-inner">
+        <router-outlet></router-outlet>
+      </div>
+    </tui-scrollbar>
+  </div>
+</div>

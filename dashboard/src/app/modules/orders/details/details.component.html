@@ -1,0 +1,385 @@
+<div class="orders">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconCheck"
+        class="tui-space_right-3"
+        [showLoader]="([orderData, statesData ] | apiLoadingState : 'Pending' : true) || waitUpdating"
+        (click)="updateOrder()"
+      >
+        {{ 'Сохранить' }}
+      </button>
+      <button
+        *ngIf="orderId"
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary-destructive"
+        icon="tuiIconTrash"
+        class="tui-space_right-3"
+        [showLoader]="([orderData, statesData ] | apiLoadingState : 'Pending' : true) || waitUpdating"
+        (click)="showDeleteDialog()"
+      >
+        Удалить
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        [disabled]="([orderData, statesData ] | apiLoadingState : 'Pending' : true) || waitUpdating"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <tui-loader
+    [showLoader]="waitUpdating"
+    [overlay]="true"
+    size="xl"
+  >
+    <div class="content" *ngIf="([orderData, statesData ] | apiLoadingState : 'Success' : true) && orderData else loader">
+      <div class="content_left">
+        <div class="content-part">
+          <div class="content-part__header">
+            <div class="content-part__title">
+              <h2>#{{ orderData.orderCode }}</h2>
+              <tui-svg
+                (click)="copyToClipboard(orderData.orderCode)"
+                tuiHint="Скопировать"
+                tuiHintDirection="top"
+                src="tuiIconCheckList"
+              ></tui-svg>
+            </div>
+            <div class="content-part__actions">
+
+            </div>
+          </div>
+          <div class="content-part__content">
+            <div class="customer">
+              <div class="customer__part">
+                <h3>Статус</h3>
+                <ng-container *tuiLet="orderData.state as statusInfo">
+                  <tui-hosted-dropdown
+                    tuiDropdownDirection="bottom"
+                    [content]="picker"
+                    [(open)]="statePickerOpen"
+                    [tuiDropdownMaxHeight]="999"
+                  >
+                    <tui-badge
+                      class="order-state"
+                      [style]="'outline: solid var(--tui-' + statusInfo.color + '-bg-hover)'"
+                      [status]="statusInfo.color"
+                      [value]="statusInfo.label"
+                    ></tui-badge>
+                  </tui-hosted-dropdown>
+                  <ng-template
+                    #picker
+                  >
+                    <div class="state-picker">
+                      <tui-badge
+                        *ngFor="let state of statesData"
+                        class="state-picker-item tui-space_vertical-1 tui-space_horizontal-1"
+                        [status]="state.color"
+                        [value]="state.label"
+                        (click)="setOrderState(state)"
+                      ></tui-badge>
+                    </div>
+                  </ng-template>
+                </ng-container>
+              </div>
+              <div class="customer__part">
+                <h3>Дата</h3>
+                <span>{{ orderData.createdAt | date }}</span>
+              </div>
+              <div class="customer__part">
+                <h3>Имя</h3>
+                <span>{{ orderData.customer.name }}</span>
+              </div>
+              <div class="customer__part">
+                <h3>Телефон</h3>
+                <span>{{ orderData.customer.phone }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-part">
+          <div class="content-part__header">
+            <div class="content-part__title">
+              <h2>Товары</h2>
+            </div>
+            <div class="content-part__actions">
+
+            </div>
+          </div>
+          <div class="content-part__content">
+            <div class="products">
+              <div class="product" [routerLink]="'/products/details/' + cartItem.product._id" *ngFor="let cartItem of orderData.cartItems">
+                <div class="product__img">
+                  <tui-avatar
+                    [avatarUrl]="cartItem.product.media[0] ? (env.https ? 'https://' : 'http://') + env.host + '/storage/images/' + cartItem.product.media[0] : 'assets/images/no-image.png'"
+                  >
+                  </tui-avatar>
+                </div>
+                <div class="product__name">
+                  <span>{{ cartItem.product.name }}</span>
+                </div>
+                <div class="product__spacer">
+                </div>
+                <div class="product__price">
+                  <div class="product__price-line">
+                    <div class="product__price-number">
+                      <tui-money
+                        currency="BYN"
+                        [value]="cartItem.product.price"
+                      ></tui-money>
+                    </div>
+                    <div class="product__price-count">x {{ cartItem.count }}</div>
+                    <div class="product__price-total" [class.product__price-total-through]="cartItem.product.discount">
+                      <tui-money
+                        currency="BYN"
+                        [value]="cartItem.count * cartItem.product.price"
+                      ></tui-money>
+                    </div>
+                  </div>
+                  <div class="product__price-line" *ngIf="cartItem.product.discount">
+                    <div class="product__discount">
+                      <span class="product__discount-percent">-{{ cartItem.product.discount | tuiFormatNumber }}%</span>
+                      <tui-money
+                        class="product__discount-value"
+                        currency="BYN"
+                        [value]="(cartItem.count * cartItem.product.price) * ((100 - cartItem.product.discount) / 100)"
+                      ></tui-money>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="total">
+                <div class="total__line total__line-number" *ngIf="orderData.totalDiscount">
+                  <span class="total__line-name">Первичная стоимость</span>
+                  <span class="total__line-value">
+                  <tui-money
+                    currency="BYN"
+                    [value]="orderData.subTotalPrice"
+                  ></tui-money>
+                </span>
+                </div>
+                <div class="total__line total__line-discount" *ngIf="orderData.totalDiscount">
+                  <span class="total__line-name">Общая скидка</span>
+                  <span class="total__line-value">
+                    <tui-money
+                      currency="BYN"
+                      [value]="orderData.totalDiscount"
+                    ></tui-money>
+                  </span>
+                </div>
+                <div class="total__line total__line-delivery">
+                  <span class="total__line-name">Стоимость доставки</span>
+                  <span class="total__line-value">
+                    <tui-money
+                      currency="BYN"
+                      [value]="orderData.delivery.deliveryMethod.deliveryPrice || 0"
+                    ></tui-money>
+                  </span>
+                </div>
+                <div class="total__line total__line-total">
+                  <span class="total__line-name">Итоговая стоимость</span>
+                  <span class="total__line-value">
+                  <tui-money
+                    currency="BYN"
+                    [value]="orderData.totalPrice"
+                  ></tui-money>
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-part">
+          <div class="content-part__header">
+            <div class="content-part__title">
+              <h2>Доставка</h2>
+            </div>
+            <div class="content-part__actions">
+            </div>
+          </div>
+          <div class="content-part__content">
+            <div class="delivery">
+              <div class="delivery-box">
+                <span class="delivery-param">Способ доставки</span>
+                <span class="delivery-value">{{ orderData.delivery.deliveryMethod.name }}</span>
+              </div>
+              <div class="delivery-box">
+                <span class="delivery-param">Стоимость доставки</span>
+                <tui-money
+                  currency="BYN"
+                  [value]="orderData.delivery.deliveryMethod.deliveryPrice || 0"
+                ></tui-money>
+              </div>
+              <div class="delivery-box" *ngFor="let item of orderData.delivery.deliveryData">
+                <span class="delivery-param">{{ item.name }}</span>
+                <span class="delivery-value">{{ item.value }}</span>
+              </div>
+              <div class="delivery-box">
+                <span class="delivery-param">Комментарий</span>
+                <span class="delivery-value">{{ orderData.delivery.comment || "-" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content-part">
+          <div class="content-part__header">
+            <div class="content-part__title">
+              <h2>Оплата</h2>
+            </div>
+            <div class="content-part__actions">
+            </div>
+          </div>
+          <div class="content-part__content">
+            <div class="payment">
+              <span class="payment__name">{{ orderData.paymentMethod.name }}</span>
+              <span class="payment__description">{{ orderData.paymentMethod.description }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content_right">
+        <div class="content-part">
+          <div class="content-part__header">
+            <div class="content-part__title">
+              <h2>История</h2>
+            </div>
+            <div class="content-part__actions">
+
+            </div>
+          </div>
+          <form [formGroup]="historyFormGroup" (ngSubmit)="addOrderHistoryItem()" tuiGroup class="history-input-group tui-space_vertical-3">
+            <tui-hosted-dropdown
+              class="tui-group__auto-width-item"
+              #dropdown
+              [tuiDropdownMaxHeight]="500"
+              [content]="historyDropdown"
+              [(open)]="dropdownOpen"
+            >
+              <button
+                class="tui-group__inherit-item"
+                tuiIconButton
+                appearance="outline"
+                size="m"
+                type="button"
+                *tuiLet="(currentHistoryType$ | async) as currentHistoryType"
+                [pseudoHover]="dropdown.open || null"
+              >
+                <tui-svg
+                  [style.color]="'var(--' + currentHistoryType!.color + ')'"
+                  [src]="currentHistoryType!.icons"
+                ></tui-svg>
+              </button>
+            </tui-hosted-dropdown>
+            <ng-template #historyDropdown>
+              <tui-data-list
+                style="width: 12rem"
+              >
+                <tui-opt-group>
+                  <button
+                    *ngFor="let item of historyDataItems"
+                    tuiOption
+                    (click)="setCurrentHistoryType(item);"
+                  >
+                    <div>
+                      <tui-svg
+                        [style.color]="'var(--' + item.color + ')'"
+                        [src]="item.icons"
+                      ></tui-svg>
+                      {{ item.label }}
+                    </div>
+                  </button>
+                </tui-opt-group>
+              </tui-data-list>
+            </ng-template>
+            <tui-input
+              tuiTextfieldSize="m"
+              formControlName="details"
+              [tuiTextfieldLabelOutside]="true"
+            >
+              Введите информацию о заказе
+              <input
+                tuiTextfield
+                type="text"
+              />
+            </tui-input>
+            <button
+              [disabled]="historyFormGroup.invalid"
+              appearance="outline"
+              size="m"
+              tuiIconButton
+              type="submit"
+              class="tui-group__auto-width-item"
+            >
+              <tui-svg
+                class="history-input-group__send"
+                src="tuiIconComment"
+              ></tui-svg>
+            </button>
+          </form>
+          <div class="content-part__content">
+            <div class="history" *ngFor="let historyItem of orderData.historyList; index as i">
+              <ng-container *tuiLet="historyItem.type | orderHistory as historyType">
+                <div class="history__title">
+                  <div class="history__left">
+                    <tui-svg [style.color]="'var(--' + historyType.color + ')'" [src]="historyType.icons"></tui-svg>
+                  </div>
+                  <div class="history__right-title">
+                    <span>{{ historyType.label }}</span>
+                    <div class="spacer"></div>
+                    <div
+                      class="history__right-remove"
+                      (click)="removeOrderHistoryItem(i)"
+                    >
+                      <tui-svg
+                        src="tuiIconClose"
+                      ></tui-svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="history__details">
+                  <div class="history__left">
+                    <div class="history__line"></div>
+                  </div>
+                  <div class="history__right">
+                    <span class="history__date">{{ historyItem.time | date : 'medium' }}</span>
+                    <span *ngIf="historyItem.details" class="history__text">{{ historyItem.details }}</span>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </tui-loader>
+  <ng-template #loader>
+    <tui-loader class="loader" size="xl">
+
+    </tui-loader>
+  </ng-template>
+</div>

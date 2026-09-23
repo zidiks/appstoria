@@ -1,0 +1,205 @@
+<tui-loader
+  [showLoader]="loading || ([categoriesTreeData, linearCategoriesData, typesData] | apiLoadingState : 'Pending' : true)"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-select
+        *ngIf="!categoryData?.root"
+        class="b-form"
+        [valueContent]="!(categoriesTreeData | apiLoadingState) ? categoryContent : parentLoading"
+        formControlName="parent"
+      >
+        <span *ngIf="!(categoriesTreeData | apiLoadingState)">Родитель</span>
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="!(categoriesTreeData | apiLoadingState); else parentLoading">
+            <div class="category-tree">
+              <tui-tree
+                [tuiTreeController]="true"
+                [value]="categoriesTreeData"
+                [content]="categoryItem"
+                [childrenHandler]="categoryChildHandler"
+              ></tui-tree>
+              <ng-template
+                #categoryItem
+                let-value
+                let-node="node"
+              >
+                <button
+                  tuiOption
+                  class="category-item"
+                  [value]="value._id"
+                >
+                  <tui-svg
+                    class="category-icon"
+                    *ngIf="!value.children?.length"
+                    src="tuiIconBookmark">
+                  </tui-svg>
+                  <span>{{ value.name }}</span>
+                </button>
+              </ng-template>
+            </div>
+          </tui-data-list>
+        </ng-template>
+        <ng-template #parentLoading>
+          <tui-loader class="tui-space_vertical-3 loader"></tui-loader>
+        </ng-template>
+      </tui-select>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="name"
+      >
+        Название
+      </tui-input>
+      <tui-primitive-textfield
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        [prefix]="parentSlug"
+        [value]="f['handle'].value || ''"
+        (valueChange)="changeSlug($event)"
+      >
+        Ключ
+      </tui-primitive-textfield>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="icon"
+      >
+        Иконка
+      </tui-input>
+      <tui-select
+        tuiTextfieldSize="m"
+        *tuiLet="typesData as items"
+        [valueContent]="items ? stringify(items) : loading"
+        formControlName="type"
+        [tuiTextfieldLabelOutside]="!items?.length"
+      >
+        Тип товара
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="items?.length; else loading">
+            <button
+              tuiOption
+              class="empty-param"
+              [value]="null"
+            >
+              Без сущности
+            </button>
+            <button
+              *ngFor="let item of items"
+              tuiOption
+              [value]="item._id"
+            >
+              {{ item.name }}
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <ng-template #loading>
+          <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+        </ng-template>
+      </tui-select>
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="title"
+      >
+        Заголовок
+      </tui-input>
+      <tui-text-area
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="description"
+        [expandable]="true"
+      >
+        Описание
+      </tui-text-area>
+      <tui-input-tag
+        tuiTextfieldSize="m"
+        class="tui-space_bottom-5"
+        formControlName="keywords"
+      >
+        Ключевые слова
+      </tui-input-tag>
+
+      <div class="tui-space_bottom-5">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Изображение</h3>
+        <div class="tui-form__row">
+          <tui-input-files
+            accept="image/*"
+            [multiple]="false"
+            formControlName="media"
+            (reject)="onReject($event)"
+            (ngModelChange)="f['media'].markAsTouched()"
+          ></tui-input-files>
+          <tui-files class="file tui-space_top-3">
+            <ng-container *ngIf="f['media'].value as file">
+              <tui-file
+                class="files-item"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+              </tui-file>
+            </ng-container>
+          </tui-files>
+        </div>
+      </div>
+
+      <tui-checkbox-labeled
+        formControlName="isHidden"
+        size="l"
+        class="tui-form__checkbox"
+      >
+        Скрыть категорию
+      </tui-checkbox-labeled>
+      <tui-tabs class="editor-tabs" [(activeItemIndex)]="editorMode">
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.advanced)"
+        >
+          <tui-svg
+            src="tuiIconDraft"
+            class="tui-space_right-2"
+          ></tui-svg>
+          Визуально
+        </button>
+        <button
+          tuiTab
+          (click)="setEditorMode(EditorMode.html)"
+        >
+          <tui-svg
+            src="tuiIconCode"
+            class="tui-space_right-2"
+          ></tui-svg>
+          HTML
+        </button>
+      </tui-tabs>
+      <tui-editor
+        *ngIf="editorMode === EditorMode.advanced"
+        class="editor tui-space_bottom-5"
+        [tools]="editorTools"
+        formControlName="content"
+      >
+        Содержание
+      </tui-editor>
+      <tui-text-area
+        class="tui-space_bottom-5"
+        *ngIf="editorMode === EditorMode.html"
+        formControlName="content"
+        [expandable]="true"
+      >
+        Содержание
+      </tui-text-area>
+      <button
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ categoryData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>

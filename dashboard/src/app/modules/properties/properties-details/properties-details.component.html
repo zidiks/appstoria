@@ -1,0 +1,150 @@
+<div class="property">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs  size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconCheck"
+        class="tui-space_right-3"
+        [showLoader]="loading"
+        (click)="submit()"
+        [disabled]="formGroup.invalid"
+      >
+        {{ !propertyId ? 'Добавить' : 'Сохранить' }}
+      </button>
+      <button
+        *ngIf="propertyId"
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <form [formGroup]="formGroup" *ngIf="(!(propertyData | apiLoadingState)) else loader">
+    <tui-loader [showLoader]="loading" [overlay]="true" size="l" class="content">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Общее</h3>
+        <div class="tui-form__row tui-form__row_multi-fields">
+          <div class="tui-form__multi-field">
+            <tui-input
+              formControlName="name"
+            >
+              Название
+            </tui-input>
+          </div>
+          <div class="tui-form__multi-field">
+            <tui-select
+              *tuiLet="typesList as items"
+              [valueContent]="items ? stringify(items) : loading"
+              formControlName="type"
+              [tuiTextfieldLabelOutside]="!items?.length"
+            >
+              Тип значения
+              <ng-template tuiDataList>
+                <tui-data-list *ngIf="items?.length; else loading">
+                  <button
+                    [tuiHint]="item.description"
+                    tuiHintAppearance="onDark"
+                    tuiHintDirection="left"
+                    *ngFor="let item of items"
+                    tuiOption
+                    [value]="item.key"
+                  >
+                    {{ item.name }}
+                  </button>
+                </tui-data-list>
+              </ng-template>
+              <ng-template #loading>
+                <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+              </ng-template>
+            </tui-select>
+          </div>
+          <div *ngIf="f['type'].value === productTypePropertyType.NumberInput || f['type'].value === productTypePropertyType.NumberSelect" class="tui-form__multi-field">
+            <tui-input
+              formControlName="units"
+            >
+              Единицы измерения
+            </tui-input>
+          </div>
+        </div>
+        <div class="tui-form__row">
+          <tui-text-area
+            formControlName="description"
+            [expandable]="true"
+          >
+            Описание
+          </tui-text-area>
+        </div>
+        <div class="tui-form__row tui-form__row_multi-fields">
+          <div class="tui-form__multi-field">
+            <tui-input
+              formControlName="code"
+            >
+              Ключ
+            </tui-input>
+          </div>
+        </div>
+        <div class="tui-form__row tui-form__row_checkboxes tui-space_bottom-2">
+          <tui-checkbox-labeled
+            formControlName="showCard"
+            size="l"
+            class="tui-form__checkbox"
+          >
+            Отображать в карточках товаров
+          </tui-checkbox-labeled>
+          <div class="tooltip">
+            <tui-checkbox-labeled
+              formControlName="showFilter"
+              size="l"
+              class="tui-form__checkbox"
+              [readOnly]="f['type'].value === productTypePropertyType.NumberInput || f['type'].value === productTypePropertyType.StringInput"
+            >
+              Отображать в фильтрах подбора
+            </tui-checkbox-labeled>
+            <tui-tooltip
+              content="Для всех типов значений кроме произвольная строка или число"
+              describeId="button"
+              direction="right"
+              class="tui-space_left-4"
+            ></tui-tooltip>
+          </div>
+        </div>
+    </tui-loader>
+    <ng-container *tuiLet="f['type']?.valueChanges | async as typeValue">
+      <div class="content" *ngIf="(typeValue | productProperty)?.options">
+        <h3 class="tui-form__header tui-form__header_margin-top_none">Значения свойства</h3>
+        <tui-input-tag
+          [tagValidator]="typeValue === productTypePropertyType.NumberSelect ? tagDigitsValidator : tagWordsValidator"
+          formControlName="options"
+          [tuiTextfieldLabelOutside]="true"
+        >
+          Введите возможные значения
+        </tui-input-tag>
+      </div>
+    </ng-container>
+  </form>
+  <ng-template #loader>
+    <tui-loader class="loader" size="xl">
+
+    </tui-loader>
+  </ng-template>
+</div>

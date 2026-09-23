@@ -1,0 +1,108 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="label"
+      >
+        Название
+      </tui-input>
+      <tui-input
+        [readOnly]="!!fieldData?.type"
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="code"
+      >
+        Код
+      </tui-input>
+      <tui-select
+        tuiTextfieldSize="m"
+        *tuiLet="fieldTypes as items"
+        [valueContent]="items ? stringify(items) : loading"
+        formControlName="type"
+        [tuiTextfieldLabelOutside]="!items?.length"
+      >
+        Тип
+        <ng-template tuiDataList>
+          <tui-data-list *ngIf="items?.length; else loading">
+            <button
+              *ngFor="let item of items"
+              tuiOption
+              [value]="item.value"
+            >
+              {{ item.label }}
+            </button>
+          </tui-data-list>
+        </ng-template>
+        <ng-template #loading>
+          <tui-loader size="m" class="tui-space_vertical-3 loader"></tui-loader>
+        </ng-template>
+      </tui-select>
+      <ng-container [ngSwitch]="f['type'].value">
+        <tui-input-tag
+          *ngSwitchCase="fieldTypeEnum.FieldStringArray"
+          class="tui-space_top-3"
+          tuiTextfieldSize="s"
+          formControlName="value"
+        >
+          Значение
+        </tui-input-tag>
+        <tui-text-area
+          *ngSwitchCase="fieldTypeEnum.FieldString"
+          tuiTextfieldSize="m"
+          class="tui-space_top-3"
+          formControlName="value"
+          [expandable]="true"
+        >
+          Значение
+        </tui-text-area>
+        <tui-editor
+          *ngSwitchCase="fieldTypeEnum.FieldContent"
+          class="editor tui-space_top-3"
+          [tools]="editorTools"
+          formControlName="value"
+        >
+          Значение
+        </tui-editor>
+        <ng-container
+          *ngSwitchCase="fieldTypeEnum.FieldImage"
+        >
+          <tui-input-files
+            class="tui-space_top-3"
+            accept="image/*"
+            [multiple]="false"
+            formControlName="value"
+            (reject)="onReject($event)"
+            (ngModelChange)="f['value'].markAsTouched()"
+          ></tui-input-files>
+          <tui-files class="file tui-space_top-3">
+            <ng-container *ngIf="f['value'].value as file">
+              <tui-file
+                class="files-item"
+                state="normal"
+                size="l"
+                [file]="file"
+                (removed)="removeFile(file)"
+              >
+              </tui-file>
+            </ng-container>
+          </tui-files>
+        </ng-container>
+      </ng-container>
+      <button
+        class="tui-space_top-5"
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ fieldData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>

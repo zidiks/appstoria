@@ -1,0 +1,20 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
+tui-checkbox-block {
+  .text {
+    font: var(--tui-font-text-s);
+    color: var(--tui-text-02);
+  }
+
+  .inner {
+    margin: 1rem 0;
+    white-space: normal;
+
+    &_flex {
+      display: flex;
+      justify-content: space-between;
+      margin: 0;
+      width: 31.25rem;
+    }
+  }
+}

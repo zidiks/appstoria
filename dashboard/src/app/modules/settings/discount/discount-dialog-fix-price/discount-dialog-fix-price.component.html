@@ -1,0 +1,64 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input-number
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="minCount"
+      >
+        Минимальное количество товаров
+      </tui-input-number>
+      <tui-input-number
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="fixPrice"
+        [postfix]="currency | tuiCurrency"
+      >
+        Цена за единицу товара
+      </tui-input-number>
+      <tui-multi-select
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="categoriesArray"
+      >
+        Категории
+        <ng-template tuiDataList>
+          <tui-data-list>
+            <div class="category-tree">
+              <tui-tree
+                [tuiTreeController]="true"
+                [value]="categoriesData"
+                [content]="categoryItem"
+                [childrenHandler]="categoryChildHandler"
+              ></tui-tree>
+              <ng-template
+                #categoryItem
+                let-value
+              >
+                <div class="category-tree__item" (click)="toggleCheckbox(value)">
+                  <tui-primitive-checkbox
+                    *ngIf="value.productTypeId"
+                    [value]="f['categories'].value.has(value._id)"
+                    class="tui-space_right-2 category-checkbox"
+                  ></tui-primitive-checkbox>
+                  <span class="category-name">
+                  {{ value.name }}
+                </span>
+                </div>
+              </ng-template>
+            </div>
+          </tui-data-list>
+        </ng-template>
+      </tui-multi-select>
+      <button
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        Сохранить
+      </button>
+    </form>
+  </div>
+</tui-loader>

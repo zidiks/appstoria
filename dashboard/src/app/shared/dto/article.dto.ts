@@ -1,0 +1,49 @@
+import { ApiId, ApiTimestamp } from "../models/api-data.model";
+
+export interface ArticleResponseDto extends ApiId, ApiTimestamp {
+  media: string;
+  title: string;
+  description: string;
+  content: string;
+  tags: string[];
+  isSlide?: boolean;
+  hidden?: boolean;
+  slideTitle?: string;
+  slideDescription?: string;
+  slideLink?: string;
+  seo: ArticleSeoDto;
+}
+
+export interface ArticlePrevResponseDto extends ApiId, ApiTimestamp {
+  media: string;
+  title: string;
+  description: string;
+  tags: string[];
+  seoTags: string[];
+}
+
+export interface getArticlesOptions {
+  preview?: boolean;
+  limit?: number;
+  page?: number;
+}
+
+export interface AddArticleRequestDto {
+  media: string;
+  title: string;
+  description: string;
+  content: string;
+  tags: string[];
+  seoTags: string[];
+}
+
+export interface ArticleSeoDto {
+  seoTitle?: string,
+  seoDescription?: string,
+  seoKeywords?: string,
+  seoUrl?: string,
+  seoAuthor?: string,
+  seoImageAlt?: string,
+}
+
+export interface UpdateArticleRequestDto extends AddArticleRequestDto { }

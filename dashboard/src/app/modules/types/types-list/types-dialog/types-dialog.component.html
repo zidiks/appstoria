@@ -1,0 +1,49 @@
+<tui-loader
+  [showLoader]="(typesData | apiLoadingState) || loading"
+  [overlay]="true"
+  size="xl"
+>
+  <div>
+    <form [formGroup]="formGroup" (ngSubmit)="submit()">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="name"
+      >
+        Название
+      </tui-input>
+      <tui-multi-select
+        *tuiLet="items$ | async"
+        class="b-form"
+        formControlName="properties"
+        [tuiTextfieldLabelOutside]="true"
+        [stringify]="(stringify$ | async)!"
+        (searchChange)="onSearch($event)"
+      >
+        <tui-data-list-wrapper
+          *tuiDataList
+          tuiMultiSelectGroup
+          [items]="items$ | async"
+          [itemContent]="(stringify$ | async)!"
+        ></tui-data-list-wrapper>
+      </tui-multi-select>
+      <tui-text-area
+        tuiTextfieldSize="m"
+        class="tui-space_top-3 tui-space_bottom-5"
+        formControlName="description"
+        [expandable]="true"
+      >
+        Описание
+      </tui-text-area>
+      <button
+        *ngIf="!(typesData | apiLoadingState)"
+        tuiButton
+        type="submit"
+        size="m"
+        [disabled]="formGroup.invalid"
+      >
+        {{ typesData?._id ? 'Сохранить' : 'Добавить' }}
+      </button>
+    </form>
+  </div>
+</tui-loader>

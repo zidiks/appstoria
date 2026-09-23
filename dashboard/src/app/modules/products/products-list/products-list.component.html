@@ -1,0 +1,297 @@
+<div class="products">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <tui-input
+        class="tui-space_right-3"
+        tuiTextfieldSize="s"
+        [formControl]="search"
+        [tuiTextfieldLabelOutside]="true"
+        tuiTextfieldIconLeft="tuiIconSearch"
+      >
+        Введите запрос
+        <input
+          placeholder="Введите запрос"
+          tuiTextfield
+          type="text"
+        />
+      </tui-input>
+      <tui-select
+        *ngIf="!!categoriesData"
+        class="tui-space_right-3 category-select"
+        tuiTextfieldSize="s"
+        [valueContent]="categoryContent"
+        [formControl]="categorySelect"
+      >
+        Категория
+        <ng-template tuiDataList>
+          <tui-data-list>
+            <div class="category-tree">
+              <tui-tree
+                [tuiTreeController]="true"
+                [value]="categoriesData"
+                [content]="categoryItem"
+                [childrenHandler]="categoryChildHandler"
+              ></tui-tree>
+              <ng-template
+                #categoryItem
+                let-value
+                let-node="node"
+              >
+                <button
+                  tuiOption
+                  class="category-item"
+                  [disabled]="value.handle === 'root'"
+                  [value]="value._id"
+                >
+                  <tui-svg
+                    class="category-icon"
+                    *ngIf="!value.children?.length"
+                    src="tuiIconBookmark">
+                  </tui-svg>
+                  <span>{{ value.name }}</span>
+                </button>
+              </ng-template>
+            </div>
+          </tui-data-list>
+        </ng-template>
+      </tui-select>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary-destructive"
+        icon="tuiIconUndo"
+        class="tui-space_right-3"
+        (click)="clearFilters()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        routerLink="/products/new"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        [appearance]="(editMode$ | async) ? 'primary' : 'secondary'"
+        icon="tuiIconEdit"
+        class="tui-space_right-3"
+        (click)="changeEditMode()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPicture"
+        class="tui-space_right-3"
+        tuiHintAppearance="onDark"
+        [tuiHint]="'Обработать изображения всех товаров'"
+        (click)="processImages()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+      [direction]="(direction$ | async) || 1"
+      [tuiSortBy]="sorter$ | async"
+      (tuiSortByChange)="sorter$.next($event!.toString())"
+      (directionChange)="direction$.next($event)"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'media'"
+          [sorter]="null"
+        >
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'name'"
+        >
+          Название
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'isStock'"
+        >
+          В наличии
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'price'"
+        >
+          Цена
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'categoryId'"
+        >
+          Категория
+        </th>
+        <th
+          tuiTh
+          tuiSortable
+          *tuiHead="'brand'"
+        >
+          Бренд
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(productsData?.data || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        tuiTr
+        [routerLink]="(editMode$ | async) ? null : ('/products/details/' + item._id)"
+      >
+        <td
+          *tuiCell="'media'"
+          tuiTd
+        >
+          <img
+            class="product-item-img"
+            [src]="item.media[0] ? (env.https ? 'https://' : 'http://') + env.host + (env.port ? ':' + env.port : '') + '/storage/images/' + item.media[0] : 'assets/images/no-image.png'"
+            default = "assets/images/no-image.png"
+            [alt]="item.name"
+          >
+        </td>
+        <td
+          *tuiCell="'name'"
+          tuiTd
+        >
+          {{ item.name }}
+          <tui-badge
+            *ngIf="item.discount > 0"
+            status="info"
+            [value]="item.discount + '%'"
+            class="tui-space_left-2"
+          ></tui-badge>
+        </td>
+        <td
+          *tuiCell="'isStock'"
+          tuiTd
+        >
+          <ng-container *ngIf="editMode$ | async; else defaultModeStock">
+            <tui-checkbox
+              style="padding: 0 0.75rem"
+              [(ngModel)]="item.isStock"
+              (change)="editableInputChange(item)"
+              size="l"
+            >
+              В наличии
+            </tui-checkbox>
+          </ng-container>
+          <ng-template #defaultModeStock>
+            {{ item.isStock ? 'Да' : 'Нет' }}
+          </ng-template>
+        </td>
+        <td
+          *tuiCell="'price'"
+          tuiTd
+        >
+          <ng-container *ngIf="editMode$ | async; else defaultModePrice">
+            <tui-input-number
+              [postfix]="'USD' | tuiCurrency"
+              [(ngModel)]="item.priceUSD"
+              [precision]="2"
+              decimal="always"
+              (keyup.enter)="editableInputChange(item, $event)"
+            >
+              Цена
+            </tui-input-number>
+          </ng-container>
+          <ng-template #defaultModePrice>
+            <span>
+              <span>{{ item.totalPrice | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ currency | tuiCurrency }}</span>
+              <br/>
+              <span class="price-usd">{{ item.priceUSD | tuiFormatNumber: {decimalLimit: 2, decimalSeparator: '.'} }} {{ 'USD' | tuiCurrency }}</span>
+            </span>
+          </ng-template>
+        </td>
+        <td
+          *tuiCell="'categoryId'"
+          tuiTd
+        >
+          {{ item.categoryName || 'Неизвестно' }}
+        </td>
+        <td
+          *tuiCell="'brand'"
+          tuiTd
+        >
+          {{ item.brand?.name || 'Неизвестно' }}
+        </td>
+      </tr>
+      <ng-container *ngIf="productsData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="productsData?.data | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="productsData | apiLoadingState : 'Success'"
+      [items]="[10, 20, 50, 100]"
+      [total]="productsData?.metadata?.total || 0"
+      [page]="page$ | async | paginationIndex"
+      [size]="(limit$ | async) || 0"
+      (pageChange)="changePage($event + 1)"
+      (sizeChange)="changeSize($event)"
+    ></tui-table-pagination>
+  </div>
+</div>

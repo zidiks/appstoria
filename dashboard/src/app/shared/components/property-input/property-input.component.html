@@ -1,0 +1,89 @@
+<ng-container [ngSwitch]="propertyData.type">
+
+  <ng-container *ngSwitchCase="propertyTypes.Color">
+    <ng-container *ngTemplateOutlet="color"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.CheckBox">
+    <ng-container *ngTemplateOutlet="checkbox"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.StringSelect">
+    <ng-container *ngTemplateOutlet="stringSelect"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.StringMultiSelect">
+    <ng-container *ngTemplateOutlet="stringMultiSelect"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.StringInput">
+    <ng-container *ngTemplateOutlet="stringInput"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.NumberSelect">
+    <ng-container *ngTemplateOutlet="stringSelect"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="propertyTypes.NumberInput">
+    <ng-container *ngTemplateOutlet="numberInput"></ng-container>
+  </ng-container>
+
+</ng-container>
+
+<ng-template #color>
+  <tui-input-color [formControl]="formControl">
+    {{ propertyData.name }}
+  </tui-input-color>
+</ng-template>
+
+<ng-template #checkbox>
+  <tui-checkbox-block [formControl]="formControl" size="l">
+    <div class="inner">
+      {{ propertyData.name }}
+      <div *ngIf="propertyData.description" class="text">
+        {{ propertyData.description }}
+      </div>
+    </div>
+  </tui-checkbox-block>
+</ng-template>
+
+<ng-template #stringSelect>
+  <tui-select [formControl]="formControl">
+    {{ propertyData.name }}
+    <tui-data-list-wrapper
+      *tuiDataList
+      [items]="propertyData.options || []"
+    ></tui-data-list-wrapper>
+  </tui-select>
+</ng-template>
+
+<ng-template #stringMultiSelect>
+  <tui-multi-select
+    [formControl]="formControl"
+    [(search)]="search"
+  >
+    {{ propertyData.name }}
+    <tui-data-list-wrapper
+      *tuiDataList
+      tuiMultiSelectGroup
+      [items]="filter(search)"
+    ></tui-data-list-wrapper>
+  </tui-multi-select>
+</ng-template>
+
+<ng-template #stringInput>
+  <tui-input
+    [formControl]="formControl"
+  >
+    {{ propertyData.name }}
+  </tui-input>
+</ng-template>
+
+<ng-template #numberInput>
+  <tui-input-count
+    [postfix]="propertyData.units || ''"
+    [formControl]="formControl"
+  >
+    {{ propertyData.name }}
+  </tui-input-count>
+</ng-template>

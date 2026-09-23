@@ -1,0 +1,138 @@
+<div class="news">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        routerLink="/news/new"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <div class="content">
+    <table
+      tuiTable
+      class="table"
+      [columns]="columns"
+    >
+      <thead>
+      <tr tuiThGroup>
+        <th
+          tuiTh
+          *tuiHead="'title'"
+        >
+          Заголовок
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'date'"
+        >
+          Дата
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'tags'"
+        >
+          Теги
+        </th>
+        <th
+          tuiTh
+          *tuiHead="'seoTags'"
+        >
+          Seo теги
+        </th>
+      </tr>
+      </thead>
+      <tbody
+        *tuiLet="(articlesData?.data || []) | tuiTableSort as sortedData"
+        tuiTbody
+        [data]="sortedData"
+      >
+      <tr
+        *ngFor="let item of sortedData"
+        tuiTr
+        [routerLink]="'/news/details/' + item._id"
+      >
+        <td
+          *tuiCell="'title'"
+          tuiTd
+        >
+          {{ item.title }}
+        </td>
+        <td
+          *tuiCell="'date'"
+          tuiTd
+        >
+          {{ item.createdAt | date }}
+        </td>
+        <td
+          *tuiCell="'tags'"
+          tuiTd
+        >
+          {{ (item.tags || []).join(', ') }}
+        </td>
+        <td
+          *tuiCell="'seoTags'"
+          tuiTd
+        >
+          {{ (item.seoTags || []).join(', ') }}
+        </td>
+      </tr>
+      <ng-container *ngIf="articlesData | apiLoadingState">
+        <tr
+          *ngFor="let item of [1, 2, 3, 4]"
+          tuiTr
+        >
+          <ng-container *ngFor="let column of columns">
+            <td
+              *tuiCell="column"
+              tuiTd
+            >
+              <span class="tui-skeleton"></span>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="articlesData?.data | apiLoadingState : 'Empty'">
+        <app-data-empty></app-data-empty>
+      </ng-container>
+      </tbody>
+    </table>
+    <tui-table-pagination
+      *ngIf="articlesData | apiLoadingState : 'Success'"
+      [items]="[10, 20, 50, 100]"
+      [total]="articlesData?.metadata?.total || 0"
+      [page]="page$ | async | paginationIndex"
+      [size]="(limit$ | async) || 0"
+      (pageChange)="changePage($event + 1)"
+      (sizeChange)="changeSize($event)"
+    ></tui-table-pagination>
+  </div>
+</div>

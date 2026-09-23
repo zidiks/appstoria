@@ -1,0 +1,67 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.news {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .content {
+    flex: 1 1 auto;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+  }
+}
+tui-table-pagination {
+  margin-top: 2rem;
+  padding: 0 0.5rem;
+}
+table {
+  width: 100%;
+  .td {
+    &-name {
+      display: flex;
+      align-items: center;
+      tui-avatar {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+  ::ng-deep {
+    tbody,
+    tr,
+    td,
+    th {
+      border-color: transparent;
+    }
+    tr {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1fr 1fr;
+      cursor: pointer;
+      &>td, th {
+        display: flex;
+        align-items: center;
+      }
+      &:not(:last-child) > td, th {
+        border-bottom: 1px solid var(--tui-base-03);
+        border-bottom-color: var(--tui-base-03);
+      }
+      &:hover > td {
+        background: var(--tui-base-02);
+      }
+    }
+  }
+}
+
+.tui-skeleton {
+  width: 100%;
+  height: 1.2rem;
+}
+
