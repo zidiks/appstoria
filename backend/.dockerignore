@@ -6,3 +6,9 @@ certs
 *.key
 *.pem
 *.crt
+.env
+.env.local
+storage
+storage_originals
+data
+.idea

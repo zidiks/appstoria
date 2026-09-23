@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+.DS_Store
+node_modules/
+.env
+.env.local
+
+# runtime data of the root docker-compose stack
+/deploy/data/
+/deploy/storage/
+/deploy/storage_originals/
