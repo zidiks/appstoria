@@ -1,0 +1,152 @@
+<div class="merchant-import">
+  <div class="header">
+    <div class="header__title">
+      <tui-breadcrumbs size="l">
+        <ng-container *ngFor="let item of breadcrumbs">
+          <a
+            *tuiItem
+            tuiLink
+            [routerLink]="item.routerLink"
+          >
+            {{ item.caption }}
+          </a>
+        </ng-container>
+      </tui-breadcrumbs>
+    </div>
+    <div class="header__actions">
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconPlus"
+        class="tui-space_right-3"
+        (click)="showAddDialog()"
+      >
+      </button>
+      <button
+        size="s"
+        tuiIconButton
+        type="button"
+        appearance="secondary"
+        icon="tuiIconRefresh"
+        class="tui-space_right-3"
+        (click)="refreshData()"
+      >
+      </button>
+    </div>
+  </div>
+  <p class="hint tui-space_top-4">
+    Товары подтягиваются из /merchant.xml другого сайта на этой платформе по расписанию.
+    Цена из фида становится ценой со скидкой, а цена «до скидки» — выше на заданный процент с округлением до красивой.
+  </p>
+  <ng-container [ngSwitch]="sources | apiLoadingStateValue">
+    <ng-container *ngSwitchCase="apiLoadingState.Success">
+      <div
+        class="content tui-space_top-4"
+        *ngIf="!(sources | apiLoadingState)"
+      >
+        <div
+          *ngFor="let source of sources || []"
+          size="l"
+          tuiIsland
+          class="source"
+        >
+          <div class="source__head">
+            <div>
+              <h3 class="tui-island__title">
+                {{ source.name }}
+                <tui-badge *ngIf="!source.enabled" status="neutral" value="выключен" size="s"></tui-badge>
+              </h3>
+              <a class="source__url" tuiLink [href]="source.url" target="_blank" rel="noopener">{{ source.url }}</a>
+            </div>
+            <div class="source__actions">
+              <button
+                tuiButton
+                size="s"
+                type="button"
+                appearance="primary"
+                icon="tuiIconRefresh"
+                [disabled]="source.running"
+                (click)="run(source)"
+              >
+                {{ source.running ? 'Идёт импорт…' : 'Запустить' }}
+              </button>
+              <button
+                tuiIconButton
+                size="s"
+                type="button"
+                appearance="secondary"
+                icon="tuiIconDraft"
+                (click)="showEditDialog(source)"
+              ></button>
+              <button
+                tuiIconButton
+                size="s"
+                type="button"
+                appearance="secondary-destructive"
+                icon="tuiIconTrash"
+                [disabled]="source.running"
+                (click)="showDeleteDialog(source)"
+              ></button>
+            </div>
+          </div>
+
+          <p class="tui-island__paragraph source__meta">
+            Каждые {{ source.intervalHours }} ч · наценка «до скидки» {{ source.markupPercent }}%
+            <ng-container *ngIf="nextRunAt(source) as next">
+              · следующий запуск {{ next | date:'dd.MM.yyyy HH:mm' }}
+            </ng-container>
+          </p>
+
+          <ng-container *ngIf="source.lastRun as lastRun; else neverRun">
+            <div class="source__status">
+              <tui-badge
+                size="m"
+                [status]="lastRun.status === 'done' ? 'success' : lastRun.status === 'failed' ? 'error' : 'info'"
+                [value]="lastRun.status === 'done' ? 'Готово' : lastRun.status === 'failed' ? 'Ошибка' : 'Идёт импорт'"
+              ></tui-badge>
+              <span>
+                {{ lastRun.startedAt | date:'dd.MM.yyyy HH:mm' }}
+                ({{ lastRun.trigger === 'manual' ? 'вручную' : 'по расписанию' }})
+              </span>
+            </div>
+            <progress
+              *ngIf="lastRun.status === 'running' && lastRun.total"
+              tuiProgressBar
+              class="tui-space_top-2"
+              [value]="lastRun.created + lastRun.updated + lastRun.unchanged + lastRun.skipped + lastRun.failed"
+              [max]="lastRun.total"
+            ></progress>
+            <p class="source__counters">
+              В фиде: <b>{{ lastRun.total }}</b> ·
+              новых: <b>{{ lastRun.created }}</b> ·
+              обновлено: <b>{{ lastRun.updated }}</b> ·
+              без изменений: <b>{{ lastRun.unchanged }}</b> ·
+              пропущено: <b>{{ lastRun.skipped }}</b> ·
+              снято с наличия: <b>{{ lastRun.hidden }}</b> ·
+              ошибок: <b>{{ lastRun.failed }}</b>
+            </p>
+            <p *ngIf="lastRun.error" class="source__error">{{ lastRun.error }}</p>
+            <details *ngIf="lastRun.warnings?.length" class="source__warnings">
+              <summary>Предупреждения ({{ lastRun.warnings.length }})</summary>
+              <ul>
+                <li *ngFor="let warning of lastRun.warnings">{{ warning }}</li>
+              </ul>
+            </details>
+          </ng-container>
+          <ng-template #neverRun>
+            <p class="tui-island__paragraph">Импорт ещё не запускался</p>
+          </ng-template>
+        </div>
+      </div>
+    </ng-container>
+    <div *ngSwitchCase="apiLoadingState.Empty">
+      <app-data-empty></app-data-empty>
+    </div>
+    <ng-container *ngSwitchCase="apiLoadingState.Pending">
+      <tui-loader class="loader" size="xl">
+      </tui-loader>
+    </ng-container>
+  </ng-container>
+</div>

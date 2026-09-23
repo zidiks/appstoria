@@ -46,13 +46,21 @@
       user-select: none;
       display: flex;
       align-items: center;
-      font-size: 4rem;
+      flex-direction: column;
       color: white;
       white-space: nowrap;
-      text-overflow: ellipsis;
-      tui-svg {
-        margin-right: 1.9rem;
-        transform: scale(2.6);
+      img {
+        display: block;
+        width: 321px;
+        max-width: 30vw;
+        height: auto;
+        // black wordmark -> white on the colourful background
+        filter: brightness(0) invert(1);
+      }
+      &__caption {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        opacity: 0.9;
       }
     }
   }

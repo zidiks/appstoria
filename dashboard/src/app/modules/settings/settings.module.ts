@@ -12,7 +12,7 @@ import {
   TuiDataListDropdownManagerModule, TuiDataListWrapperModule,
   TuiInputModule, TuiInputNumberModule, TuiInputTagModule,
   TuiIslandModule, TuiMultiSelectModule, TuiSelectModule,
-  TuiTextAreaModule, TuiTreeModule
+  TuiProgressModule, TuiTextAreaModule, TuiTreeModule
 } from "@taiga-ui/kit";
 import {
     TuiButtonModule,
@@ -37,6 +37,8 @@ import {
 import { TuiCurrencyPipeModule } from "@taiga-ui/addon-commerce";
 import {CurrencyComponent} from "./currency/currency.component";
 import {CurrencyDialogComponent} from "./currency/currency-dialog/currency-dialog.component";
+import { MerchantImportComponent } from "./merchant-import/merchant-import.component";
+import { MerchantImportDialogComponent } from "./merchant-import/merchant-import-dialog/merchant-import-dialog.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +55,8 @@ import {CurrencyDialogComponent} from "./currency/currency-dialog/currency-dialo
     DiscountDialogFixPriceComponent,
     CurrencyComponent,
     CurrencyDialogComponent,
+    MerchantImportComponent,
+    MerchantImportDialogComponent,
   ],
     imports: [
         CommonModule,
@@ -88,6 +92,7 @@ import {CurrencyDialogComponent} from "./currency/currency-dialog/currency-dialo
         TuiMapperPipeModule,
         TuiCheckboxModule,
         TuiPrimitiveCheckboxModule,
+        TuiProgressModule,
     ]
 })
 export class SettingsModule { }

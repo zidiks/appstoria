@@ -1,0 +1,80 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+.merchant-import {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .header {
+    padding: 0.6rem 1rem;
+    background: var(--tui-base-01);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hint {
+    margin-bottom: 0;
+    color: var(--tui-text-02);
+  }
+  .content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    @media (max-width: 1200px) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
+.source {
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+  &__url {
+    word-break: break-all;
+  }
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  &__meta {
+    margin-top: 0.75rem;
+  }
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+  &__counters {
+    color: var(--tui-text-02);
+    margin: 0.75rem 0 0;
+  }
+  &__error {
+    color: var(--tui-error-fill);
+    margin: 0.5rem 0 0;
+  }
+  &__warnings {
+    margin-top: 0.5rem;
+    summary {
+      cursor: pointer;
+      color: var(--tui-warning-fill);
+    }
+    ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.25rem;
+      max-height: 12rem;
+      overflow: auto;
+    }
+  }
+}
+.loader {
+  margin-top: 4rem;
+}

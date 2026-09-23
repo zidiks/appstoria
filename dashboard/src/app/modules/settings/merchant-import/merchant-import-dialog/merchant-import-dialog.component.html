@@ -1,0 +1,128 @@
+<tui-loader
+  [showLoader]="loading"
+  [overlay]="true"
+  size="xl"
+>
+  <form [formGroup]="formGroup" (ngSubmit)="submit()">
+    <tui-input
+      tuiTextfieldSize="m"
+      class="tui-space_top-3 tui-space_bottom-5"
+      formControlName="name"
+    >
+      Название источника
+    </tui-input>
+
+    <div class="url-row tui-space_bottom-5">
+      <tui-input
+        tuiTextfieldSize="m"
+        class="url-row__input"
+        formControlName="url"
+      >
+        Ссылка на merchant.xml, например https://example.by/merchant.xml
+      </tui-input>
+      <button
+        tuiButton
+        type="button"
+        size="m"
+        appearance="secondary"
+        [showLoader]="previewLoading"
+        [disabled]="!!formGroup.get('url')?.invalid"
+        (click)="checkFeed()"
+      >
+        Проверить
+      </button>
+    </div>
+
+    <div class="tui-form__row tui-form__row_multi-fields tui-space_bottom-5">
+      <tui-input-number
+        tuiTextfieldSize="m"
+        class="tui-form__multi-field"
+        formControlName="intervalHours"
+        [min]="1"
+        [max]="720"
+      >
+        Обновлять каждые, часов
+      </tui-input-number>
+      <tui-input-number
+        tuiTextfieldSize="m"
+        class="tui-form__multi-field"
+        formControlName="markupPercent"
+        [min]="0"
+        [max]="500"
+      >
+        Цена «до скидки» выше на, %
+      </tui-input-number>
+    </div>
+
+    <tui-select
+      tuiTextfieldSize="m"
+      class="tui-space_bottom-2"
+      formControlName="defaultCategoryId"
+      [valueContent]="stringifyCategory"
+    >
+      Категория для новых товаров
+      <tui-data-list-wrapper
+        *tuiDataList
+        [items]="categoryIds"
+        [itemContent]="stringifyCategory"
+      ></tui-data-list-wrapper>
+    </tui-select>
+    <p class="hint tui-space_bottom-5">
+      Используется, если на нашем сайте нет категории с тем же адресом (handle), что у источника.
+    </p>
+
+    <div class="checkboxes tui-space_bottom-5">
+      <tui-checkbox-labeled formControlName="enabled" size="l">
+        Импорт по расписанию включён
+      </tui-checkbox-labeled>
+      <tui-checkbox-labeled formControlName="matchCategoryByHandle" size="l">
+        Искать категорию по адресу из ссылки товара
+      </tui-checkbox-labeled>
+      <tui-checkbox-labeled formControlName="createNew" size="l">
+        Создавать новые товары
+      </tui-checkbox-labeled>
+      <tui-checkbox-labeled formControlName="updateContent" size="l">
+        Обновлять название, описание и фото у уже импортированных (иначе — только цену и наличие)
+      </tui-checkbox-labeled>
+      <tui-checkbox-labeled formControlName="hideMissing" size="l">
+        Снимать с наличия товары, которые пропали из фида
+      </tui-checkbox-labeled>
+    </div>
+
+    <p *ngIf="previewError" class="preview-error">{{ previewError }}</p>
+    <div *ngIf="preview" class="preview tui-space_bottom-5">
+      <p class="preview__title">
+        {{ preview.title || 'Фид' }}: товаров — <b>{{ preview.total }}</b>. Первые {{ preview.items.length }}:
+      </p>
+      <table class="preview__table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Товар</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>До скидки</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of preview.items">
+            <td><img *ngIf="item.image" [src]="item.image" alt="" loading="lazy" /></td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.categoryHandle || '—' }}</td>
+            <td>{{ item.totalPrice }} {{ item.currency }}</td>
+            <td><s>{{ item.price }}</s> <span class="preview__discount">−{{ item.discount }}%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button
+      tuiButton
+      type="submit"
+      size="m"
+      [disabled]="formGroup.invalid"
+    >
+      {{ source?._id ? 'Сохранить' : 'Добавить' }}
+    </button>
+  </form>
+</tui-loader>

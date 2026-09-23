@@ -4,6 +4,7 @@ import { DeliveryComponent } from "../delivery/delivery.component";
 import { OrderStateComponent } from "../order-state/order-state.component";
 import { DiscountComponent } from "../discount/discount.component";
 import {CurrencyComponent} from "../currency/currency.component";
+import { MerchantImportComponent } from "../merchant-import/merchant-import.component";
 
 export const settingsList: SettingsItemModel[] = [
   {
@@ -40,5 +41,12 @@ export const settingsList: SettingsItemModel[] = [
     component: CurrencyComponent,
     path: 'currency',
     icon: 'tuiIconSettingsLarge'
+  },
+  {
+    name: 'Импорт из merchant.xml',
+    description: 'Автоматическая загрузка товаров и цен с другого сайта на платформе',
+    component: MerchantImportComponent,
+    path: 'merchant-import',
+    icon: 'tuiIconDownloadLarge'
   },
 ];

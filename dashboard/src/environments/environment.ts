@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  host: 'api.macplus.by',
+  host: 'api.appstoria.by',
   port: null,
   currentOrigin: false,
   https: true,

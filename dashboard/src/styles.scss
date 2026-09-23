@@ -1,3 +1,39 @@
+// App:storia brand theme for Taiga UI 3.x (overrides @taiga-ui/core/styles/theme/variables.less).
+// styles.scss is included after taiga-ui-theme.less in angular.json, so these :root values win.
+:root {
+  // Fonts (Ubuntu is loaded from Google Fonts in index.html)
+  --tui-heading-font: 'Ubuntu', -apple-system, 'BlinkMacSystemFont', system-ui, 'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --tui-text-font: 'Ubuntu', -apple-system, 'BlinkMacSystemFont', system-ui, 'Roboto', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --tui-font-heading: var(--tui-heading-font);
+  --tui-font-text: var(--tui-text-font);
+
+  // Primary (buttons, active states)
+  --tui-primary: #2c6dec;
+  --tui-primary-hover: #1f56c4;
+  --tui-primary-active: #1a4fb8;
+  // NB: in Taiga 3 --tui-primary-text is the text colour ON the primary background, so it stays white
+  --tui-primary-text: #fff;
+
+  // Secondary (inputs and secondary buttons background) - light brand-blue tints
+  --tui-secondary: #eaf0fd;
+  --tui-secondary-hover: #dde7fc;
+  --tui-secondary-active: #d0ddfa;
+
+  // Accent (brand accent blue instead of Taiga orange)
+  --tui-accent: #0057ff;
+  --tui-accent-hover: #3379ff;
+  --tui-accent-active: #0046cc;
+  --tui-accent-text: #fff;
+
+  // Links, focus, selection
+  --tui-link: #2c6dec;
+  --tui-link-hover: #1f56c4;
+  --tui-link-night: #6c9cff;
+  --tui-link-night-hover: #2c6dec;
+  --tui-focus: rgba(44, 109, 236, 0.48);
+  --tui-selection: rgba(44, 109, 236, 0.12);
+}
+
 body {
   margin: 0;
 }

@@ -64,14 +64,21 @@
       margin-top: 1rem;
       display: flex;
       justify-content: center;
-      h2 {
+      .bar__brand {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        color: var(--tui-primary-active);
-        font-size: 1.2rem;
-        tui-svg {
-          margin-right: 0.3rem;
+        text-decoration: none;
+        img {
+          display: block;
+          height: 26px;
+          width: auto;
         }
+      }
+      .bar__caption {
+        margin-top: 0.35rem;
+        font-size: 0.75rem;
+        color: var(--tui-text-02);
       }
     }
     &__list {
