@@ -1,0 +1,178 @@
+@use "../config/variables";
+
+
+/* -------------------------------------------
+    Social Links
+        - Default Style
+        - Other Styles
+            - No Border
+            - Inline Style
+---------------------------------------------- */
+
+// Default Style
+.social-links {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.social-link {
+    margin: 2px 8px 2px 0;
+    width: 32px;
+    height: 32px;
+    line-height: 28px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    border: none !important;
+    color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color .4s, border .4s, background .4s;
+    text-align: center;
+    &:last-child { margin-right: 0; }
+    &-icon {
+        width: 20px !important;
+        height: 20px !important;
+    }
+    i {
+        letter-spacing: -.001em;
+        line-height: 1;
+    }
+    &:hover {
+        background: variables.$primary-color;
+        border-color: variables.$primary-color;
+        color: #fff;
+    }
+    &.social-facebook:hover {
+        background: variables.$social-facebook;
+        border-color: variables.$social-facebook;
+    }
+    &.social-twitter:hover {
+        background: variables.$social-twitter;
+        border-color: variables.$social-twitter;
+    }
+    &.social-linkedin:hover {
+        background: variables.$social-linkedin;
+        border-color: variables.$social-linkedin;
+    }
+    &.social-email:hover {
+        background: variables.$social-email;
+        border-color: variables.$social-email;
+    }
+    &.social-google:hover {
+        background: variables.$social-google;
+        border-color: variables.$social-google;
+    }
+    &.social-pinterest:hover {
+        background: variables.$social-pinterest;
+        border-color: variables.$social-pinterest;
+    }
+    &.social-reddit:hover {
+        background: variables.$social-reddit;
+        border-color: variables.$social-reddit;
+    }
+    &.social-tumblr:hover {
+        background: variables.$social-tumblr;
+        border-color: variables.$social-tumblr;
+    }
+    &.social-vk:hover {
+        background: variables.$social-vk;
+        border-color: variables.$social-vk;
+    }
+    &.social-whatsapp:hover {
+        background: variables.$social-whatsapp;
+        border-color: variables.$social-whatsapp;
+    }
+    &.social-xing:hover {
+        background: variables.$social-xing;
+        border-color: variables.$social-xing;
+    }
+    &.social-instagram {
+        background: variables.$social-instagram;
+        border-color: variables.$social-instagram;
+    }
+    &.social-telegram {
+        background: variables.$social-telegram;
+        border-color: variables.$social-telegram;
+    }
+    &.social-viber {
+        background: variables.$social-viber;
+        border-color: variables.$social-viber;
+    }
+    &.social-whatsapp {
+        background: variables.$social-whatsapp;
+        border-color: variables.$social-whatsapp;
+    }
+}
+
+/*
+Other Styles
+    - No Border
+    - Inline Style
+*/
+
+// No Border
+.no-border {
+    .social-link {
+        border: 0;
+        line-height: 30px;
+        &:not(:hover) {
+            background: transparent;
+        }
+    }
+}
+// Inline Style
+.inline-links {
+    .social-link {
+        display: inline-block;
+        margin-right: 2rem;
+        width: auto;
+        height: auto;
+        border: 0;
+        color: inherit;
+        &:not(:last-child) {
+            margin-right: 2rem;
+        }
+        &:hover {
+            background: transparent;
+        }
+        &.social-facebook:hover {
+            color: variables.$social-facebook;
+        }
+        &.social-twitter:hover {
+            color: variables.$social-twitter;
+        }
+        &.social-linkedin:hover {
+            color: variables.$social-linkedin;
+        }
+        &.social-email:hover {
+            color: variables.$social-email;
+        }
+        &.social-google:hover {
+            color: variables.$social-google;
+        }
+        &.social-pinterest:hover {
+            color: variables.$social-pinterest;
+        }
+        &.social-reddit:hover {
+            color: variables.$social-reddit;
+        }
+        &.social-tumblr:hover {
+            color: variables.$social-tumblr;
+        }
+        &.social-vk:hover {
+            color: variables.$social-vk;
+        }
+        &.social-whatsapp:hover {
+            color: variables.$social-whatsapp;
+        }
+        &.social-xing:hover {
+            color: variables.$social-xing;
+        }
+        &.social-instagram:hover {
+            color: variables.$social-instagram;
+        }
+    }
+}
+

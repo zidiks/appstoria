@@ -1,0 +1,27 @@
+User-agent: *
+Disallow: /*utm_
+Disallow: /*gclid=
+Disallow: /*?search=
+Disallow: /*checkout
+Disallow: /*?max_price=
+Disallow: /*min_price=
+Disallow: /*?sortby=
+Disallow: /*?per_page=
+Disallow: /*?type=list
+Disallow: /*?type=grid
+
+User-agent: Googlebot
+Disallow: /*utm_
+Disallow: /*gclid=
+Disallow: /*?search=
+Disallow: /*checkout
+Disallow: /*?max_price=
+Disallow: /*min_price=
+Disallow: /*?sortby=
+Disallow: /*?per_page=
+Disallow: /*?type=list
+Disallow: /*?type=grid
+
+Host: https://macplus.by
+
+Sitemap: https://macplus.by/sitemap.xml

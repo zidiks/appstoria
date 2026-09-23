@@ -1,0 +1,41 @@
+# Mac Plus
+
+> Интернет-магазин техники Apple в Минске с доставкой по Беларуси.
+
+Основной язык сайта — русский. Цены и наличие товаров могут меняться; актуальные данные находятся на страницах каталога и товаров.
+
+**Контакты**
+
+- Телефон: +375 (29) 6144864
+- Email: info@macplus.by
+- Адрес: г. Минск, Беларусь
+- Рабочее время: понедельник–пятница — 9:00–20:00; суббота — 10:00–17:00; воскресенье — выходной.
+
+## Основные страницы
+
+- [Главная](https://macplus.by/): Обзор магазина, популярных товаров, преимуществ и новых материалов.
+- [Каталог](https://macplus.by/shop/): Полный каталог техники Apple и аксессуаров с поиском и фильтрами.
+- [iPhone](https://macplus.by/iphone/): Каталог доступных моделей смартфонов Apple iPhone.
+- [MacBook](https://macplus.by/macbook/): Каталог ноутбуков Apple MacBook Air и MacBook Pro.
+- [Mac mini](https://macplus.by/macmini/): Каталог компактных настольных компьютеров Apple Mac mini.
+- [iPad](https://macplus.by/ipad/): Каталог планшетов Apple iPad, iPad Air, iPad Pro и iPad mini.
+- [Apple Watch](https://macplus.by/apple-watch/): Каталог умных часов Apple Watch разных серий.
+- [AirPods](https://macplus.by/airpods/): Каталог наушников Apple AirPods и AirPods Max.
+- [Аксессуары](https://macplus.by/accessories/): Аксессуары Apple и Baseus, зарядные устройства, кабели, аккумуляторы и USB-хабы.
+
+## Покупателям
+
+- [Доставка](https://macplus.by/pages/delivery-terms/): Условия и способы доставки заказов.
+- [Оплата](https://macplus.by/pages/payment-terms/): Доступные способы и условия оплаты.
+- [Гарантия](https://macplus.by/pages/warranty/): Условия гарантии и сервисного обслуживания техники.
+- [Trade-in](https://macplus.by/pages/trade-in/): Условия обмена старой техники на новую.
+- [Отзывы](https://macplus.by/pages/reviews/): Отзывы покупателей о магазине Mac Plus.
+- [Контакты](https://macplus.by/pages/contact-us/): Телефон, электронная почта, адрес и форма обратной связи.
+- [Блог](https://macplus.by/blog/): Обзоры, новости и материалы о технике Apple.
+
+## Optional
+
+- [Обзор iPad Air M4](https://macplus.by/blog/ipad-air-m4-novaya-era-proizvoditelnosti-i-dostupnosti/): Возможности и производительность планшета iPad Air M4.
+- [Обзор iPhone 17e](https://macplus.by/blog/iphone-17e-moschnyy-start-v-ekosisteme-apple-2026-goda/): Возможности доступной модели в линейке iPhone 17.
+- [Обзор AirPods Max 2](https://macplus.by/blog/novaya-era-zvuka-polnyy-obzor-airpods-max-2-2026/): Особенности второго поколения полноразмерных наушников Apple.
+- [Обзор MacBook Air M5](https://macplus.by/blog/samyy-populyarnyy-noutbuk-na-novyy-lad-polnyy-obzor-macbook-air-m5/): Возможности и сценарии использования MacBook Air M5.
