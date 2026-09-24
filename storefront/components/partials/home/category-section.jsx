@@ -44,15 +44,13 @@ export default function CategorySection({ recProducts }) {
                         <li>
                           {item.discount > 0 ? (
                             <span>
-                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}>от</span>
                               <s>{item.price} BYN</s>
                               <br />
-                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}> {item.totalPrice} BYN</span>
+                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}>от {item.totalPrice} BYN</span>
                             </span>
                           ) : (
                             <span>
-                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}>от</span>
-                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}> {item.totalPrice} BYN</span>
+                              <span style={{ fontSize: '1.6rem', color: 'black', fontWeight: '500' }}>от {item.totalPrice} BYN</span>
                               <br />
                               <br />
                             </span>
