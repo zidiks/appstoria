@@ -352,7 +352,9 @@ export const getCartCount = (cartItems) => {
  */
 export const toDecimal = (price, fixedCount = 2) => {
   if (!price) return 0;
-  return price.toLocaleString(undefined, {
+  // Локаль явно: на сервере системная может быть английской (2,349.00 вместо 2 349,00),
+  // и разметка SSR разошлась бы с браузерной
+  return price.toLocaleString('ru-RU', {
     minimumFractionDigits: fixedCount,
     maximumFractionDigits: fixedCount,
   });

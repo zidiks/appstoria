@@ -1,5 +1,3 @@
-import {getArticles} from "~/utils/endpoints/articles";
-import { FEATURES } from '~/site.config';
 import {getCategories} from "~/utils/endpoints/categoryTree";
 import {getProducts} from "~/utils/endpoints/products";
 import {getAllSeo} from "~/utils/endpoints/seo";
@@ -7,7 +5,7 @@ import {SITE_URL} from '~/utils/site';
 
 const host = SITE_URL;
 
-function generateSiteMap({posts, categories, products, filters}) {
+function generateSiteMap({categories, products, filters}) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
@@ -40,16 +38,6 @@ function generateSiteMap({posts, categories, products, filters}) {
          </url>
         `;
      }).join('')}
-     ${FEATURES.blog ? `<url>
-       <loc>${host}/blog</loc>
-     </url>` : ''}
-     ${(FEATURES.blog ? posts?.data || [] : []).map(item => {
-      return `
-       <url>
-           <loc>${`${host}/blog/${item.seo?.seoUrl}`}</loc>
-       </url>
-      `;
-     }).join('')}
    </urlset>
  `;
 }
@@ -57,7 +45,6 @@ function generateSiteMap({posts, categories, products, filters}) {
 function SiteMap() { }
 
 export async function getServerSideProps({ res }) {
-  const posts = FEATURES.blog ? await getArticles(1, 1000) : null;
   const categories = await getCategories();
   const filters = (await getAllSeo() || []).filter((item) => {
     return item.url?.includes('/filter/')
@@ -70,7 +57,7 @@ export async function getServerSideProps({ res }) {
     },
   });
 
-  const sitemap = generateSiteMap({posts, categories, products, filters});
+  const sitemap = generateSiteMap({categories, products, filters});
 
   res.setHeader('Content-Type', 'text/xml');
   res.write(sitemap);

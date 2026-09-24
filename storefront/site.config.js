@@ -17,14 +17,6 @@ export const PRICE_MARKUP = {
 };
 
 /**
- * Разделы витрины. blog: false — /blog редиректит на главную, блок блога на главной,
- * пункт меню и записи в sitemap скрыты, слайды и баннеры (это тоже статьи) — без ссылок.
- */
-export const FEATURES = {
-  blog: false,
-};
-
-/**
  * Слайдер на главной.
  *   source: 'fields'   — картинки из полей-картинок админки (fields), пустые пропускаются;
  *   source: 'articles' — статьи с флагом «слайд», как на macplus.
@@ -72,8 +64,6 @@ export const FIELDS = {
   'product-seo-header': { source: 'config', value: '{TITLE}' },
   'product-seo-title': { source: 'config', value: '{TITLE} — купить в Гродно и Беларуси | App:storia' },
   'product-seo-description': { source: 'config', value: '✅ {TITLE} по выгодной цене с доставкой по Беларуси. ⭐ Купить {CATEGORY} в App:storia.' },
-  'blog-seo-title': { source: 'config', value: '{TITLE} | Блог App:storia' },
-  'blog-seo-description': { source: 'config', value: '{TITLE}. Полезные статьи про технику Apple от App:storia.' },
 
   // Фиды /ymlfeed.xml и /merchant.xml
   'yml-feed-name': { source: 'config', value: 'App:storia' },

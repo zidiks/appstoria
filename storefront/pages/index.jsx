@@ -3,9 +3,6 @@ import IntroSection from '~/components/partials/home/intro-section';
 import CategorySection from '~/components/partials/home/category-section';
 import BannerSection from '~/components/partials/home/banner-section';
 import ServiceBox from '~/components/partials/home/service-section';
-import BlogSection from '~/components/partials/home/blog-section';
-import {getLatestArticles} from '~/utils/endpoints/articles';
-import { FEATURES } from '~/site.config';
 import {getRecProducts} from "~/utils/endpoints/products";
 import {getSlides} from "~/utils/endpoints/slides";
 import {getFieldsObject} from '~/utils/endpoints/fields';
@@ -20,14 +17,12 @@ import {SITE_DESCRIPTION, SITE_NAME} from "~/utils/site";
 export const getStaticProps = (async () => {
   try {
   const [
-    articles,
     recProducts,
     slides,
     features,
     fields,
     seoMainMeta,
   ] = await Promise.all([
-    FEATURES.blog ? getLatestArticles() : { data: [] },
     getRecProducts(),
     getSlides(),
     getFieldsObject('features_1', 'features_2', 'features_3', 'features_4'),
@@ -36,7 +31,6 @@ export const getStaticProps = (async () => {
   ]);
   return {
     props: {
-      articles: articles.data,
       recProducts: recProducts.data,
       slides: slides.data,
       fields: fields,
@@ -49,7 +43,6 @@ export const getStaticProps = (async () => {
     console.error('[Home data unavailable]', error?.message || error);
     return {
       props: {
-        articles: [],
         recProducts: [],
         slides: [],
         fields: {},
@@ -61,7 +54,7 @@ export const getStaticProps = (async () => {
   }
 })
 
-export default function HomePage({ articles, recProducts, slides, fields, features, categoryTree, mainSeo }) {
+export default function HomePage({ recProducts, slides, fields, features, categoryTree, mainSeo }) {
   return (
     <div className="main home mt-lg-4 homepage">
       <Head>
@@ -89,10 +82,8 @@ export default function HomePage({ articles, recProducts, slides, fields, featur
           tradeInTitle={fields['trade-in-title']}
         />
 
-        {/* Без блога под иконками сразу футер — возвращаем отступ, который давала секция блога */}
-        <ServiceBox fields={features} className={FEATURES.blog ? '' : 'mb-10'}/>
+        <ServiceBox fields={features} className="mb-10"/>
 
-        {FEATURES.blog && <BlogSection posts={articles}/>}
 
         { mainSeo?.content && (
           <div
