@@ -36,7 +36,7 @@ export function rebrandText(text) {
     .split(PROTECTED_TOKEN)
     .map((part, index) => {
       if (index % 2 === 1) {
-        return part.replace(SITE_HOST, '$1app-storia.by');
+        return part.replace(SITE_HOST, '$1appstoria.by');
       }
       return TEXT_REPLACEMENTS.reduce(
         (acc, [pattern, replacement]) => acc.replace(pattern, replacement),

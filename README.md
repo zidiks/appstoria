@@ -1,12 +1,12 @@
 # App:storia
 
-Монорепо интернет-магазина [app-storia.by](https://app-storia.by) — форк платформы mac-plus.
+Монорепо интернет-магазина [appstoria.by](https://appstoria.by) — форк платформы mac-plus.
 
 | Папка | Что это | Стек | Домен |
 |---|---|---|---|
-| `backend/` | API | NestJS 9, MongoDB | api.app-storia.by |
-| `storefront/` | Витрина | Next.js 15 | app-storia.by |
-| `dashboard/` | Админка | Angular 14, Taiga UI | admin.app-storia.by |
+| `backend/` | API | NestJS 9, MongoDB | api.appstoria.by |
+| `storefront/` | Витрина | Next.js 15 | appstoria.by |
+| `dashboard/` | Админка | Angular 14, Taiga UI | admin.appstoria.by |
 | `deploy/` | Caddy (reverse proxy + HTTPS) | | |
 | `branding/` | Исходники логотипов | | |
 
@@ -20,7 +20,7 @@ git subtree pull --prefix=dashboard ../mac-plus-dashboard main
 
 ## Деплой на VPS
 
-Нужны Docker с compose-плагином и DNS: `app-storia.by`, `www.app-storia.by`, `api.app-storia.by` и `admin.app-storia.by` смотрят на IP сервера. Порты 80 и 443 должны быть открыты.
+Нужны Docker с compose-плагином и DNS: `appstoria.by`, `www.appstoria.by`, `api.appstoria.by` и `admin.appstoria.by` смотрят на IP сервера. Порты 80 и 443 должны быть открыты.
 
 ```bash
 git clone https://github.com/zidiks/appstoria.git && cd appstoria
@@ -53,4 +53,4 @@ docker compose exec mongo sh -c 'mongodump -u "$MONGO_INITDB_ROOT_USERNAME" -p "
 
 ## Что заполнить в админке после первого запуска
 
-Раздел «Поля»: `phone`, `email`, `address`, `work_time`, `legal`, `copyright`, `instagram` / `telegram` / `viber` / `whatsapp`, `main-seo-title`, `main-seo-description`, `yml-feed-name`, `yml-feed-link` (`https://app-storia.by`), `yml-feed-company`, `yml-feed-delivery`, `yandex-reviews-org` (ID организации в Яндекс Картах для виджета отзывов), тексты страниц `delivery-terms`, `payment-terms`, `warranty`, `privacy-policy`, `public-offer`.
+Раздел «Поля»: `phone`, `email`, `address`, `work_time`, `legal`, `copyright`, `instagram` / `telegram` / `viber` / `whatsapp`, `main-seo-title`, `main-seo-description`, `yml-feed-name`, `yml-feed-link` (`https://appstoria.by`), `yml-feed-company`, `yml-feed-delivery`, `yandex-reviews-org` (ID организации в Яндекс Картах для виджета отзывов), тексты страниц `delivery-terms`, `payment-terms`, `warranty`, `privacy-policy`, `public-offer`.

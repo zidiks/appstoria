@@ -226,7 +226,7 @@ export class PublicFormProtectionService {
         .filter(Boolean);
     }
 
-    const origins = ['https://app-storia.by', 'https://www.app-storia.by'];
+    const origins = ['https://appstoria.by', 'https://www.appstoria.by'];
 
     if (process.env.NODE_ENV !== 'prod') {
       origins.push(

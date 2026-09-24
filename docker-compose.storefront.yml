@@ -1,7 +1,7 @@
-# Временный режим: только витрина app-storia.by поверх бэка macplus.
+# Временный режим: только витрина appstoria.by поверх бэка macplus.
 #   docker compose -f docker-compose.storefront.yml up -d --build
 # Нужен .env с SITE_DOMAIN и ACME_EMAIL (остальное — по умолчанию ниже).
-# На бэке macplus в CORS_ORIGINS и PUBLIC_FORM_ALLOWED_ORIGINS должен быть app-storia.by.
+# На бэке macplus в CORS_ORIGINS и PUBLIC_FORM_ALLOWED_ORIGINS должен быть appstoria.by.
 
 services:
   storefront:
@@ -9,8 +9,8 @@ services:
       context: ./storefront
       args:
         API_HOST: ${API_HOST:-https://api.macplus.by}
-        NEXT_PUBLIC_HOST: https://${SITE_DOMAIN:-app-storia.by}
-        # Ключ виджета macplus: в Cloudflare добавить app-storia.by в его hostnames
+        NEXT_PUBLIC_HOST: https://${SITE_DOMAIN:-appstoria.by}
+        # Ключ виджета macplus: в Cloudflare добавить appstoria.by в его hostnames
         TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:-0x4AAAAAADygPJz9Vg2Cf5kV}
     container_name: appstoria-storefront
     restart: always
@@ -26,7 +26,7 @@ services:
       - "443:443"
       - "443:443/udp"
     environment:
-      SITE_DOMAIN: ${SITE_DOMAIN:-app-storia.by}
+      SITE_DOMAIN: ${SITE_DOMAIN:-appstoria.by}
       ACME_EMAIL: ${ACME_EMAIL:-hello@app-storia.by}
     volumes:
       - ./deploy/Caddyfile.storefront:/etc/caddy/Caddyfile:ro

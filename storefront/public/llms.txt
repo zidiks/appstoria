@@ -12,22 +12,22 @@
 - Рабочее время: каждый день — 12:00–20:00.
 - Instagram: https://www.instagram.com/appstoria/
 - ВКонтакте: https://vk.com/appstoria.grodno
-- Facebook: https://www.facebook.com/app-storia.by/
+- Facebook: https://www.facebook.com/appstoria.by/
 
 ## Основные страницы
 
-- [Главная](https://app-storia.by/): Обзор магазина, популярных товаров, преимуществ и новых материалов.
-- [Каталог](https://app-storia.by/shop/): Полный каталог техники Apple и аксессуаров с поиском и фильтрами.
+- [Главная](https://appstoria.by/): Обзор магазина, популярных товаров, преимуществ и новых материалов.
+- [Каталог](https://appstoria.by/shop/): Полный каталог техники Apple и аксессуаров с поиском и фильтрами.
 
 ## Покупателям
 
-- [Доставка](https://app-storia.by/pages/delivery-terms/): Условия и способы доставки заказов.
-- [Оплата](https://app-storia.by/pages/payment-terms/): Доступные способы и условия оплаты.
-- [Гарантия](https://app-storia.by/pages/warranty/): Условия гарантии и сервисного обслуживания техники.
-- [Trade-in](https://app-storia.by/pages/trade-in/): Условия обмена старой техники на новую.
-- [Отзывы](https://app-storia.by/pages/reviews/): Отзывы покупателей о магазине App:storia.
-- [Контакты](https://app-storia.by/pages/contact-us/): Телефон, электронная почта, адрес и форма обратной связи.
+- [Доставка](https://appstoria.by/pages/delivery-terms/): Условия и способы доставки заказов.
+- [Оплата](https://appstoria.by/pages/payment-terms/): Доступные способы и условия оплаты.
+- [Гарантия](https://appstoria.by/pages/warranty/): Условия гарантии и сервисного обслуживания техники.
+- [Trade-in](https://appstoria.by/pages/trade-in/): Условия обмена старой техники на новую.
+- [Отзывы](https://appstoria.by/pages/reviews/): Отзывы покупателей о магазине App:storia.
+- [Контакты](https://appstoria.by/pages/contact-us/): Телефон, электронная почта, адрес и форма обратной связи.
 
 ## Optional
 
-- [Карта сайта](https://app-storia.by/sitemap.xml): Полный список страниц каталога, товаров и статей.
+- [Карта сайта](https://appstoria.by/sitemap.xml): Полный список страниц каталога, товаров и статей.

@@ -22,6 +22,6 @@ Disallow: /*?per_page=
 Disallow: /*?type=list
 Disallow: /*?type=grid
 
-Host: https://app-storia.by
+Host: https://appstoria.by
 
-Sitemap: https://app-storia.by/sitemap.xml
+Sitemap: https://appstoria.by/sitemap.xml

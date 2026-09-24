@@ -77,7 +77,7 @@ export const FIELDS = {
 
   // Фиды /ymlfeed.xml и /merchant.xml
   'yml-feed-name': { source: 'config', value: 'App:storia' },
-  'yml-feed-link': { source: 'config', value: 'https://app-storia.by' },
+  'yml-feed-link': { source: 'config', value: 'https://appstoria.by' },
   'yml-feed-company': { source: 'config', value: 'ООО «ПольМари»' },
   'yml-feed-delivery': { source: 'config', value: 'true' },
 
@@ -125,10 +125,10 @@ export const SEO_BY_URL = {
  */
 export const TEXT_REPLACEMENTS = [
   // Домен сайта (но не api.macplus.by — оттуда картинки)
-  [/(?<![\w.-])(?:www\.)?macplus\.by/gi, 'app-storia.by'],
+  [/(?<![\w.-])(?:www\.)?macplus\.by/gi, 'appstoria.by'],
   [/\bmac\s?plus\b/gi, 'App:storia'],
   [/в Минске/g, 'в Беларуси'],
 ];
 
 /** Метка в комментарии заказа, чтобы в админке бэка отличать заказы с этой витрины */
-export const ORDER_COMMENT_TAG = '[app-storia.by]';
+export const ORDER_COMMENT_TAG = '[appstoria.by]';
