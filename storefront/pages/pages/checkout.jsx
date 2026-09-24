@@ -13,7 +13,7 @@ import PhoneInput, {isValidPhoneNumber} from 'react-phone-number-input';
 import ru from '~/public/labels/ru';
 import Head from "next/head";
 import TurnstileWidget from '~/components/features/turnstile';
-import { ORDER_COMMENT_TAG } from '~/site.config';
+import { SOURCE_TAG } from '~/site.config';
 import {getPublicFormErrorMessage} from '~/utils/endpoints/public-form';
 import FormStatus from '~/components/features/form-status';
 
@@ -131,7 +131,7 @@ function Checkout(props) {
     orderObj.cartItems = cartList.map(el => ({ productId: el._id, count: el.qty }));
     orderObj.turnstileToken = turnstileToken;
     // Заказ уходит в общую админку — помечаем, с какой витрины он пришёл
-    orderObj.delivery.comment = [ORDER_COMMENT_TAG, obj.comment?.trim()].filter(Boolean).join(' ');
+    orderObj.delivery.comment = [SOURCE_TAG, obj.comment?.trim()].filter(Boolean).join('\n');
     if (obj.email) {
       orderObj.customer.email = obj.email.trim();
     }
