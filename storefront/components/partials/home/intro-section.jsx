@@ -4,6 +4,14 @@ import Image from 'next/image';
 import MpCarousel from "~/components/features/mp-carousel";
 import {SwiperSlide} from "swiper/react";
 import Link from "next/link";
+import { FEATURES } from '~/site.config';
+
+// Слайды — это статьи блога; пока блог скрыт, слайд просто картинка
+function SlideLink({ seoUrl, children }) {
+  return FEATURES.blog
+    ? <Link href={`/blog/${seoUrl || '#'}`}>{children}</Link>
+    : <>{children}</>;
+}
 
 function IntroSection({ slides }) {
   const [index, setIndex] = useState(0);
@@ -33,7 +41,7 @@ function IntroSection({ slides }) {
           >
             {(slides || []).map((item, index) => (
               <SwiperSlide key={index}>
-                <Link href={`/blog/${item.seo?.seoUrl || '#'}`}>
+                <SlideLink seoUrl={item.seo?.seoUrl}>
                   <div className="intro-section-carousel-item">
                     <Image
                       className="intro-section-carousel-img"
@@ -47,7 +55,7 @@ function IntroSection({ slides }) {
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1400px"
                     />
                   </div>
-                </Link>
+                </SlideLink>
               </SwiperSlide>
             ))}
           </MpCarousel>

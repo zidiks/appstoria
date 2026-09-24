@@ -5,6 +5,7 @@ import BannerSection from '~/components/partials/home/banner-section';
 import ServiceBox from '~/components/partials/home/service-section';
 import BlogSection from '~/components/partials/home/blog-section';
 import {getLatestArticles} from '~/utils/endpoints/articles';
+import { FEATURES } from '~/site.config';
 import {getRecProducts} from "~/utils/endpoints/products";
 import {getSlides} from "~/utils/endpoints/slides";
 import {getFieldsObject} from '~/utils/endpoints/fields';
@@ -26,7 +27,7 @@ export const getStaticProps = (async () => {
     fields,
     seoMainMeta,
   ] = await Promise.all([
-    getLatestArticles(),
+    FEATURES.blog ? getLatestArticles() : { data: [] },
     getRecProducts(),
     getSlides(),
     getFieldsObject('features_1', 'features_2', 'features_3', 'features_4'),
@@ -90,7 +91,7 @@ export default function HomePage({ articles, recProducts, slides, fields, featur
 
         <ServiceBox fields={features}/>
 
-        <BlogSection posts={articles}/>
+        {FEATURES.blog && <BlogSection posts={articles}/>}
 
         { mainSeo?.content && (
           <div

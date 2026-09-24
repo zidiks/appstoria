@@ -8,6 +8,7 @@ import InlineSVG from "react-inlinesvg";
 import {chevronForwardOutlineIcon} from "~/icons/chevron-forward-outline";
 import {homeOutlineIcon} from "~/icons/home-outline";
 import {SITE_URL} from '~/utils/site';
+import { FEATURES } from '~/site.config';
 
 export default function Category({ banner, products, filters, category, page, filterObject, filtersPairs, fullPath, mainSeo, seoFields, searchValue }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -110,9 +111,11 @@ export default function Category({ banner, products, filters, category, page, fi
                       {banner.description}
                     </h4>
                     <h1 className="banner-title font-weight-bold ls-normal text-uppercase">{banner.title}</h1>
-                    <ALink href={`/blog/${banner.seo?.seoUrl || '#'}`} className="btn btn-outline btn-dark btn-rounded">
-                      Подробнее
-                    </ALink>
+                    {FEATURES.blog && (
+                      <ALink href={`/blog/${banner.seo?.seoUrl || '#'}`} className="btn btn-outline btn-dark btn-rounded">
+                        Подробнее
+                      </ALink>
+                    )}
                   </div>
                 </div>
               )}

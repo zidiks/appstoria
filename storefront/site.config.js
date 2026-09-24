@@ -17,6 +17,14 @@ export const PRICE_MARKUP = {
 };
 
 /**
+ * Разделы витрины. blog: false — /blog редиректит на главную, блок блога на главной,
+ * пункт меню и записи в sitemap скрыты, слайды и баннеры (это тоже статьи) — без ссылок.
+ */
+export const FEATURES = {
+  blog: false,
+};
+
+/**
  * Поля «админки» (Field на бэке, /field/object?code=...).
  *   source: 'config' — всегда берём value отсюда, бэк не спрашиваем;
  *   source: 'api'    — берём из админки бэка (и прогоняем через TEXT_REPLACEMENTS,

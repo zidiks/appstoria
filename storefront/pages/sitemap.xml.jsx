@@ -1,4 +1,5 @@
 import {getArticles} from "~/utils/endpoints/articles";
+import { FEATURES } from '~/site.config';
 import {getCategories} from "~/utils/endpoints/categoryTree";
 import {getProducts} from "~/utils/endpoints/products";
 import {getAllSeo} from "~/utils/endpoints/seo";
@@ -39,10 +40,10 @@ function generateSiteMap({posts, categories, products, filters}) {
          </url>
         `;
      }).join('')}
-     <url>
+     ${FEATURES.blog ? `<url>
        <loc>${host}/blog</loc>
-     </url>
-     ${(posts?.data || []).map(item => {
+     </url>` : ''}
+     ${(FEATURES.blog ? posts?.data || [] : []).map(item => {
       return `
        <url>
            <loc>${`${host}/blog/${item.seo?.seoUrl}`}</loc>
@@ -56,7 +57,7 @@ function generateSiteMap({posts, categories, products, filters}) {
 function SiteMap() { }
 
 export async function getServerSideProps({ res }) {
-  const posts = await getArticles(1, 1000);
+  const posts = FEATURES.blog ? await getArticles(1, 1000) : null;
   const categories = await getCategories();
   const filters = (await getAllSeo() || []).filter((item) => {
     return item.url?.includes('/filter/')

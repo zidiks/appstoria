@@ -3,6 +3,7 @@ import {useRouter} from 'next/router';
 import ALink from '~/components/features/custom-link';
 import PostOne from '~/components/features/post/post-one';
 import {getArticles} from '~/utils/endpoints/articles';
+import { FEATURES } from '~/site.config';
 import BlogPagination from "~/components/features/blog-pagination";
 import Head from "next/head";
 import InlineSVG from "react-inlinesvg";
@@ -10,6 +11,9 @@ import {homeOutlineIcon} from "~/icons/home-outline";
 import {chevronForwardOutlineIcon} from "~/icons/chevron-forward-outline";
 
 export const getStaticProps = async () => {
+  if (!FEATURES.blog) {
+    return { notFound: true };
+  }
   const pagination = {
     page: 1,
     limit: 8,
