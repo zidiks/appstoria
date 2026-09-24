@@ -38,7 +38,8 @@ export const SLIDES = {
  * Поля «админки» (Field на бэке, /field/object?code=...).
  *   source: 'config' — всегда берём value отсюда, бэк не спрашиваем;
  *   source: 'api'    — берём из админки бэка (и прогоняем через TEXT_REPLACEMENTS,
- *                      если не указано rebrand: false).
+ *                      если не указано rebrand: false). С from: 'другой-код' значение
+ *                      берётся из другого поля бэка — так заводим поля только для appstoria.
  * Поля, которых здесь нет, берутся из бэка как есть.
  */
 export const FIELDS = {
@@ -88,8 +89,8 @@ export const FIELDS = {
   'nav-limit': { source: 'config', value: '7' },
   'nav-sale-title': { source: 'config', value: 'Купить сейчас' },
   'nav-sale-link': { source: 'config', value: '/macbook/apple-macbook-air-13-m4/' },
-  // Имя файла в хранилище бэка (/storage/images/...)
-  'nav-sale-image': { source: 'config', value: 'f89820020d539e.webp' },
+  // Картинка в выпадающем меню каталога — отдельное поле appstoria в админке macplus
+  'nav-sale-image': { source: 'api', from: 'appstoria-nav-sale-image' },
 
   // Trade-in
   'trade-in-title': { source: 'config', value: 'На всю технику' },

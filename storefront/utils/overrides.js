@@ -103,18 +103,30 @@ export function transformApiPayload(url, payload) {
   return payload;
 }
 
-/** Какие из запрошенных полей реально нужно спрашивать у бэка */
+/** Под каким кодом поле лежит на бэке (from — поле-замена только для этой витрины) */
+function backendCode(code) {
+  return FIELDS[code]?.from || code;
+}
+
+/** Какие поля реально нужно спрашивать у бэка */
 export function apiFieldCodes(codes) {
-  return codes.filter((code) => FIELDS[code]?.source !== 'config');
+  return [
+    ...new Set(
+      codes.filter((code) => FIELDS[code]?.source !== 'config').map(backendCode),
+    ),
+  ];
 }
 
 export function applyFieldOverrides(codes, apiFields = {}) {
-  const result = { ...apiFields };
+  const result = {};
   for (const code of codes) {
     const override = FIELDS[code];
     if (override?.source === 'config') {
       result[code] = override.value;
-    } else if (override?.rebrand !== false && typeof result[code] === 'string') {
+      continue;
+    }
+    result[code] = apiFields[backendCode(code)];
+    if (override?.rebrand !== false && typeof result[code] === 'string') {
       result[code] = rebrandText(result[code]);
     }
   }

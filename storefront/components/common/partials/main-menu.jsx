@@ -50,14 +50,16 @@ function MainMenu({ router, categoryTree, layoutFields }) {
                       style={{ height: "500px", width: "350px" }}
                       className="menu-banner menu-banner1 banner banner-fixed"
                     >
-                      <Image
-                        style={{ objectFit: "cover", objectPosition: "left top", borderRadius: ".6rem" }}
-                        src={getImgPath(layoutFields["nav-sale-image"])}
-                        alt="Menu banner"
-                        loading="lazy"
-                        width={884}
-                        height={1320}
-                      />
+                      {layoutFields["nav-sale-image"] && (
+                        <Image
+                          style={{ objectFit: "cover", objectPosition: "left top", borderRadius: ".6rem" }}
+                          src={getImgPath(layoutFields["nav-sale-image"])}
+                          alt="Menu banner"
+                          loading="lazy"
+                          width={884}
+                          height={1320}
+                        />
+                      )}
                       <div className="banner-content y-50">
                         <ALink
                           href={layoutFields["nav-sale-link"] || "#"}
