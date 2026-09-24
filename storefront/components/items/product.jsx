@@ -103,7 +103,7 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
         const items = [{
           item_name: product.name || '',
           item_id: product._id,
-          price: product.price || 0,
+          price: product.totalPrice || product.price || 0,
           item_brand: product.brand?.name || '',
           item_category: categoryString,
           quantity: 1
@@ -111,7 +111,7 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
         const ymItems = [{
           id: product._id,
           name: product.name || '',
-          price: product.price || 0,
+          price: product.totalPrice || product.price || 0,
           brand: product.brand?.name || '',
           category: categoryString,
           quantity: 1
@@ -170,7 +170,7 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
       const items = [{
         item_name: product.name || '',
         item_id: product._id,
-        price: product.price || 0,
+        price: product.totalPrice || product.price || 0,
         item_brand: product.brand?.name || '',
         item_category: product.category?.name || '',
         quantity: 1
@@ -178,7 +178,7 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
       const ymItems = [{
         id: product._id,
         name: product.name || '',
-        price: product.price || 0,
+        price: product.totalPrice || product.price || 0,
         brand: product.brand?.name || '',
         category: product.category?.name || '',
         quantity: 1

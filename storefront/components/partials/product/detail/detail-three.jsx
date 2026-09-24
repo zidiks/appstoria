@@ -149,7 +149,7 @@ function DetailThree(props) {
                     />
                     <div className="additional-container-content-item-text">
                       <span className="additional-container-content-item-name">{item.name}</span>
-                      <span className="additional-container-content-item-price">от {toDecimal(item.price)} BYN</span>
+                      <span className="additional-container-content-item-price">от {toDecimal(item.totalPrice || item.price)} BYN</span>
                     </div>
                     <div className={clsx('additional-container-content-item-ckeckbox', {
                       'additional-container-content-item-ckeckbox-active': isActive,

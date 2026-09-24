@@ -1,3 +1,5 @@
+import { transformApiPayload } from '~/utils/overrides';
+
 const DEFAULT_TIMEOUT_MS = 8_000;
 const DEFAULT_RETRY_DELAY_MS = 400;
 const RETRYABLE_STATUSES = new Set([408, 500, 502, 503, 504]);
@@ -82,7 +84,7 @@ export async function fetchJson(url, options = {}) {
         );
       }
 
-      return payload;
+      return transformApiPayload(url, payload);
     } catch (error) {
       const requestError = normalizeRequestError(error, url, timeoutMs);
       const shouldRetry =

@@ -10,6 +10,7 @@ import React from "react";
 import Head from 'next/head'
 import ServiceUnavailable from '~/components/features/service-unavailable';
 import {resolveLayoutData} from '~/utils/layout-data-cache';
+import {applyFieldOverrides} from '~/utils/overrides';
 import {isTemporaryApiError} from '~/utils/endpoints/fetch-json';
 import {
   CONTACTS,
@@ -158,6 +159,25 @@ const App = ({Component, pageProps}) => {
   )
 };
 
+const LAYOUT_FIELD_CODES = [
+  "telegram",
+  "viber",
+  "instagram",
+  "whatsapp",
+  "phone",
+  "email",
+  "address",
+  "work_time",
+  "copyright",
+  "legal",
+  "nav-sale-title",
+  "nav-sale-link",
+  "nav-sale-image",
+  "main-seo-title",
+  "main-seo-description",
+  "nav-limit",
+];
+
 App.getInitialProps = async ({Component, ctx}) => {
   const [
     categoryTreeResult,
@@ -166,24 +186,7 @@ App.getInitialProps = async ({Component, ctx}) => {
   ] = await Promise.allSettled([
     getCategoryTree(),
     getMenuByCode("footer_nav"),
-    getFieldsObject(
-      "telegram",
-      "viber",
-      "instagram",
-      "whatsapp",
-      "phone",
-      "email",
-      "address",
-      "work_time",
-      "copyright",
-      "legal",
-      "nav-sale-title",
-      "nav-sale-link",
-      "nav-sale-image",
-      "main-seo-title",
-      "main-seo-description",
-      "nav-limit"
-    )
+    getFieldsObject(...LAYOUT_FIELD_CODES)
   ]);
   const categoryTree = resolveLayoutData(
     'categoryTree',
@@ -198,7 +201,8 @@ App.getInitialProps = async ({Component, ctx}) => {
   const layoutFields = resolveLayoutData(
     'layoutFields',
     layoutFieldsResult,
-    {},
+    // Бэк недоступен — захардкоженные в site.config.js поля всё равно показываем
+    applyFieldOverrides(LAYOUT_FIELD_CODES),
   );
   let pageProps = {};
   if (Component.getInitialProps) {
