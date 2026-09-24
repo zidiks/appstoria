@@ -17,9 +17,9 @@ function BannerSection({ tradeInTitle, tradeInSubtitle, tradeInDescription }) {
               <div>
                 <Image src={gearImage} alt="guarantee" title="guarantee" width={60} height={60} loading="lazy" className="banner-icon mb-4" />
               </div>
-              <span className="banner-title text-white ls-normal lh-1">{tradeInTitle}</span>
-              <span className="banner-title text-white ls-normal lh-1">{tradeInSubtitle}</span>
-              <span className="banner-title text-white ls-normal lh-1">{tradeInDescription}</span>
+              {[tradeInTitle, tradeInSubtitle, tradeInDescription].filter(Boolean).map((line) => (
+                <span key={line} className="banner-title text-white ls-normal lh-1">{line}</span>
+              ))}
             </div>
           </div>
         </Reveal>

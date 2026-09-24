@@ -39,13 +39,13 @@ export const LEGAL = {
   unp: '491468179',
   regDate: '10.11.2023',
   // Юридический адрес (оферта, политика ПД: место нахождения и адрес для заявлений)
-  address: '',
+  address: 'г. Гродно, ул. Подольная 37, 1-й этаж (здание кафе «Шервуд»)',
   // Банковские реквизиты одной строкой: р/с, банк, БИК
   bank: '',
   // Почта для обращений по персональным данным
   pdEmail: '',
-  // Где проходит сервисное обслуживание (гарантия): название и адрес
-  serviceCenter: '',
+  // Где проходит сервисное обслуживание (гарантия): «…которое осуществляется в {serviceCenter}»
+  serviceCenter: 'сервисном центре «Appstoria» по адресу г. Гродно, ул. Подольная 37',
 };
 
 const legalPage = (code) => ({
@@ -60,6 +60,8 @@ const legalPage = (code) => ({
     LEGAL_ADDRESS: LEGAL.address,
     BANK: LEGAL.bank,
     PD_EMAIL: LEGAL.pdEmail,
+    // пункты политики ПД о подаче заявлений — только если есть куда их подавать
+    PD_CONTACT: LEGAL.address || LEGAL.pdEmail,
     SERVICE_CENTER: LEGAL.serviceCenter,
   }),
 });
