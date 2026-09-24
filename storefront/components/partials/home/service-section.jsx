@@ -2,11 +2,11 @@ import React from "react";
 import InlineSVG from "react-inlinesvg";
 import {servicesIcons} from "~/utils/data/services-icons";
 
-function ServiceBox({fields}) {
+function ServiceBox({fields, className = ''}) {
   const services = Object.values(fields);
 
   return (
-    <section className="container">
+    <section className={`container ${className}`}>
       <div className="services-section-wrapper">
         {services.map((feature, index) => (
           <div key={index} className="services-section-item">

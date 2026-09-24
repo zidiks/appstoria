@@ -89,7 +89,8 @@ export default function HomePage({ articles, recProducts, slides, fields, featur
           tradeInTitle={fields['trade-in-title']}
         />
 
-        <ServiceBox fields={features}/>
+        {/* Без блога под иконками сразу футер — возвращаем отступ, который давала секция блога */}
+        <ServiceBox fields={features} className={FEATURES.blog ? '' : 'mb-10'}/>
 
         {FEATURES.blog && <BlogSection posts={articles}/>}
 
