@@ -6,10 +6,10 @@ import {SwiperSlide} from "swiper/react";
 import Link from "next/link";
 import { FEATURES } from '~/site.config';
 
-// Слайды — это статьи блога; пока блог скрыт, слайд просто картинка
+// Слайд-статья ведёт в блог, если он включён; слайды из полей — просто картинки
 function SlideLink({ seoUrl, children }) {
-  return FEATURES.blog
-    ? <Link href={`/blog/${seoUrl || '#'}`}>{children}</Link>
+  return FEATURES.blog && seoUrl
+    ? <Link href={`/blog/${seoUrl}`}>{children}</Link>
     : <>{children}</>;
 }
 
@@ -46,8 +46,8 @@ function IntroSection({ slides }) {
                     <Image
                       className="intro-section-carousel-img"
                       src={getImgPath(item.media)}
-                      alt={item.seo?.imageAlt || item.title}
-                      title={item.seo?.seoTitle || item.title}
+                      alt={item.seo?.imageAlt || item.title || 'App:storia'}
+                      title={item.seo?.seoTitle || item.title || undefined}
                       width={1400}
                       height={546}
                       priority={index === 0}

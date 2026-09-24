@@ -25,6 +25,16 @@ export const FEATURES = {
 };
 
 /**
+ * Слайдер на главной.
+ *   source: 'fields'   — картинки из полей-картинок админки (fields), пустые пропускаются;
+ *   source: 'articles' — статьи с флагом «слайд», как на macplus.
+ */
+export const SLIDES = {
+  source: 'fields',
+  fields: ['appstoria-slide-1', 'appstoria-slide-2', 'appstoria-slide-3'],
+};
+
+/**
  * Поля «админки» (Field на бэке, /field/object?code=...).
  *   source: 'config' — всегда берём value отсюда, бэк не спрашиваем;
  *   source: 'api'    — берём из админки бэка (и прогоняем через TEXT_REPLACEMENTS,
