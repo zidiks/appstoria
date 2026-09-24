@@ -6,3 +6,5 @@ build
 .env.local
 .idea
 .env.*.local
+hoster-build
+hoster-build.zip

@@ -30,3 +30,7 @@ node_modules
 Thumbs.db
 .env.local
 .env.*.local
+
+# сборка для shared-хостинга (npm run build:hoster)
+/hoster-build/
+/hoster-build.zip

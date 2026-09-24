@@ -9,11 +9,17 @@ const apiUrl = new URL(API_HOST);
 const siteUrl = new URL(NEXT_PUBLIC_HOST);
 const apexHost = siteUrl.hostname.replace(/^www\./, '');
 
+// Сборка для shared-хостинга (npm run build:hoster): компактный standalone-сервер
+// без полного node_modules и без оптимизатора картинок (ему нужен нативный sharp)
+const HOSTER_BUILD = process.env.HOSTER_BUILD === 'true';
+
 module.exports = {
+    ...(HOSTER_BUILD ? { output: 'standalone' } : {}),
     sassOptions: {
         silenceDeprecations: ['legacy-js-api'],
     },
     images: {
+        unoptimized: HOSTER_BUILD,
         minimumCacheTTL: 31536000,
         remotePatterns: [
             {
