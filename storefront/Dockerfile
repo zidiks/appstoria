@@ -2,6 +2,8 @@ FROM node:20
 
 # Без аргументов берутся значения из .env.production
 ARG API_HOST
+ARG API_UPSTREAM
+ARG API_PROXY
 ARG NEXT_PUBLIC_HOST
 ARG TURNSTILE_SITE_KEY
 
@@ -12,7 +14,7 @@ COPY . .
 
 # Заданные build args пишем в .env.production.local: он перекрывает .env.production
 # и читается не только при сборке, но и при `next start`
-RUN for name in API_HOST NEXT_PUBLIC_HOST TURNSTILE_SITE_KEY; do \
+RUN for name in API_HOST API_UPSTREAM API_PROXY NEXT_PUBLIC_HOST TURNSTILE_SITE_KEY; do \
       value=$(printenv "$name" || true); \
       if [ -n "$value" ]; then echo "$name=$value" >> .env.production.local; fi; \
     done

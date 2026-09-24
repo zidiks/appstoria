@@ -1,5 +1,11 @@
 // Переопределения данных бэка на витрине — см. site.config.js
-import { FIELDS, PRICE_MARKUP, TEXT_REPLACEMENTS } from '~/site.config';
+import {
+  FIELDS,
+  PRICE_MARKUP,
+  SOURCE_API_HOST,
+  SOURCE_SITE_HOST,
+  TEXT_REPLACEMENTS,
+} from '~/site.config';
 
 /** Округление вверх до «девятки»: 49, 139, 1349, 12999 — не меньше заданной наценки */
 export function prettyOldPrice(salePrice, percent) {
@@ -24,11 +30,10 @@ function markupProduct(product) {
   product.discount = Math.round((1 - product.totalPrice / price) * 100);
 }
 
-// Ссылки и имена файлов не переписываем (кроме домена самого сайта в ссылках):
-// в них встречается «macplus» — в хосте API и в названиях картинок.
+// Ссылки и имена файлов не переписываем текстовыми правилами — только хосты:
+// сайт источника → наш сайт, API источника → наш прокси {сайт}/api
 const PROTECTED_TOKEN =
   /(https?:\/\/[^\s"'<>()]+|[\w./-]+\.(?:webp|png|jpe?g|gif|svg|avif)\b)/gi;
-const SITE_HOST = /^(https?:\/\/)(?:www\.)?macplus\.by(?=[/?#]|$)/i;
 
 export function rebrandText(text) {
   if (typeof text !== 'string' || !text) return text;
@@ -36,7 +41,9 @@ export function rebrandText(text) {
     .split(PROTECTED_TOKEN)
     .map((part, index) => {
       if (index % 2 === 1) {
-        return part.replace(SITE_HOST, '$1appstoria.by');
+        return part
+          .replace(SOURCE_API_HOST, process.env.API_HOST)
+          .replace(SOURCE_SITE_HOST, '$1appstoria.by');
       }
       return TEXT_REPLACEMENTS.reduce(
         (acc, [pattern, replacement]) => acc.replace(pattern, replacement),

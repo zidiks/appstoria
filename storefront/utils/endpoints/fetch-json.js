@@ -1,4 +1,22 @@
+import getConfig from 'next/config';
 import { transformApiPayload } from '~/utils/overrides';
+
+/**
+ * Код собирает адреса от process.env.API_HOST — это публичный {сайт}/api.
+ * На сервере идём мимо собственного прокси прямо на бэк; в браузере добавляем
+ * слэш в конец пути, иначе trailingSlash сайта ответит лишним редиректом 308.
+ */
+function resolveApiUrl(url) {
+  if (typeof window === 'undefined') {
+    const { apiPublic, apiUpstream } = getConfig()?.serverRuntimeConfig || {};
+    return apiPublic && apiUpstream && url.startsWith(apiPublic)
+      ? apiUpstream + url.slice(apiPublic.length)
+      : url;
+  }
+  if (!url.startsWith(process.env.API_HOST)) return url;
+  const [path, query] = url.split('?');
+  return (path.endsWith('/') ? path : `${path}/`) + (query !== undefined ? `?${query}` : '');
+}
 
 const DEFAULT_TIMEOUT_MS = 8_000;
 const DEFAULT_RETRY_DELAY_MS = 400;
@@ -17,7 +35,8 @@ export class ApiRequestError extends Error {
   }
 }
 
-export async function fetchJson(url, options = {}) {
+export async function fetchJson(publicUrl, options = {}) {
+  const url = resolveApiUrl(publicUrl);
   const {
     timeoutMs = DEFAULT_TIMEOUT_MS,
     retries: configuredRetries,

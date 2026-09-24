@@ -180,10 +180,18 @@ const sameCase = (word, source) =>
 // \b в JS не работает с кириллицей — границы слова задаём явно
 const RU_LETTER = 'А-Яа-яЁё';
 
+// Имя площадки-источника не пишем открытым текстом: этот файл попадает в JS браузера
+const SOURCE = atob('bWFjcGx1cw==');
+/** Ссылка на сайт источника → на наш сайт */
+export const SOURCE_SITE_HOST = new RegExp(`^(https?:\\/\\/)(?:www\\.)?${SOURCE}\\.by(?=[/?#]|$)`, 'i');
+/** Ссылка на API источника (картинки в описаниях) → на наш прокси {сайт}/api */
+export const SOURCE_API_HOST = new RegExp(`^https?:\\/\\/api\\.${SOURCE}\\.by`, 'i');
+
 export const TEXT_REPLACEMENTS = [
-  // Домен сайта (но не api.macplus.by — оттуда картинки)
-  [/(?<![\w.-])(?:www\.)?macplus\.by/gi, 'appstoria.by'],
-  [/\bmac\s?plus\b/gi, 'App:storia'],
+  // Домен сайта-источника (его api. — отдельное правило для ссылок)
+  [new RegExp(`(?<![\\w.-])(?:www\\.)?${SOURCE}\\.by`, 'gi'), 'appstoria.by'],
+  // Бренд источника, в том числе раздельно
+  [new RegExp(`\\b${SOURCE.slice(0, 3)}\\s?${SOURCE.slice(3)}\\b`, 'gi'), 'App:storia'],
   // Город: витрина — гродненская. «Гродно» не склоняется: Минска/Минску/Минске → Гродно
   [
     // «Минском» — существительное («под Минском»), но не прилагательное перед
