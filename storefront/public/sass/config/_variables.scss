@@ -7,7 +7,8 @@ $primary-color: #2C6DEC !default;
 $primary-color-hover: #1F56C4 !default;
 $primary-color-dark:  #111111 !default;
 $secondary-color: #0057FF  !default;
-$sale-color: #E53935 !default;
+// Скидка — оранжевый: контрастный к синему бренду и не спорит с синими «Хит»/«Новинка»
+$sale-color: #F76707 !default;
 $rating-color: #FFB400 !default;
 $alert-color: #b10001 !default; 
 $success-color: #a8c26e !default;

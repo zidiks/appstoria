@@ -37,7 +37,6 @@ const App = ({Component, pageProps}) => {
   // Admin fields win; brand contacts are used only when a field is missing/empty.
   const layoutFields = withDefaults(pageProps?.layoutFields, {
     phone: CONTACTS.phone,
-    email: CONTACTS.email,
     address: `г. ${CONTACTS.city}, ${CONTACTS.streetAddress}`,
     work_time: CONTACTS.workTime,
   });
@@ -46,6 +45,7 @@ const App = ({Component, pageProps}) => {
 
   const telephone = layoutFields?.phone || CONTACTS.phone;
   const email = layoutFields?.email || CONTACTS.email;
+  const emailLd = email ? { email } : {};
   const sameAs = Array.from(new Set([...SOCIALS, layoutFields?.instagram].filter(Boolean)));
   const postalAddress = {
     "@type": "PostalAddress",
@@ -74,7 +74,7 @@ const App = ({Component, pageProps}) => {
       "description": ORGANIZATION_DESCRIPTION,
       "url": `${SITE_URL}/`,
       "logo": `${SITE_URL}${SITE_LOGO}`,
-      "email": email,
+      ...emailLd,
       "address": postalAddress,
       "contactPoint": [{
         "@type": "ContactPoint",
@@ -90,7 +90,7 @@ const App = ({Component, pageProps}) => {
       "description": ORGANIZATION_DESCRIPTION,
       "url": `${SITE_URL}/`,
       "image": `${SITE_URL}${SITE_LOGO}`,
-      "openingHours": "Mo-Su 12:00-20:00",
+      "openingHours": "Mo-Su 11:00-20:00",
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
@@ -103,12 +103,12 @@ const App = ({Component, pageProps}) => {
             "Saturday",
             "Sunday"
           ],
-          "opens": "12:00",
+          "opens": "11:00",
           "closes": "20:00"
         }
       ],
       "telephone": telephone,
-      "email": email,
+      ...emailLd,
       "address": postalAddress,
       "sameAs": sameAs
     }

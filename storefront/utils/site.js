@@ -9,11 +9,12 @@ export const CONTACTS = {
   phone: '+375 (29) 585-12-34',
   phoneHref: 'tel:+375295851234',
   phoneE164: '+375295851234',
-  email: 'hello@app-storia.by',
-  streetAddress: 'ул. Подольная 37, 1-й этаж (здание кафе «Веранда»)',
+  // Почту на сайте пока не показываем
+  email: '',
+  streetAddress: 'ул. Подольная 37, 1-й этаж (здание кафе «Шервуд»)',
   city: 'Гродно',
   country: 'Беларусь',
-  workTime: 'Каждый день 12:00–20:00',
+  workTime: 'Каждый день 11:00–20:00',
 };
 
 export const SOCIALS = [

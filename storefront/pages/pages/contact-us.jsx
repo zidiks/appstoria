@@ -129,10 +129,14 @@ export default function ContactUs({ fields }) {
                         <ALink href={`tel:${fields.phone}`}>{fields.phone}</ALink>
                       </p>
 
-                      <h4 className="mb-2 text-capitalize">Почта</h4>
-                      <p className="mb-4">
-                        <ALink href={`mailto:${fields.email}`}>{fields.email}</ALink>
-                      </p>
+                      {fields.email && (
+                        <>
+                          <h4 className="mb-2 text-capitalize">Почта</h4>
+                          <p className="mb-4">
+                            <ALink href={`mailto:${fields.email}`}>{fields.email}</ALink>
+                          </p>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

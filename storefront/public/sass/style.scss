@@ -584,8 +584,12 @@ body {
   margin: 0 !important;
 }
 
-.btn-link-banner:hover {
+// «Купить сейчас» в баннере выпадающего меню — белым поверх синей картинки
+.btn-link-banner {
   color: white !important;
+  &:hover {
+    opacity: .85;
+  }
 }
 
 .banner-section-wrapper {

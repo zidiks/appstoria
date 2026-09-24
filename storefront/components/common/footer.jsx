@@ -35,10 +35,12 @@ export default function Footer({ fields, categoryTree, footerNav }) {
                     <label>Телефон: </label>
                     <ALink href={`tel:${fields.phone}`}>{fields.phone}</ALink>
                   </li>
-                  <li>
-                    <label>Email: </label>
-                    <ALink href={`mailto:${fields.email}`}>{fields.email}</ALink>
-                  </li>
+                  {fields.email && (
+                    <li>
+                      <label>Email: </label>
+                      <ALink href={`mailto:${fields.email}`}>{fields.email}</ALink>
+                    </li>
+                  )}
                   <li>
                     <label>Адрес: </label>
                     <a rel="nofollow" href={`http://maps.google.com/?q=${fields.address}`} target="_blank">

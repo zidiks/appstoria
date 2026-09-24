@@ -130,8 +130,13 @@ function Checkout(props) {
     orderObj.paymentMethod = delivery[currentRadio].paymentMethods[payment];
     orderObj.cartItems = cartList.map(el => ({ productId: el._id, count: el.qty }));
     orderObj.turnstileToken = turnstileToken;
-    // Заказ уходит в общую админку — помечаем, с какой витрины он пришёл
-    orderObj.delivery.comment = [SOURCE_TAG, obj.comment?.trim()].filter(Boolean).join('\n');
+    // Заказ уходит в общую админку — помечаем, с какой витрины он пришёл. Название
+    // доставки бэк возьмёт своё (по _id), поэтому пишем и то, что видел покупатель
+    orderObj.delivery.comment = [
+      SOURCE_TAG,
+      `Доставка: ${delivery[currentRadio].name}`,
+      obj.comment?.trim(),
+    ].filter(Boolean).join('\n');
     if (obj.email) {
       orderObj.customer.email = obj.email.trim();
     }

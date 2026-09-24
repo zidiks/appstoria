@@ -37,15 +37,15 @@ export const SLIDES = {
 export const FIELDS = {
   // Контакты
   phone: { source: 'config', value: '+375 (29) 585-12-34' },
-  email: { source: 'config', value: 'hello@app-storia.by' },
-  address: { source: 'config', value: 'г. Гродно, ул. Подольная 37, 1-й этаж (здание кафе «Веранда»)' },
-  work_time: { source: 'config', value: 'Каждый день 12:00–20:00' },
+  // Пустая строка — почта на сайте не показывается
+  email: { source: 'config', value: '' },
+  address: { source: 'config', value: 'г. Гродно, ул. Подольная 37, 1-й этаж (здание кафе «Шервуд»)' },
+  work_time: { source: 'config', value: 'Каждый день 11:00–20:00' },
   copyright: { source: 'config', value: ' App:storia' },
-  // Реквизиты продавца. Заказы с витрины сейчас оформляет macplus, поэтому
-  // здесь его юрлицо. Появятся свои — замени value.
+  // Реквизиты продавца
   legal: {
     source: 'config',
-    value: 'ООО «ПольМари»  \nУНП:692030367\nДата регистрации в торговом реестре - 06.04.2017.',
+    value: 'ООО «МакПлюсТрейд»\nУНП 491468179\nДата регистрации в торговом реестре - 10.11.2023.',
   },
 
   // Соцсети и мессенджеры. Пустая строка — иконка не показывается.
@@ -68,7 +68,7 @@ export const FIELDS = {
   // Фиды /ymlfeed.xml и /merchant.xml
   'yml-feed-name': { source: 'config', value: 'App:storia' },
   'yml-feed-link': { source: 'config', value: 'https://appstoria.by' },
-  'yml-feed-company': { source: 'config', value: 'ООО «ПольМари»' },
+  'yml-feed-company': { source: 'config', value: 'ООО «МакПлюсТрейд»' },
   'yml-feed-delivery': { source: 'config', value: 'true' },
 
   // Главная
@@ -94,6 +94,24 @@ export const FIELDS = {
   warranty: { source: 'api' },
   'privacy-policy': { source: 'api' },
   'public-offer': { source: 'api' },
+};
+
+/**
+ * Способы доставки на витрине. Сами способы (цена, порог бесплатной доставки,
+ * поля, оплата) берутся с бэка macplus: заказ проверяется по их _id. Здесь —
+ * только то, что видит покупатель. Способы, которых нет в списке, скрыты.
+ */
+export const DELIVERY_METHODS = {
+  // на бэке: «Курьерская доставка Минск»
+  '651f075d52ec98d085c945c8': {
+    name: 'Курьерская доставка Гродно',
+    description: 'Доставка курьером к вашей двери',
+  },
+  // на бэке: «Курьерская доставка Беларусь»
+  '66e441b34a87f456a8d4bc9c': {
+    name: 'Курьерская доставка Беларусь',
+    description: 'Курьерская доставка до двери',
+  },
 };
 
 /**
