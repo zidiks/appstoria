@@ -35,7 +35,6 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
   };
 
   const ogImage = product.seo?.seoImage[0];
-  const titleString = `${product.seo?.seoTitle || product.name || SITE_NAME}`;
   const descriptionString = `${product.seo?.seoTitle || product.name || ''}`;
   const categoryString = `${product.category.name}`;
   const headerString = `${product.name}`;
@@ -53,7 +52,8 @@ export default function ProductItem({product, featured, deliveryMethods, seoFiel
   const phoneValid = Boolean(phoneValue && isValidPhoneNumber(phoneValue));
   const captchaReady = !turnstileEnabled || Boolean(turnstileToken);
 
-  const interpolatedTitle = mainSeo?.title || seoFields['product-seo-title'].replaceAll('{TITLE}', titleString);
+  // Свой SEO-заголовок товара уже полный — шаблон нужен только товарам без него
+  const interpolatedTitle = mainSeo?.title || product.seo?.seoTitle || seoFields['product-seo-title'].replaceAll('{TITLE}', product.name || SITE_NAME);
   const interpolatedDescription = mainSeo?.description || seoFields['product-seo-description'].replaceAll('{TITLE}', descriptionString).replaceAll('{CATEGORY}', categoryString);
   const interpolatedHeader = mainSeo?.tag || seoFields['product-seo-header'].replaceAll('{TITLE}', headerString);
 

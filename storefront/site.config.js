@@ -88,6 +88,18 @@ export const FIELDS = {
 };
 
 /**
+ * SEO конкретных страниц. Перекрывает раздел «SEO» админки бэка
+ * (/seo/item?url=...) — поля, заданные здесь, главнее. url — путь без домена.
+ */
+export const SEO_BY_URL = {
+  '/': {
+    title: FIELDS['main-seo-title'].value,
+    description: FIELDS['main-seo-description'].value,
+    tag: 'App:storia — техника Apple в Гродно',
+  },
+};
+
+/**
  * Замены в текстах, пришедших с бэка: SEO-страницы (/seo), SEO и описания
  * товаров/категорий/статей, поля с source: 'api'. Порядок важен. Имена файлов
  * и ссылки на картинки не трогаются.

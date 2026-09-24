@@ -9,7 +9,6 @@ import { wishlistActions } from '~/store/wishlist';
 
 import { getImgPath, toDecimal } from '~/utils';
 import Image from "next/image";
-import { SITE_URL } from '~/utils/site';
 
 function ProductTwo(props) {
   const { product, adClass = 'text-center', addToCart, isCat = true } = props;
@@ -42,7 +41,7 @@ function ProductTwo(props) {
         </div>
 
         <div className="product-action">
-          <ALink href={`${SITE_URL}/${product.categoryHandle ? product.categoryHandle + '/' : ''}${product.seo?.seoUrl || '#'}`} className="btn-product btn-quickview" title="Quick View">
+          <ALink href={`/${product.categoryHandle ? product.categoryHandle + '/' : ''}${product.seo?.seoUrl || '#'}`} className="btn-product btn-quickview" title="Quick View">
             Подробнее
           </ALink>
         </div>

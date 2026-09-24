@@ -1,11 +1,15 @@
 import { fetchJson } from './fetch-json';
+import { SEO_BY_URL } from '~/site.config';
 
 export async function getSeoByUrl(url) {
+  let seo = null;
   try {
-    return (await fetchJson(process.env.API_HOST + `/seo/item?url=${url}`)) || null;
+    seo = (await fetchJson(process.env.API_HOST + `/seo/item?url=${url}`)) || null;
   } catch (e) {
-    return null;
+    seo = null;
   }
+  const override = SEO_BY_URL[url];
+  return override ? { ...(seo || {}), url, ...override } : seo;
 }
 
 export async function getAllSeo() {
