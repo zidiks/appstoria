@@ -9,3 +9,6 @@ node_modules/
 /deploy/data/
 /deploy/storage/
 /deploy/storage_originals/
+
+# исходники картинок (тяжёлые), в репо — только оптимизированные версии
+/branding/*.source.*
