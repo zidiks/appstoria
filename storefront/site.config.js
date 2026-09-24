@@ -4,6 +4,7 @@
  * Сейчас витрина работает на бэке macplus (API_HOST=https://api.macplus.by),
  * поэтому всё, что в его админке заведено под Mac Plus, перекрываем здесь.
  */
+import { LEGAL_PAGE_TEMPLATES, renderLegalPage } from '~/content/legal-pages';
 
 /**
  * Цена «до скидки». Цена из бэка (totalPrice) показывается как цена со скидкой,
@@ -27,6 +28,43 @@ export const SLIDES = {
 };
 
 /**
+ * Продавец. Отсюда берутся реквизиты в футере, в YML-фиде и в юридических
+ * страницах (content/legal-pages.js). Пустое значение — фраза с ним в тексты
+ * не попадает.
+ */
+export const LEGAL = {
+  name: 'ООО «МакПлюсТрейд»',
+  // «Определяет деятельность …» — в родительном падеже
+  nameGenitive: 'Общества с ограниченной ответственностью «МакПлюсТрейд»',
+  unp: '491468179',
+  regDate: '10.11.2023',
+  // Юридический адрес (оферта, политика ПД: место нахождения и адрес для заявлений)
+  address: '',
+  // Банковские реквизиты одной строкой: р/с, банк, БИК
+  bank: '',
+  // Почта для обращений по персональным данным
+  pdEmail: '',
+  // Где проходит сервисное обслуживание (гарантия): название и адрес
+  serviceCenter: '',
+};
+
+const legalPage = (code) => ({
+  source: 'config',
+  value: renderLegalPage(LEGAL_PAGE_TEMPLATES[code], {
+    SITE_URL: 'https://appstoria.by',
+    SITE_DOMAIN: 'appstoria.by',
+    LEGAL_NAME: LEGAL.name,
+    LEGAL_NAME_FULL: LEGAL.nameGenitive,
+    UNP: LEGAL.unp,
+    REG_DATE: LEGAL.regDate,
+    LEGAL_ADDRESS: LEGAL.address,
+    BANK: LEGAL.bank,
+    PD_EMAIL: LEGAL.pdEmail,
+    SERVICE_CENTER: LEGAL.serviceCenter,
+  }),
+});
+
+/**
  * Поля «админки» (Field на бэке, /field/object?code=...).
  *   source: 'config' — всегда берём value отсюда, бэк не спрашиваем;
  *   source: 'api'    — берём из админки бэка (и прогоняем через TEXT_REPLACEMENTS,
@@ -45,7 +83,7 @@ export const FIELDS = {
   // Реквизиты продавца
   legal: {
     source: 'config',
-    value: 'ООО «МакПлюсТрейд»\nУНП 491468179\nДата регистрации в торговом реестре - 10.11.2023.',
+    value: `${LEGAL.name}\nУНП ${LEGAL.unp}\nДата регистрации в торговом реестре - ${LEGAL.regDate}.`,
   },
 
   // Соцсети и мессенджеры. Пустая строка — иконка не показывается.
@@ -53,7 +91,6 @@ export const FIELDS = {
   telegram: { source: 'config', value: '' },
   viber: { source: 'config', value: '' },
   whatsapp: { source: 'config', value: '' },
-  'yandex-reviews-org': { source: 'config', value: '' },
 
   // SEO. {TITLE} — название товара/категории/статьи, {CATEGORY} — категория.
   'main-seo-title': { source: 'config', value: 'App:storia — техника Apple в Гродно и по Беларуси' },
@@ -68,7 +105,7 @@ export const FIELDS = {
   // Фиды /ymlfeed.xml и /merchant.xml
   'yml-feed-name': { source: 'config', value: 'App:storia' },
   'yml-feed-link': { source: 'config', value: 'https://appstoria.by' },
-  'yml-feed-company': { source: 'config', value: 'ООО «МакПлюсТрейд»' },
+  'yml-feed-company': { source: 'config', value: LEGAL.name },
   'yml-feed-delivery': { source: 'config', value: 'true' },
 
   // Главная
@@ -87,13 +124,12 @@ export const FIELDS = {
   'trade-in-subtitle': { source: 'config', value: 'предоставляем ГАРАНТИЮ 1 год' },
   'trade-in-description': { source: 'config', value: 'и 36 месяцев сервисного обслуживания' },
 
-  // Большие юридические тексты (HTML) пока берём у бэка: своих ещё нет.
-  // Бренд и домен в них заменяются через TEXT_REPLACEMENTS.
-  'delivery-terms': { source: 'api' },
-  'payment-terms': { source: 'api' },
-  warranty: { source: 'api' },
-  'privacy-policy': { source: 'api' },
-  'public-offer': { source: 'api' },
+  // Юридические страницы — тексты в content/legal-pages.js, реквизиты из LEGAL
+  'public-offer': legalPage('public-offer'),
+  'privacy-policy': legalPage('privacy-policy'),
+  'payment-terms': legalPage('payment-terms'),
+  'delivery-terms': legalPage('delivery-terms'),
+  warranty: legalPage('warranty'),
 };
 
 /**

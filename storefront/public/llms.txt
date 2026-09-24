@@ -24,7 +24,6 @@
 - [Оплата](https://appstoria.by/pages/payment-terms/): Доступные способы и условия оплаты.
 - [Гарантия](https://appstoria.by/pages/warranty/): Условия гарантии и сервисного обслуживания техники.
 - [Trade-in](https://appstoria.by/pages/trade-in/): Условия обмена старой техники на новую.
-- [Отзывы](https://appstoria.by/pages/reviews/): Отзывы покупателей о магазине App:storia.
 - [Контакты](https://appstoria.by/pages/contact-us/): Телефон, электронная почта, адрес и форма обратной связи.
 
 ## Optional

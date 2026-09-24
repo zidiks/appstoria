@@ -1,6 +1,10 @@
 import { fetchJson } from './fetch-json';
-// В меню из админки macplus есть «Блог» — в этом форке блога нет
-const isBlogLink = (item) => /^\/blog(\/|$)/.test(item?.handle || '');
+// В меню из админки macplus есть разделы, которых в этом форке нет
+const REMOVED_SECTIONS = ['/blog', '/pages/reviews'];
+const isRemovedLink = (item) => {
+  const path = (item?.handle || '').replace(/\/+$/, '');
+  return REMOVED_SECTIONS.some((section) => path === section || path.startsWith(`${section}/`));
+};
 
 export async function getMenuByCode(code) {
   const menu =
@@ -8,7 +12,7 @@ export async function getMenuByCode(code) {
       children: [],
     };
   if (Array.isArray(menu.children)) {
-    menu.children = menu.children.filter((item) => !isBlogLink(item));
+    menu.children = menu.children.filter((item) => !isRemovedLink(item));
   }
   return menu;
 }
