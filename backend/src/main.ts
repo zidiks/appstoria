@@ -31,9 +31,9 @@ function getCorsOrigins(): string[] {
   }
 
   const origins = [
-    'https://appstoria.by',
-    'https://www.appstoria.by',
-    'https://admin.appstoria.by',
+    'https://app-storia.by',
+    'https://www.app-storia.by',
+    'https://admin.app-storia.by',
   ];
   if (process.env.NODE_ENV !== 'prod') {
     origins.push(

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  host: 'api.appstoria.by',
+  host: 'api.app-storia.by',
   port: null,
   currentOrigin: false,
   https: true,

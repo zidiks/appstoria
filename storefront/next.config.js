@@ -1,7 +1,7 @@
 // Build-time configuration. All values can be overridden via environment
 // variables (e.g. Docker build args), defaults point to production App:storia.
-const API_HOST = (process.env.API_HOST || 'https://api.appstoria.by').replace(/\/+$/, '');
-const NEXT_PUBLIC_HOST = (process.env.NEXT_PUBLIC_HOST || 'https://appstoria.by').replace(/\/+$/, '');
+const API_HOST = (process.env.API_HOST || 'https://api.app-storia.by').replace(/\/+$/, '');
+const NEXT_PUBLIC_HOST = (process.env.NEXT_PUBLIC_HOST || 'https://app-storia.by').replace(/\/+$/, '');
 // Cloudflare Turnstile site key is domain-bound; empty value disables the widget.
 const TURNSTILE_SITE_KEY = process.env.TURNSTILE_SITE_KEY || '';
 

@@ -1,5 +1,5 @@
 // Site-wide brand constants. SITE_URL comes from NEXT_PUBLIC_HOST (see next.config.js).
-export const SITE_URL = (process.env.NEXT_PUBLIC_HOST || 'https://appstoria.by').replace(/\/+$/, '');
+export const SITE_URL = (process.env.NEXT_PUBLIC_HOST || 'https://app-storia.by').replace(/\/+$/, '');
 export const SITE_NAME = 'App:storia';
 export const SITE_DESCRIPTION = 'Продажа и ремонт техники Apple в Гродно';
 export const ORGANIZATION_DESCRIPTION = 'Магазин и сервис техники Apple в Гродно';
@@ -19,5 +19,5 @@ export const CONTACTS = {
 export const SOCIALS = [
   'https://www.instagram.com/appstoria/',
   'https://vk.com/appstoria.grodno',
-  'https://www.facebook.com/appstoria.by/',
+  'https://www.facebook.com/app-storia.by/',
 ];
