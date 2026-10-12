@@ -71,7 +71,7 @@ export default function StickyBuyFooter({product, openModal, addToCartHandler, c
                   </div>
                 </button>
                 <button className={`btn-product btn-cart text-normal ls-normal font-weight-semi-bold ${cartActive ? '' : 'disabled'}`} onClick={() => openModal(true)}>
-                  Купить сразу
+                  В рассрочку
                 </button>
               </>
             ) : (

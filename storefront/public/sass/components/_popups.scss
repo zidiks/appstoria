@@ -543,7 +543,7 @@ button.mfp-close {
     .fast-phone-error {
         display: block;
         min-height: 1.4rem;
-        margin: -1.8rem .2rem .4rem;
+        margin: .4rem .2rem .6rem;
         padding-left: .4rem;
         color: #d93025;
         font-size: 1.1rem;
@@ -555,6 +555,70 @@ button.mfp-close {
 
         &.visible {
             opacity: 1;
+        }
+    }
+    .installment-field {
+        margin-bottom: 2rem;
+        text-align: left;
+
+        &_label {
+            display: block;
+            margin-bottom: .8rem;
+            padding-left: .2rem;
+            color: #222;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+    }
+    .installment-field-last {
+        margin-bottom: 0;
+    }
+    // Ошибка взноса — последний <p> в форме, перебиваем p:last-of-type
+    p.installment-error {
+        margin: .4rem .2rem 1.6rem;
+    }
+    .installment-terms {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: .8rem;
+    }
+    .installment-term {
+        height: 4.6rem;
+        padding: 0 .4rem;
+        border: 1px solid variables.$dark-color;
+        border-radius: .3rem;
+        background: #fff;
+        color: #222;
+        font-size: 1.3rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+
+        &:hover {
+            border-color: variables.$primary-color;
+        }
+        &.active {
+            border-color: variables.$primary-color;
+            background: variables.$primary-color;
+            color: #fff;
+        }
+    }
+    .installment-percent {
+        position: relative;
+
+        .form-control {
+            height: 4.6rem;
+            padding: 0 3.2rem 0 1.2rem;
+            border-radius: .3rem;
+        }
+        &_suffix {
+            position: absolute;
+            top: 50%;
+            right: 1.4rem;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.4rem;
+            pointer-events: none;
         }
     }
     .custom-checkbox + label {

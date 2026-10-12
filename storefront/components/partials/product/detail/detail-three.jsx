@@ -178,7 +178,7 @@ function DetailThree(props) {
                   </div>
                 </button>
                 <button className={`btn-product btn-cart text-normal ls-normal mr-none font-weight-semi-bold ${cartActive ? '' : 'disabled'}`} onClick={() => openModal(true)}>
-                  Купить сразу
+                  В рассрочку
                 </button>
               </>
             ) : (
